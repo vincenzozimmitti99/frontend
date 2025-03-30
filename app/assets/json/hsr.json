@@ -1,0 +1,125 @@
+{
+	"id": "hsr",
+	"regularIncome":
+	[
+		{
+			"type": "f2p",
+			"name": "Dailies",
+			"recurrence": -1,
+			"value": 60
+		},
+		{
+			"type": "premium",
+			"name": "Express Supply Pass",
+			"recurrence": 0,
+			"value": 90
+		},
+		{
+			"type": "f2p",
+			"name": "Weeklies",
+			"recurrence": -1,
+			"value": 225,
+			"resetStart": "03-24-2025",
+			"resetInterval": 7
+		}
+	],
+	"endgameIncome": [
+		{
+			"name": "Memory of Chaos",
+			"recurrence": 1,
+			"value": 800,
+			"resetStart": "03-31-2025",
+			"resetInterval": 42
+		},
+		{
+			"name": "Pure Fiction",
+			"recurrence": 1,
+			"value": 800,
+			"resetStart": "04-28-2025",
+			"resetInterval": 42
+		},
+		{
+			"name": "Apocalyptic Shadow",
+			"recurrence": 1,
+			"value": 800,
+			"resetStart": "04-14-2025",
+			"resetInterval": 42
+		}
+	],
+	"otherIncome":
+	[
+		{
+			"name": "April Monthly Shop",
+			"recurrence": 1,
+			"value": 800,
+			"start": "04-01-2025",
+			"end": "04-31-2025"
+		},
+		{
+			"name": "3.2 Livestream Code",
+			"recurrence": 1,
+			"value": 300,
+			"start": "03-28-2025"
+		},
+		{
+			"name": "3.2 Daily Login Reward",
+			"recurrence": 10,
+			"value": 320,
+			"start": "04-09-2025",
+			"end": "04-16-2025"
+		},
+		{
+			"name": "3.2 One-time Login Reward",
+			"recurrence": 1,
+			"value": 1600,
+			"start": "04-09-2025"
+		},
+		{
+			"name": "3.2 Mail Reward",
+			"recurrence": 1,
+			"value": 600,
+			"start": "04-09-2025"
+		},
+		{
+			"name": "The Awooo Firm",
+			"recurrence": 1,
+			"value": 1120,
+			"start": "02-28-2025",
+			"end": "04-07-2025"
+		},
+		{
+			"name": "Holy City Appraisals",
+			"recurrence": 1,
+			"value": 500,
+			"start": "03-19-2025",
+			"end": "04-07-2025"
+		}
+	],
+	"pullables":
+	[
+		{
+			"name": "Castorice",
+			"type": "character",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Castorice LC",
+			"type": "weapon",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Anaxa",
+			"type": "character",
+			"start": "04-30-2025",
+			"end": "05-20-2025"
+		},
+		{
+			"name": "Anaxa LC",
+			"type": "weapon",
+			"start": "04-30-2025",
+			"end": "05-20-2025"
+		}
+	]
+}
