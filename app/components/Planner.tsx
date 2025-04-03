@@ -91,6 +91,7 @@ function Planner(props: PlannerProps){
 	const [totalPulls, setTotalPulls] = useState(0);
 
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
+	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<{ name: string; pullCount: number; }[]>([]);
 
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
 		const value = event.target.value;
@@ -141,7 +142,12 @@ function Planner(props: PlannerProps){
 				<span>Selected pullables:</span>
 				{selectedPullables.map((item) => {return <span>{item.name}</span>})}
 			</div>
-			<PlannerTable json={jsons[props.game]} config={config} pullsFromTableState={[pullsFromTable, setPullsFromTable]} selectedPullablesState={[selectedPullables, setSelectedPullables]} esteemedLuck={esteemedLuck} />
+			<div className="flex">
+				{pullsFromSelectedPullables.map((item) => {
+					return <span>{`${item.name}: ${Math.floor(item.pullCount)}`}</span>
+				})}
+			</div>
+			<PlannerTable json={jsons[props.game]} config={config} pullsFromTableState={[pullsFromTable, setPullsFromTable]} pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]} selectedPullablesState={[selectedPullables, setSelectedPullables]} esteemedLuck={esteemedLuck} />
 		</div>
 	);
 }

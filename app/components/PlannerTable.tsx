@@ -10,6 +10,7 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
 	pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
+	pullsFromSelectedPullablesState: [{ name: string; pullCount: number; }[], React.Dispatch<React.SetStateAction<{ name: string; pullCount: number; }[]>>];
 	selectedPullablesState: [ExtendedPullable[], React.Dispatch<React.SetStateAction<ExtendedPullable[]>>];
 	esteemedLuck: string;
 };
@@ -84,14 +85,15 @@ const calculateTotalCurrency = (
 	resetStart?: string,
 	resetInterval?: number,
 ): number => {
-	if(recurrence === -1 && start && end){
-		if(resetStart && resetInterval){
+	if(recurrence === -1 && start && end){ // Case regular rewards
+		if(resetStart && resetInterval){ // Case weeklies
 			return value*Math.floor(daysDifference(new Date(resetStart), end)/resetInterval); // This works though
-		} else {
+		} else { // Case dailies + welkin
 			return value*daysDifference(start, end); // Not sure if daily count is right, maybe missing one day to the last day
 		}
 	}
-
+	
+	// Case any other rewards, which is most likely recurrence 1
 	return recurrence*value;
 };
 
@@ -233,8 +235,22 @@ function PlannerTable(props: PlannerTableProps){
 			
 			return dailiesUntil.filter(item => !!item)
 		},
-		[props.json.regularIncome, props.selectedPullablesState[0]]
+		[props.json.regularIncome]
 	);
+
+	const selectedPullables = useMemo(() => {
+		let selectedPullables = [];
+		for(let savedItem of savedItems){
+			for(let item of pullables){
+				if(item?.name===savedItem.name){
+					if(!savedItem.disabled){
+						selectedPullables.push(item);
+					}
+				}
+			}
+		}
+		return selectedPullables;
+	}, [pullables, savedItems]);
 
 	// Here make some conditions that check the sorting selected by the user and sorts accordingly. Or maybe not because sorting seems bad?
 	const combinedData = useMemo(
@@ -244,6 +260,77 @@ function PlannerTable(props: PlannerTableProps){
 
 	// Update parent state with total pulls
 	useEffect(() => {
+		// console.log(`Re-rendering! ${Math.random()}`); // Debug
+		interface PullableGroup {
+			selectedPullables: ExtendedPullable[];
+			startDate: string;
+			endDate: string;
+		}
+
+		const groupByDatesSelectedPullables: PullableGroup[] = [];
+		const pullableMap: { [key: string]: PullableGroup } = {}; // Hash map to group by 'end' date
+
+		// Populate the hash map
+		for(let i=0;i<selectedPullables.length;i++){
+			const { start, end } = selectedPullables[i];
+
+			// If the 'end' date is not in the map, initialize it
+			if(!pullableMap[end]){
+				pullableMap[end] = {
+					selectedPullables: [],
+					startDate: start,
+					endDate: end
+				};
+			}
+
+			// Add the current pullable to the group
+			pullableMap[end].selectedPullables.push(selectedPullables[i]);
+		}
+
+		// Convert the hash map values into the desired array format
+		for(const key in pullableMap){
+			groupByDatesSelectedPullables.push(pullableMap[key]);
+		}
+		// console.log(groupByDatesSelectedPullables); // Debug
+
+		const separatedCounts = groupByDatesSelectedPullables.map((pullableGroup) => {
+			return {
+				"name": pullableGroup.selectedPullables.map((item) => item.name).join(" + "),
+				"pullCount": combinedData
+				.filter((item) => {
+					const savedItem = savedItems.find((saved) => saved.name === item.name);
+					if(item.end){
+						return !savedItem?.disabled && dateDifference(new Date(pullableGroup.endDate), new Date(item.start))<0;
+					}
+				})
+				.reduce((sum, current) => { // This is UGLY AS FUCK HOLY SHIT FIX THIS AND MAKE IT A FUNCTION also for the totalPulls one and the rendering ones!
+					const dateStart = new Date(current.start);
+					const dateEnd = current.end ? new Date(current.end) : undefined;
+					const hasRecurrence = "recurrence" in current;
+					if(hasRecurrence){
+						if(isRegularIncome(current)){
+							return sum + calculateTotalCurrency(
+								current.value,
+								hasRecurrence ? current.recurrence : undefined,
+								dateStart,
+								dateEnd,
+								current.resetStart,
+								current.resetInterval
+							);
+						} else {
+							return sum + Math.floor(calculateTotalCurrency(
+								current.value,
+								hasRecurrence ? current.recurrence : undefined,
+								dateStart,
+								dateEnd
+							));
+						}
+					}
+					return sum + current.value;
+				}, 0) / 160
+			}
+		});
+
 		const totalPulls = combinedData
 			.filter((item) => {
 				const savedItem = savedItems.find((saved) => saved.name === item.name);
@@ -254,18 +341,30 @@ function PlannerTable(props: PlannerTableProps){
 				const dateEnd = current.end ? new Date(current.end) : undefined;
 				const hasRecurrence = "recurrence" in current;
 				if(hasRecurrence){
-					return sum + Math.floor(calculateTotalCurrency(
-						current.value,
-						hasRecurrence ? current.recurrence : undefined,
-						dateStart,
-						dateEnd
-					));
+					if(isRegularIncome(current)){
+						return sum + calculateTotalCurrency(
+							current.value,
+							hasRecurrence ? current.recurrence : undefined,
+							dateStart,
+							dateEnd,
+							current.resetStart,
+							current.resetInterval
+						);
+					} else {
+						return sum + Math.floor(calculateTotalCurrency(
+							current.value,
+							hasRecurrence ? current.recurrence : undefined,
+							dateStart,
+							dateEnd
+						));
+					}
 				}
 				return sum + current.value;
 			}, 0) / 160;
 
+		props.pullsFromSelectedPullablesState[1](separatedCounts);
 		props.pullsFromTableState[1](totalPulls);
-	}, [combinedData, props.pullsFromTableState, savedItems]);
+	}, [combinedData, savedItems, selectedPullables]);
 
 	useEffect(() => {
 		// Load savedItems from localStorage
@@ -302,24 +401,16 @@ function PlannerTable(props: PlannerTableProps){
 			localStorage.setItem("savedItems", JSON.stringify(initialSavedItems));
 		}
 	}, [props.json.pullables, props.json.otherIncome, props.json.endgameIncome]);
-	
-	useEffect(() => {
-		// Save to localStorage whenever savedItems changes
-		localStorage.setItem("savedItems", JSON.stringify(savedItems));
 
-		// Update selected pullables
-		let selectedPullables = [];
-		for(let savedItem of savedItems){
-			for(let item of pullables){
-				if(item?.name===savedItem.name){
-					if(!savedItem.disabled){
-						selectedPullables.push(item);
-					}
-				}
-			}
-		}
-		props.selectedPullablesState[1](selectedPullables);
+	// Save to localStorage whenever savedItems changes
+	useEffect(() => {
+		localStorage.setItem("savedItems", JSON.stringify(savedItems));
 	}, [savedItems]);
+
+	// Update selectedPullablesState whenever selectedPullables changes
+	useEffect(() => {
+		props.selectedPullablesState[1](selectedPullables);
+	}, [selectedPullables]);
 
 	const toggleExpand = (index: number) => {
 		setExpandedRow(expandedRow === index ? null : index);
