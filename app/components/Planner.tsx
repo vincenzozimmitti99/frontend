@@ -1,4 +1,4 @@
-import type { ExtendedPullable, PlannerData } from "~/types/PlannerData";
+import type { ExtendedPullable, MonthlyPass, PlannerData } from "~/types/PlannerData";
 import hsrJSON from "../assets/json/hsr.json";
 
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ export interface Config{
     th3: string;
 	rankCharacter: string;
 	rankWeapon: string;
+	monthlyPass: string;
 }
 
 const loadConfig = (id: string) => {
@@ -30,7 +31,8 @@ const loadConfig = (id: string) => {
 				pulls: "",
 				th3: "Pulls ()",
 				rankCharacter: "",
-				rankWeapon: ""
+				rankWeapon: "",
+				monthlyPass: ""
 			};
 			break;
 		case "genshin":
@@ -39,7 +41,8 @@ const loadConfig = (id: string) => {
 				pulls: "Intertwined Fates",
 				th3: "Pulls (Primogems)",
 				rankCharacter: "Constellation",
-				rankWeapon: "Rank"
+				rankWeapon: "Rank",
+				monthlyPass: "Express Supply Pass"
 			};
 			break;
 		case "hsr":
@@ -48,7 +51,8 @@ const loadConfig = (id: string) => {
 				pulls: "Star Rail Special Passes",
 				th3: "Pulls (Jades)",
 				rankCharacter: "Eidolon",
-				rankWeapon: "Superimpose"
+				rankWeapon: "Superimpose",
+				monthlyPass: "Express Supply Pass"
 			};
 			break;
 		case "zzz":
@@ -57,7 +61,8 @@ const loadConfig = (id: string) => {
 				pulls: "Encrypted Master Tapes",
 				th3: "Pulls (Polychromes)",
 				rankCharacter: "Mindscape Cinema",
-				rankWeapon: "Overclock?"
+				rankWeapon: "Overclock?",
+				monthlyPass: "Express Supply Pass"
 			};
 			break;
 		case "wuwa":
@@ -66,7 +71,8 @@ const loadConfig = (id: string) => {
 				pulls: "Radiant Tides",
 				th3: "Pulls (Astrites)",
 				rankCharacter: "",
-				rankWeapon: ""
+				rankWeapon: "",
+				monthlyPass: "Express Supply Pass"
 			};
 			break;
 		default:
@@ -75,7 +81,8 @@ const loadConfig = (id: string) => {
 				pulls: "pulls",
 				th3: "Pulls (currency)",
 				rankCharacter: "",
-				rankWeapon: ""
+				rankWeapon: "",
+				monthlyPass: "Monthly Pass"
 			};
 			break;
 	};
@@ -88,6 +95,7 @@ function Planner(props: PlannerProps){
 	const [yourTickets, setYourTickets] = useState("0");
 	const [pullsFromTable, setPullsFromTable] = useState(0);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
+	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
 	const [totalPulls, setTotalPulls] = useState(0);
 
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
@@ -132,6 +140,12 @@ function Planner(props: PlannerProps){
 				<input type="text" className="text-right" value={yourTickets} onChange={yourTicketsHandle} />
 			</div>
 			<div className="flex">
+				<span>{config.monthlyPass}: </span>
+				<label><input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, enabled: !prev.enabled}})}} />Enabled</label>
+				<label><input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />Always</label>
+				<label>End date: <input type="text" className="text-right" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} /></label>
+			</div>
+			<div className="flex">
 				<span>Esteemed luck: </span>
 				<input type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} />%
 			</div>
@@ -147,7 +161,15 @@ function Planner(props: PlannerProps){
 					return <span>{`${item.name}: ${Math.floor(item.pullCount)}`}</span>
 				})}
 			</div>
-			<PlannerTable json={jsons[props.game]} config={config} pullsFromTableState={[pullsFromTable, setPullsFromTable]} pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]} selectedPullablesState={[selectedPullables, setSelectedPullables]} esteemedLuck={esteemedLuck} />
+			<PlannerTable
+				json={jsons[props.game]}
+				config={config}
+				monthlyPassState={[monthlyPass, setMonthlyPass]}
+				pullsFromTableState={[pullsFromTable, setPullsFromTable]}
+				pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]}
+				selectedPullablesState={[selectedPullables, setSelectedPullables]}
+				esteemedLuck={esteemedLuck}
+			/>
 		</div>
 	);
 }

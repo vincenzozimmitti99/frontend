@@ -1,14 +1,15 @@
 "use client";
 
-import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem } from "~/types/PlannerData";
+import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass } from "~/types/PlannerData";
 import type { Config } from "./Planner";
 import hsrLuck from "../assets/json/hsr-luck.json";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
+	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
 	pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
 	pullsFromSelectedPullablesState: [{ name: string; pullCount: number; }[], React.Dispatch<React.SetStateAction<{ name: string; pullCount: number; }[]>>];
 	selectedPullablesState: [ExtendedPullable[], React.Dispatch<React.SetStateAction<ExtendedPullable[]>>];
@@ -222,11 +223,31 @@ function PlannerTable(props: PlannerTableProps){
 						if(isRegularIncome(item)){
 							let startDate = i>0?new Date(pullables[i-1].end):new Date();
 							let endDate = new Date(pullables[i].end);
+							let recurrence;
+							if(item.type==="premium"){
+								if(props.monthlyPassState[0].enabled){
+									recurrence = -1;
+									if(!props.monthlyPassState[0].always){
+										if(props.monthlyPassState[0].endDate){
+											let newEndDate = new Date(Math.min(endDate.getTime(), new Date(props.monthlyPassState[0].endDate).getTime()));
+											if(!isNaN(newEndDate.getTime()))
+												endDate = newEndDate;
+											if(endDate<startDate)
+												endDate = startDate;
+										}
+									}
+								} else {
+									recurrence = 0;
+								}
+							} else {
+								recurrence = item.recurrence;
+							}
 							dailiesUntil.push({
 								...item,
 								name: `${item.name} until ${pullables[i].name}`,
 								start: startDate,
 								end: endDate,
+								recurrence: recurrence
 							});
 						}
 					}
@@ -235,7 +256,7 @@ function PlannerTable(props: PlannerTableProps){
 			
 			return dailiesUntil.filter(item => !!item)
 		},
-		[props.json.regularIncome]
+		[props.json.regularIncome, props.monthlyPassState[0]]
 	);
 
 	const selectedPullables = useMemo(() => {
@@ -258,8 +279,7 @@ function PlannerTable(props: PlannerTableProps){
 		[regularIncome, endgameIncome, props.json.otherIncome, pullables]
 	);
 
-	// Update parent state with total pulls
-	useEffect(() => {
+	const groupByDatesSelectedPullables = useMemo(() => {
 		// console.log(`Re-rendering! ${Math.random()}`); // Debug
 		interface PullableGroup {
 			selectedPullables: ExtendedPullable[];
@@ -267,7 +287,6 @@ function PlannerTable(props: PlannerTableProps){
 			endDate: string;
 		}
 
-		const groupByDatesSelectedPullables: PullableGroup[] = [];
 		const pullableMap: { [key: string]: PullableGroup } = {}; // Hash map to group by 'end' date
 
 		// Populate the hash map
@@ -288,11 +307,11 @@ function PlannerTable(props: PlannerTableProps){
 		}
 
 		// Convert the hash map values into the desired array format
-		for(const key in pullableMap){
-			groupByDatesSelectedPullables.push(pullableMap[key]);
-		}
-		// console.log(groupByDatesSelectedPullables); // Debug
+		return Object.values(pullableMap);
+	}, [selectedPullables]);
 
+	// Update parent state with total pulls
+	useEffect(() => {
 		const separatedCounts = groupByDatesSelectedPullables.map((pullableGroup) => {
 			return {
 				"name": pullableGroup.selectedPullables.map((item) => item.name).join(" + "),
@@ -361,10 +380,9 @@ function PlannerTable(props: PlannerTableProps){
 				}
 				return sum + current.value;
 			}, 0) / 160;
-
 		props.pullsFromSelectedPullablesState[1](separatedCounts);
 		props.pullsFromTableState[1](totalPulls);
-	}, [combinedData, savedItems, selectedPullables]);
+	}, [combinedData, savedItems, groupByDatesSelectedPullables]);
 
 	useEffect(() => {
 		// Load savedItems from localStorage

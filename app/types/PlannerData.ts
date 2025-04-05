@@ -48,6 +48,12 @@ export type ExtendedPullable = Pullable & {
 	rank: number
 }
 
+export type MonthlyPass = {
+	enabled: boolean,
+	always: boolean,
+	endDate: string | null
+}
+
 export type SavedItem = {
 	name: string,
 	disabled: boolean,

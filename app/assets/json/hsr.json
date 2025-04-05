@@ -11,7 +11,7 @@
 		{
 			"type": "premium",
 			"name": "Express Supply Pass",
-			"recurrence": 0,
+			"recurrence": -1,
 			"value": 90
 		},
 		{
