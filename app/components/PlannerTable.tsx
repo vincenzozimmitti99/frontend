@@ -146,9 +146,11 @@ function PlannerTable(props: PlannerTableProps){
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, itemName: string) => {
 		const value = event.target.value;
 		setSavedItems((prev) => {
-			return prev.map((item) =>
+			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, rank: +value } : item
 			);
+			localStorage.setItem("savedItems", JSON.stringify(newSaved));
+			return newSaved;
 		});
 	};
 
@@ -156,9 +158,11 @@ function PlannerTable(props: PlannerTableProps){
 
 	const toggleDisabled = (itemName: string) => {
 		setSavedItems((prev) => {
-			return prev.map((item) =>
+			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, disabled: !item.disabled } : item
 			);
+			localStorage.setItem("savedItems", JSON.stringify(newSaved));
+			return newSaved;
 		});
 	};
 
@@ -426,6 +430,7 @@ function PlannerTable(props: PlannerTableProps){
 	useEffect(() => {
 		// Load savedItems from localStorage
 		const savedItemsFromStorage = localStorage.getItem("savedItems");
+		// console.log(savedItemsFromStorage);
 		const initialSavedItems = combinedData.map((item) => {
 			if(isExtendedPullable(item)){
 				return {
@@ -434,13 +439,13 @@ function PlannerTable(props: PlannerTableProps){
 					rank: item.type==="character"?0:1
 				}
 			}
-			return ({
+			return({
 				name: item.name,
 				disabled: false,
-			})
+			});
 		});
 
-		if(savedItemsFromStorage) {
+		if(savedItemsFromStorage){
 			let savedItemsFromStorageObject = JSON.parse(savedItemsFromStorage);
 			for(let initialSavedItem of initialSavedItems){
 				for(let savedItem of savedItemsFromStorageObject){
@@ -452,17 +457,14 @@ function PlannerTable(props: PlannerTableProps){
 					}
 				}
 			}
-			setSavedItems(initialSavedItems);
-		} else {
-			setSavedItems(initialSavedItems);
-			localStorage.setItem("savedItems", JSON.stringify(initialSavedItems));
 		}
-	}, [props.json.pullables, props.json.otherIncome, props.json.endgameIncome]);
+		setSavedItems(initialSavedItems);
+	}, []);
 
 	// Save to localStorage whenever savedItems changes
-	useEffect(() => {
-		localStorage.setItem("savedItems", JSON.stringify(savedItems));
-	}, [savedItems]);
+	// useEffect(() => {
+	// 	localStorage.setItem("savedItems", JSON.stringify(savedItems));
+	// }, [savedItems]);
 
 	// Update selectedPullablesState whenever selectedPullables changes
 	useEffect(() => {
