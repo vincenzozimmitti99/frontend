@@ -108,6 +108,42 @@
 			"end": "04-30-2025"
 		},
 		{
+			"name": "Fugue",
+			"type": "character",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Fugue LC",
+			"type": "weapon",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Acheron",
+			"type": "character",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Acheron LC",
+			"type": "weapon",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Jiaoqiu",
+			"type": "character",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
+			"name": "Jiaoqiu LC",
+			"type": "weapon",
+			"start": "04-09-2025",
+			"end": "04-30-2025"
+		},
+		{
 			"name": "Anaxa",
 			"type": "character",
 			"start": "04-30-2025",

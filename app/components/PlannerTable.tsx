@@ -136,6 +136,36 @@ const calculateTotalCurrency = (item: ExtendedPullable | ExtendedRegularIncome |
 	return recurrence*item.value;
 };
 
+const groupByEndDate = (pullables: ExtendedPullable[]) => {
+	interface PullableGroup {
+		selectedPullables: ExtendedPullable[];
+		startDate: string;
+		endDate: string;
+	}
+
+	const pullableMap: { [key: string]: PullableGroup } = {}; // Hash map to group by 'end' date
+
+	// Populate the hash map
+	for(let i=0;i<pullables.length;i++){
+		const { start, end } = pullables[i];
+
+		// If the 'end' date is not in the map, initialize it
+		if(!pullableMap[end]){
+			pullableMap[end] = {
+				selectedPullables: [],
+				startDate: start,
+				endDate: end
+			};
+		}
+
+		// Add the current pullable to the group
+		pullableMap[end].selectedPullables.push(pullables[i]);
+	}
+
+	// Convert the hash map values into the desired array format
+	return Object.values(pullableMap);
+}
+
 function PlannerTable(props: PlannerTableProps){
 	const [expandedRow, setExpandedRow] = useState<number | null>(null);
 	const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
@@ -259,12 +289,13 @@ function PlannerTable(props: PlannerTableProps){
 	const regularIncome: ExtendedRegularIncome[] = useMemo(
 		() =>{
 			let dailiesUntil = [];
+			const pullablesByEndDate = groupByEndDate(pullables);
 			for(let item of props.json.regularIncome){
-				for(let i=0;i<pullables.length;i++){
-					if(pullables[i].type==="character"){
+				for(let i=0;i<pullablesByEndDate.length;i++){
+					if(pullablesByEndDate[i].selectedPullables[0].type==="character"){
 						if(isRegularIncome(item)){
 							let startDate = i>0?new Date(pullables[i-1].end):new Date();
-							let endDate = new Date(pullables[i].end);
+							let endDate = new Date(pullablesByEndDate[i].endDate);
 							let recurrence;
 							if(item.type==="premium"){
 								if(props.monthlyPassState[0].enabled){
@@ -286,7 +317,7 @@ function PlannerTable(props: PlannerTableProps){
 							}
 							dailiesUntil.push({
 								...item,
-								name: `${item.name} until ${pullables[i].name}`,
+								name: `${item.name} until ${pullablesByEndDate[i].selectedPullables[0].name}`,
 								start: startDate,
 								end: endDate,
 								recurrence: recurrence
@@ -322,34 +353,7 @@ function PlannerTable(props: PlannerTableProps){
 	);
 
 	const groupByDatesSelectedPullables = useMemo(() => {
-		// console.log(`Re-rendering! ${Math.random()}`); // Debug
-		interface PullableGroup {
-			selectedPullables: ExtendedPullable[];
-			startDate: string;
-			endDate: string;
-		}
-
-		const pullableMap: { [key: string]: PullableGroup } = {}; // Hash map to group by 'end' date
-
-		// Populate the hash map
-		for(let i=0;i<selectedPullables.length;i++){
-			const { start, end } = selectedPullables[i];
-
-			// If the 'end' date is not in the map, initialize it
-			if(!pullableMap[end]){
-				pullableMap[end] = {
-					selectedPullables: [],
-					startDate: start,
-					endDate: end
-				};
-			}
-
-			// Add the current pullable to the group
-			pullableMap[end].selectedPullables.push(selectedPullables[i]);
-		}
-
-		// Convert the hash map values into the desired array format
-		return Object.values(pullableMap);
+		return groupByEndDate(selectedPullables);
 	}, [selectedPullables]);
 
 	// Update parent state with total pulls
