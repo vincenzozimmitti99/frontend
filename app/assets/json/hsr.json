@@ -3,7 +3,7 @@
 	"regularIncome":
 	[
 		{
-			"type": "f2p",
+			"type": "daily",
 			"name": "Dailies",
 			"recurrence": -1,
 			"value": 60
@@ -15,12 +15,10 @@
 			"value": 90
 		},
 		{
-			"type": "f2p",
+			"type": "weekly",
 			"name": "Weeklies",
 			"recurrence": -1,
-			"value": 225,
-			"resetStart": "03-24-2025",
-			"resetInterval": 7
+			"value": 225
 		}
 	],
 	"endgameIncome": [

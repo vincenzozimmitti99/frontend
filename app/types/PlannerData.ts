@@ -6,8 +6,7 @@ export interface Income {
 
 export interface RegularIncome extends Income {
 	type: string;
-	resetStart?: string,
-	resetInterval?: number
+	resetDay?: number
 }
 
 export interface OtherIncome extends Income {

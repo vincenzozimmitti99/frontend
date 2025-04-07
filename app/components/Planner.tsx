@@ -99,7 +99,7 @@ function Planner(props: PlannerProps){
 	const [totalPulls, setTotalPulls] = useState(0);
 
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
-	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<{ name: string; pullCount: number; }[]>([]);
+	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<{ name: string; currencyCount: number; }[]>([]);
 
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
 		const value = event.target.value;
@@ -150,7 +150,7 @@ function Planner(props: PlannerProps){
 				<input type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} />%
 			</div>
 			<div className="flex">
-				<span>Total pulls:</span><span className={`${totalPulls > 0 ? "text-green-500" : totalPulls < 0 ? "text-red-500" : ""}`}>{totalPulls>0?`+${totalPulls}`:totalPulls}</span>
+				<span>Total pulls:</span><span className={`${totalPulls > 0 ? "text-green-500" : totalPulls < 0 ? "text-red-500" : ""}`}>{totalPulls>0?`+${Math.floor(totalPulls/160)} (+${totalPulls})`:`${Math.floor(totalPulls/160)} (${totalPulls})`}</span>
 			</div>
 			<div className="flex">
 				<span>Selected pullables:</span>
@@ -158,7 +158,7 @@ function Planner(props: PlannerProps){
 			</div>
 			<div className="flex">
 				{pullsFromSelectedPullables.map((item) => {
-					return <span>{`${item.name}: ${Math.floor(item.pullCount)}`}</span>
+					return <span>{`${item.name}: ${Math.floor(item.currencyCount/160)} (${item.currencyCount})`}</span>
 				})}
 			</div>
 			<PlannerTable

@@ -11,7 +11,7 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	config: Config;
 	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
 	pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
-	pullsFromSelectedPullablesState: [{ name: string; pullCount: number; }[], React.Dispatch<React.SetStateAction<{ name: string; pullCount: number; }[]>>];
+	pullsFromSelectedPullablesState: [{ name: string; currencyCount: number; }[], React.Dispatch<React.SetStateAction<{ name: string; currencyCount: number; }[]>>];
 	selectedPullablesState: [ExtendedPullable[], React.Dispatch<React.SetStateAction<ExtendedPullable[]>>];
 	esteemedLuck: string;
 };
@@ -31,7 +31,7 @@ const isEndgameIncomeVariantHSR = (income: EndgameIncome): income is EndgameInco
 }
 
 const isRegularIncome = (item: any): item is RegularIncome => {
-	return (item as RegularIncome).type === "f2p" || (item as RegularIncome).type === "premium";
+	return (item as RegularIncome).type === "daily" || (item as RegularIncome).type === "premium" || (item as RegularIncome).type === "weekly";
 }
 
 const isExtendedPullable = (item: any): item is ExtendedPullable => {
@@ -90,53 +90,50 @@ const getIndexFromPercentage = (percentage: number, cumulativeArray: number[]) =
 	return cumulativeArray.length - 1;
 };
 
-const calculateTotalCurrency = (
-	value: number,
-	recurrence: number | undefined = 1,
-	start?: Date,
-	end?: Date,
-	resetStart?: string,
-	resetInterval?: number,
-): number => {
-	if(recurrence === -1 && start && end){ // Case regular rewards
-		if(resetStart && resetInterval){ // Case weeklies
-			const resetDay = 1; // Every Monday, take this from JSON though
-			const countWeeklies = (start: Date, end: Date): number => {
-                const adjustDateForReset = (date: Date): Date => {
-					// Where the magic happens, skip first week count only if it's over 4AM.
-					// Since only the first instance has a start=today, it only happens there.
-					// The successive ones won't have any skip
-					if(date.getHours()>=4){
-						date.setDate(date.getDate()+1);
-					}
-                    date.setHours(4, 0, 0, 0);
-                    return date;
-                };
+const calculateTotalCurrency = (item: ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome): number => {
+	let recurrence = (("recurrence" in item)?item.recurrence:1);
 
-                let newStart = adjustDateForReset(new Date(start));
-                let newEnd = adjustDateForReset(new Date(end));
-				let counter = 0;
-                while(dateDifference(newStart, newEnd)>0){
-					if(newStart.getDay()!==resetDay){
-						newStart.setDate(newStart.getDate()+1);
-						continue;
+	if(recurrence === -1 && item.start && item.end){ // Case regular rewards
+		if(isRegularIncome(item)){
+			if(item.type==="weekly"){ // Case weeklies
+				const countWeeklies = (start: Date, end: Date): number => {
+					const adjustDateForReset = (date: Date): Date => {
+						// Where the magic happens, skip first week count only if it's over 4AM.
+						// Since only the first instance has a start=today, it only happens there.
+						// The successive ones won't have any skip
+						if(date.getHours()>=4){
+							date.setDate(date.getDate()+1);
+						}
+						date.setHours(4, 0, 0, 0);
+						return date;
+					};
+	
+					let newStart = adjustDateForReset(new Date(start));
+					let newEnd = adjustDateForReset(new Date(end));
+					let resetDay = ("resetDay" in item)?item.resetDay:1; // Default as Monday
+					let counter = 0;
+					while(dateDifference(newStart, newEnd)>0){
+						if(newStart.getDay()!==resetDay){
+							newStart.setDate(newStart.getDate()+1);
+							continue;
+						}
+						counter++;
+						newStart.setDate(newStart.getDate()+7);
 					}
-					counter++;
-					newStart.setDate(newStart.getDate()+7);
-				}
-                return counter;
-            };
-			// start = new Date("05-05-2025");
-			// start.setHours(3, 59, 0, 0);
-
-            return value * countWeeklies(start, end);
-		} else { // Case dailies + welkin
-			return value*daysDifference(start, end); // Not sure if daily count is right, maybe missing one day to the last day
+					return counter;
+				};
+				// start = new Date("05-05-2025");
+				// start.setHours(3, 59, 0, 0);
+				// console.log(item.start, item.end);
+				return item.value*countWeeklies(item.start, item.end);
+			} else { // Case dailies + monthly pass
+				return item.value*daysDifference(item.start, item.end); // Not sure if daily count is right, maybe missing one day to the last day
+			}
 		}
 	}
 	
-	// Case any other rewards, which is most likely recurrence 1
-	return recurrence*value;
+	// Case any other rewards or pullable, which is most likely recurrence 1
+	return recurrence*item.value;
 };
 
 function PlannerTable(props: PlannerTableProps){
@@ -360,36 +357,14 @@ function PlannerTable(props: PlannerTableProps){
 		const separatedCounts = groupByDatesSelectedPullables.map((pullableGroup) => {
 			return {
 				"name": pullableGroup.selectedPullables.map((item) => item.name).join(" + "),
-				"pullCount": combinedData
+				"currencyCount": combinedData
 				.filter((item) => {
 					const savedItem = savedItems.find((saved) => saved.name === item.name);
 					return !savedItem?.disabled && dateDifference(new Date(pullableGroup.endDate), new Date(item.start))<0;
 				})
-				.reduce((sum, current) => { // This is UGLY AS FUCK HOLY SHIT FIX THIS AND MAKE IT A FUNCTION also for the totalPulls one and the rendering ones!
-					const dateStart = new Date(current.start);
-					const dateEnd = current.end ? new Date(current.end) : undefined;
-					const hasRecurrence = "recurrence" in current;
-					if(hasRecurrence){
-						if(isRegularIncome(current)){
-							return sum + calculateTotalCurrency(
-								current.value,
-								hasRecurrence ? current.recurrence : undefined,
-								dateStart,
-								dateEnd,
-								current.resetStart,
-								current.resetInterval
-							);
-						} else {
-							return sum + Math.floor(calculateTotalCurrency(
-								current.value,
-								hasRecurrence ? current.recurrence : undefined,
-								dateStart,
-								dateEnd
-							));
-						}
-					}
-					return sum + current.value;
-				}, 0) / 160
+				.reduce((sum, current) => {
+					return sum + calculateTotalCurrency(current);
+				}, 0)
 			}
 		});
 
@@ -399,30 +374,8 @@ function PlannerTable(props: PlannerTableProps){
 				return !savedItem?.disabled;
 			})
 			.reduce((sum, current) => {
-				const dateStart = new Date(current.start);
-				const dateEnd = current.end ? new Date(current.end) : undefined;
-				const hasRecurrence = "recurrence" in current;
-				if(hasRecurrence){
-					if(isRegularIncome(current)){
-						return sum + calculateTotalCurrency(
-							current.value,
-							hasRecurrence ? current.recurrence : undefined,
-							dateStart,
-							dateEnd,
-							current.resetStart,
-							current.resetInterval
-						);
-					} else {
-						return sum + Math.floor(calculateTotalCurrency(
-							current.value,
-							hasRecurrence ? current.recurrence : undefined,
-							dateStart,
-							dateEnd
-						));
-					}
-				}
-				return sum + current.value;
-			}, 0) / 160;
+				return sum + calculateTotalCurrency(current);
+			}, 0);
 		props.pullsFromSelectedPullablesState[1](separatedCounts);
 		props.pullsFromTableState[1](totalPulls);
 	}, [combinedData, savedItems, groupByDatesSelectedPullables]);
@@ -518,27 +471,10 @@ function PlannerTable(props: PlannerTableProps){
 			<tbody>
 				{
 					combinedData.map((item, index) => {
+						let currencyCount = calculateTotalCurrency(item);
+						// console.log(item.start, item.end);
 						const dateStart = new Date(item.start);
 						const dateEnd = item.end ? new Date(item.end) : undefined;
-						const hasRecurrence = "recurrence" in item;
-						let currencyCount;
-						if(isRegularIncome(item)){
-							currencyCount = calculateTotalCurrency(
-								item.value,
-								hasRecurrence ? item.recurrence : undefined,
-								dateStart,
-								dateEnd,
-								item.resetStart,
-								item.resetInterval
-							);
-						} else {
-							currencyCount = calculateTotalCurrency(
-								item.value,
-								hasRecurrence ? item.recurrence : undefined,
-								dateStart,
-								dateEnd
-							);
-						}
 						
 						const pullCount = Math.floor(currencyCount/160);
 
