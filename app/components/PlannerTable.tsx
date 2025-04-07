@@ -59,9 +59,21 @@ const sortByDate = (dates: (ExtendedRegularIncome | ExtendedIncome | OtherIncome
 	return dates.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 }
 
+/**
+ * Subtracts end to start and divides to get the ms difference. The result is positive if end is greater than start.
+ * @param startDate 
+ * @param endDate 
+ * @returns 
+ */
 const dateDifference = (startDate: Date, endDate: Date) =>
 	endDate.getTime() - startDate.getTime();
 
+/**
+ * Subtracts end to start and divides to get the days difference. The result is positive if end is greater than start.
+ * @param startDate 
+ * @param endDate 
+ * @returns 
+ */
 const daysDifference = (startDate: Date, endDate: Date) =>
 	Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -88,7 +100,36 @@ const calculateTotalCurrency = (
 ): number => {
 	if(recurrence === -1 && start && end){ // Case regular rewards
 		if(resetStart && resetInterval){ // Case weeklies
-			return value*Math.floor(daysDifference(new Date(resetStart), end)/resetInterval); // This works though
+			const resetDay = 1; // Every Monday, take this from JSON though
+			const countWeeklies = (start: Date, end: Date): number => {
+                const adjustDateForReset = (date: Date): Date => {
+					// Where the magic happens, skip first week count only if it's over 4AM.
+					// Since only the first instance has a start=today, it only happens there.
+					// The successive ones won't have any skip
+					if(date.getHours()>=4){
+						date.setDate(date.getDate()+1);
+					}
+                    date.setHours(4, 0, 0, 0);
+                    return date;
+                };
+
+                let newStart = adjustDateForReset(new Date(start));
+                let newEnd = adjustDateForReset(new Date(end));
+				let counter = 0;
+                while(dateDifference(newStart, newEnd)>0){
+					if(newStart.getDay()!==resetDay){
+						newStart.setDate(newStart.getDate()+1);
+						continue;
+					}
+					counter++;
+					newStart.setDate(newStart.getDate()+7);
+				}
+                return counter;
+            };
+			// start = new Date("05-05-2025");
+			// start.setHours(3, 59, 0, 0);
+
+            return value * countWeeklies(start, end);
 		} else { // Case dailies + welkin
 			return value*daysDifference(start, end); // Not sure if daily count is right, maybe missing one day to the last day
 		}
@@ -318,9 +359,7 @@ function PlannerTable(props: PlannerTableProps){
 				"pullCount": combinedData
 				.filter((item) => {
 					const savedItem = savedItems.find((saved) => saved.name === item.name);
-					if(item.end){
-						return !savedItem?.disabled && dateDifference(new Date(pullableGroup.endDate), new Date(item.start))<0;
-					}
+					return !savedItem?.disabled && dateDifference(new Date(pullableGroup.endDate), new Date(item.start))<0;
 				})
 				.reduce((sum, current) => { // This is UGLY AS FUCK HOLY SHIT FIX THIS AND MAKE IT A FUNCTION also for the totalPulls one and the rendering ones!
 					const dateStart = new Date(current.start);
