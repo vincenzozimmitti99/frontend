@@ -57,7 +57,7 @@ const expandedIcon = (isExpanded: boolean) => (
 );
 
 const sortByDate = (dates: (ExtendedRegularIncome | ExtendedIncome | OtherIncome | ExtendedPullable)[]) => {
-	return dates.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+	return dates.sort((a, b) => new Date(a.end || a.start).getTime() - new Date(b.end || b.start).getTime());
 }
 
 /**
@@ -291,7 +291,7 @@ function PlannerTable(props: PlannerTableProps){
 				
 				const pullsRequired = getIndexFromPercentage(
 					+props.esteemedLuck,
-					hsrLuck[type]["data"][rank]["pulls"]
+					hsrLuck[type]["data"][rank]["pulls"] // This needs to adapt to the game!!! Fix it later!
 				);
 				return { ...item, value: -pullsRequired * 160 };
 			}
@@ -306,7 +306,7 @@ function PlannerTable(props: PlannerTableProps){
 				for(let i=0;i<pullablesByEndDate.length;i++){
 					if(pullablesByEndDate[i].selectedPullables[0].type==="character"){
 						if(isRegularIncome(item)){
-							let startDate = i>0?new Date(pullables[i-1].end):new Date();
+							let startDate = i>0?new Date(pullablesByEndDate[i-1].endDate):new Date();
 							let endDate = new Date(pullablesByEndDate[i].endDate);
 							let recurrence;
 							if(item.type==="premium"){
@@ -334,6 +334,7 @@ function PlannerTable(props: PlannerTableProps){
 								end: endDate,
 								recurrence: recurrence
 							});
+							console.log(dailiesUntil);
 						}
 					}
 				}

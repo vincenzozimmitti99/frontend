@@ -44,6 +44,13 @@
 			"value": 400,
 			"start": "04-07-2025",
 			"end": "04-21-2025"
+		},
+		{
+			"name": "Tournament of Glory in Bloom",
+			"recurrence": 1,
+			"value": 960,
+			"start": "03-28-2025",
+			"end": "04-14-2025"
 		}
 	],
 	"pullables":
@@ -76,73 +83,73 @@
 			"name": "Venti",
 			"type": "character",
 			"start": "04-15-2025",
-			"end": "05-06-2025"
+			"end": "05-05-2025"
 		},
 		{
 			"name": "Venti Signature",
 			"type": "weapon",
 			"start": "04-15-2025",
-			"end": "05-06-2025"
+			"end": "05-05-2025"
 		},
 		{
 			"name": "Xilonen",
 			"type": "character",
 			"start": "04-15-2025",
-			"end": "05-06-2025"
+			"end": "05-05-2025"
 		},
 		{
 			"name": "Xilonen Signature",
 			"type": "weapon",
 			"start": "04-15-2025",
-			"end": "05-06-2025"
+			"end": "05-05-2025"
 		},
 		{
 			"name": "Escoffier",
 			"type": "character",
-			"start": "05-07-2025",
-			"end": "05-27-2025"
+			"start": "05-05-2025",
+			"end": "05-25-2025"
 		},
 		{
 			"name": "Escoffier Signature",
 			"type": "weapon",
-			"start": "05-07-2025",
-			"end": "05-27-2025"
+			"start": "05-05-2025",
+			"end": "05-25-2025"
 		},
 		{
 			"name": "Kinich",
 			"type": "character",
-			"start": "05-07-2025",
-			"end": "05-27-2025"
+			"start": "05-05-2025",
+			"end": "05-25-2025"
 		},
 		{
 			"name": "Kinich Signature",
 			"type": "weapon",
-			"start": "05-07-2025",
-			"end": "05-27-2025"
+			"start": "05-05-2025",
+			"end": "05-25-2025"
 		},
 		{
 			"name": "Navia",
 			"type": "character",
-			"start": "05-27-2025",
-			"end": "06-16-2025"
+			"start": "05-25-2025",
+			"end": "06-14-2025"
 		},
 		{
 			"name": "Navia Signature",
 			"type": "weapon",
-			"start": "05-27-2025",
-			"end": "06-16-2025"
+			"start": "05-25-2025",
+			"end": "06-14-2025"
 		},
 		{
 			"name": "Raiden Shogun",
 			"type": "character",
-			"start": "05-27-2025",
-			"end": "06-16-2025"
+			"start": "05-25-2025",
+			"end": "06-14-2025"
 		},
 		{
 			"name": "Raiden Shogun Signature",
 			"type": "weapon",
-			"start": "05-27-2025",
-			"end": "06-16-2025"
+			"start": "05-25-2025",
+			"end": "06-14-2025"
 		}
 	]
 }
