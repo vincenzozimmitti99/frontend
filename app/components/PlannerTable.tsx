@@ -176,7 +176,12 @@ function PlannerTable(props: PlannerTableProps){
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, rank: +value } : item
 			);
-			localStorage.setItem("savedItems", JSON.stringify(newSaved));
+			const pullPlannerFromStorage = localStorage.getItem("pullplanner");
+			if(pullPlannerFromStorage){
+				let pullPlanner = JSON.parse(pullPlannerFromStorage);
+				pullPlanner[props.config.game].savedItems = newSaved;
+				localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
+			}
 			return newSaved;
 		});
 	};
@@ -188,7 +193,12 @@ function PlannerTable(props: PlannerTableProps){
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, disabled: !item.disabled } : item
 			);
-			localStorage.setItem("savedItems", JSON.stringify(newSaved));
+			const pullPlannerFromStorage = localStorage.getItem("pullplanner");
+			if(pullPlannerFromStorage){
+				let pullPlanner = JSON.parse(pullPlannerFromStorage);
+				pullPlanner[props.config.game].savedItems = newSaved;
+				localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
+			}
 			return newSaved;
 		});
 	};
@@ -332,6 +342,20 @@ function PlannerTable(props: PlannerTableProps){
 		[props.json.regularIncome, props.monthlyPassState[0]]
 	);
 
+	const otherIncome = useMemo(() => {
+		return props.json.otherIncome.map((item) => {
+			if(item.end){
+				if(dateDifference(new Date(item.end), new Date())<0){
+					return item
+				}
+			} else {
+				if(dateDifference(new Date(item.start), new Date())<3*(1000*60*60*24)){
+					return item
+				}
+			}
+		}).filter((item) => !!item);
+	}, [props.json.otherIncome]);
+
 	const selectedPullables = useMemo(() => {
 		let selectedPullables = [];
 		for(let savedItem of savedItems){
@@ -348,8 +372,8 @@ function PlannerTable(props: PlannerTableProps){
 
 	// Here make some conditions that check the sorting selected by the user and sorts accordingly. Or maybe not because sorting seems bad?
 	const combinedData = useMemo(
-		() => sortByDate([...regularIncome, ...endgameIncome, ...props.json.otherIncome, ...pullables].filter((item) => !!item)),
-		[regularIncome, endgameIncome, props.json.otherIncome, pullables]
+		() => sortByDate([...regularIncome, ...endgameIncome, ...otherIncome, ...pullables].filter((item) => !!item)),
+		[regularIncome, endgameIncome, otherIncome, pullables]
 	);
 
 	const groupByDatesSelectedPullables = useMemo(() => {
@@ -385,9 +409,6 @@ function PlannerTable(props: PlannerTableProps){
 	}, [combinedData, savedItems, groupByDatesSelectedPullables]);
 
 	useEffect(() => {
-		// Load savedItems from localStorage
-		const savedItemsFromStorage = localStorage.getItem("savedItems");
-		// console.log(savedItemsFromStorage);
 		const initialSavedItems = combinedData.map((item) => {
 			if(isExtendedPullable(item)){
 				return {
@@ -402,14 +423,28 @@ function PlannerTable(props: PlannerTableProps){
 			});
 		});
 
-		if(savedItemsFromStorage){
-			let savedItemsFromStorageObject = JSON.parse(savedItemsFromStorage);
-			for(let initialSavedItem of initialSavedItems){
-				for(let savedItem of savedItemsFromStorageObject){
-					if(initialSavedItem.name===savedItem.name){
-						initialSavedItem.disabled = savedItem.disabled;
-						if (savedItem.rank !== undefined) {
-							initialSavedItem.rank = savedItem.rank; // Restore rank
+		const initialPullPlanner = {
+			[props.config.game]: {
+				monthlyPass: {enabled: false, always: false, endDate: null},
+				savedItems: initialSavedItems
+			}
+		}
+
+		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
+		if(!pullPlannerFromStorage){
+			localStorage.setItem("pullplanner", JSON.stringify(initialPullPlanner));
+		} else {
+			let pullPlanner = JSON.parse(pullPlannerFromStorage);
+
+			if(pullPlanner[props.config.game].savedItems){
+				let savedItemsFromStorageObject = pullPlanner[props.config.game].savedItems;
+				for(let initialSavedItem of initialSavedItems){
+					for(let savedItem of savedItemsFromStorageObject){
+						if(initialSavedItem.name===savedItem.name){
+							initialSavedItem.disabled = savedItem.disabled;
+							if (savedItem.rank !== undefined) {
+								initialSavedItem.rank = savedItem.rank; // Restore rank
+							}
 						}
 					}
 				}
@@ -450,9 +485,9 @@ function PlannerTable(props: PlannerTableProps){
 			let savedItem = savedItems.find((savedItem) => {return savedItem.name===item.name});
 			let rankSelector;
 			if(item.type==="character"){
-				rankSelector = <div><span>Desired Eidolon</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
+				rankSelector = <div><span>Desired {props.config.rankCharacter}</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
 			} else if(item.type==="weapon"){
-				rankSelector = <div><span>Desired Superimposion</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
+				rankSelector = <div><span>Desired {props.config.rankWeapon}</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
 			}
 			return [
 				disableCheckbox,
