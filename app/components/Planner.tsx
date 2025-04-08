@@ -110,6 +110,17 @@ function Planner(props: PlannerProps){
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
 	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<{ name: string; currencyCount: number; }[]>([]);
 
+	const updateStorage = (propertyName: string, value: string | object) => {
+		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
+		if(pullPlannerFromStorage){
+			let pullPlanner = JSON.parse(pullPlannerFromStorage);
+			pullPlanner[props.game][propertyName] = value;
+			localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
+			return true;
+		}
+		return false;
+	};
+
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
 		const value = event.target.value;
 		setState(value);
@@ -119,6 +130,7 @@ function Planner(props: PlannerProps){
 		const value = event.target.value;
 	
 		if(/^\d*$/.test(value) && value.length<10){
+			updateStorage("yourCurrency", value);
 			setYourCurrency(value);
 		}
 	};
@@ -127,12 +139,22 @@ function Planner(props: PlannerProps){
 		const value = event.target.value;
 	
 		if(/^\d*$/.test(value) && value.length<6){
+			updateStorage("yourPulls", value);
 			setYourPulls(value);
 		}
 	};
 
 	useEffect(() => {
-		console.log(yourCurrency)
+		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
+		if(pullPlannerFromStorage){
+			let pullPlanner = JSON.parse(pullPlannerFromStorage);
+			pullPlanner[props.game].yourCurrency?setYourCurrency(pullPlanner[props.game].yourCurrency):null;
+			pullPlanner[props.game].yourPulls?setYourPulls(pullPlanner[props.game].yourPulls):null;
+			pullPlanner[props.game].monthlyPass?setMonthlyPass(pullPlanner[props.game].monthlyPass):null;
+		}
+	}, []);
+
+	useEffect(() => {
 		let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
 		setTotalPulls(result);
 	}, [yourCurrency, yourPulls, pullsFromTable]);
@@ -149,7 +171,7 @@ function Planner(props: PlannerProps){
 			</div>
 			<div className="flex">
 				<span>{config.monthlyPass}: </span>
-				<label><input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, enabled: !prev.enabled}})}} />Enabled</label>
+				<label><input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, enabled: !prev.enabled}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass})}} />Enabled</label>
 				<label><input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />Always</label>
 				<label>End date: <input type="text" className="text-right" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} /></label>
 			</div>

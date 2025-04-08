@@ -170,18 +170,24 @@ function PlannerTable(props: PlannerTableProps){
 	const [expandedRow, setExpandedRow] = useState<number | null>(null);
 	const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
 
+	const updateStorage = (propertyName: string, value: string | object) => {
+		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
+		if(pullPlannerFromStorage){
+			let pullPlanner = JSON.parse(pullPlannerFromStorage);
+			pullPlanner[props.config.game][propertyName] = value;
+			localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
+			return true;
+		}
+		return false;
+	};
+
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, itemName: string) => {
 		const value = event.target.value;
 		setSavedItems((prev) => {
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, rank: +value } : item
 			);
-			const pullPlannerFromStorage = localStorage.getItem("pullplanner");
-			if(pullPlannerFromStorage){
-				let pullPlanner = JSON.parse(pullPlannerFromStorage);
-				pullPlanner[props.config.game].savedItems = newSaved;
-				localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
-			}
+			updateStorage("savedItems", newSaved);
 			return newSaved;
 		});
 	};
@@ -193,12 +199,7 @@ function PlannerTable(props: PlannerTableProps){
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, disabled: !item.disabled } : item
 			);
-			const pullPlannerFromStorage = localStorage.getItem("pullplanner");
-			if(pullPlannerFromStorage){
-				let pullPlanner = JSON.parse(pullPlannerFromStorage);
-				pullPlanner[props.config.game].savedItems = newSaved;
-				localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
-			}
+			updateStorage("savedItems", newSaved);
 			return newSaved;
 		});
 	};
