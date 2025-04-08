@@ -13,6 +13,7 @@ type PlannerProps = React.HTMLProps<HTMLDivElement> & {
 }
 
 export interface Config{
+	game: string;
     currency: string;
     pulls: string;
     th3: string;
@@ -27,6 +28,7 @@ const loadConfig = (id: string) => {
 	switch(id){
 		case "3rd": // Fix
 			config = {
+				game: id,
 				currency: "",
 				pulls: "",
 				th3: "Pulls ()",
@@ -37,6 +39,7 @@ const loadConfig = (id: string) => {
 			break;
 		case "genshin":
 			config = {
+				game: id,
 				currency: "Primogems",
 				pulls: "Intertwined Fates",
 				th3: "Pulls (Primogems)",
@@ -47,6 +50,7 @@ const loadConfig = (id: string) => {
 			break;
 		case "hsr":
 			config = {
+				game: id,
 				currency: "Stellar Jades",
 				pulls: "Star Rail Special Passes",
 				th3: "Pulls (Jades)",
@@ -57,16 +61,18 @@ const loadConfig = (id: string) => {
 			break;
 		case "zzz":
 			config = {
+				game: id,
 				currency: "Polychromes",
 				pulls: "Encrypted Master Tapes",
 				th3: "Pulls (Polychromes)",
 				rankCharacter: "Mindscape Cinema",
-				rankWeapon: "Overclock?",
+				rankWeapon: "Overclock?", // Fix this later
 				monthlyPass: "Express Supply Pass"
 			};
 			break;
 		case "wuwa":
 			config = {
+				game: id,
 				currency: "Astrites",
 				pulls: "Radiant Tides",
 				th3: "Pulls (Astrites)",
@@ -77,11 +83,12 @@ const loadConfig = (id: string) => {
 			break;
 		default:
 			config = {
+				game: id,
 				currency: "currency",
 				pulls: "pulls",
 				th3: "Pulls (currency)",
-				rankCharacter: "",
-				rankWeapon: "",
+				rankCharacter: "Character Rank",
+				rankWeapon: "Weapon Rank",
 				monthlyPass: "Monthly Pass"
 			};
 			break;
@@ -91,8 +98,10 @@ const loadConfig = (id: string) => {
 };
 
 function Planner(props: PlannerProps){
-	const [yourJades, setYourJades] = useState("0");
-	const [yourTickets, setYourTickets] = useState("0");
+	let config = loadConfig(props.game);
+
+	const [yourCurrency, setYourCurrency] = useState("0");
+	const [yourPulls, setYourPulls] = useState("0");
 	const [pullsFromTable, setPullsFromTable] = useState(0);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
@@ -106,38 +115,37 @@ function Planner(props: PlannerProps){
 		setState(value);
 	};
 
-	const yourJadesHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const yourCurrencyHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 	
 		if(/^\d*$/.test(value) && value.length<10){
-			setYourJades(value);
+			setYourCurrency(value);
 		}
 	};
 
-	const yourTicketsHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const yourPullsHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 	
 		if(/^\d*$/.test(value) && value.length<6){
-			setYourTickets(value);
+			setYourPulls(value);
 		}
 	};
 
 	useEffect(() => {
-		let result = Math.floor((+yourJades/160) + +yourTickets + pullsFromTable);
+		console.log(yourCurrency)
+		let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
 		setTotalPulls(result);
-	}, [yourJades, yourTickets, pullsFromTable]);
-
-	let config = loadConfig(props.game);
+	}, [yourCurrency, yourPulls, pullsFromTable]);
 
 	return(
 		<div className="mx-auto">
 			<div className="flex">
 				<span>Your {config.currency}: </span>
-				<input type="text" className="text-right" value={yourJades} onChange={yourJadesHandle} />
+				<input type="text" className="text-right" value={yourCurrency} onChange={yourCurrencyHandle} />
 			</div>
 			<div className="flex">
 				<span>Your {config.pulls}: </span>
-				<input type="text" className="text-right" value={yourTickets} onChange={yourTicketsHandle} />
+				<input type="text" className="text-right" value={yourPulls} onChange={yourPullsHandle} />
 			</div>
 			<div className="flex">
 				<span>{config.monthlyPass}: </span>
@@ -158,7 +166,7 @@ function Planner(props: PlannerProps){
 			</div>
 			<div className="flex">
 				{pullsFromSelectedPullables.map((item) => {
-					return <span>{`${item.name}: ${Math.floor(item.currencyCount/160)} (${item.currencyCount})`}</span>
+					return <span>{`${item.name}: ${Math.floor((+yourCurrency + item.currencyCount)/160) + +yourPulls} (${+yourCurrency + +yourPulls*160 + item.currencyCount})`}</span>
 				})}
 			</div>
 			<PlannerTable
