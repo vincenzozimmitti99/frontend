@@ -1,0 +1,148 @@
+{
+	"id": "genshin",
+	"regularIncome":
+	[
+		{
+			"type": "daily",
+			"name": "Dailies",
+			"recurrence": -1,
+			"value": 60
+		},
+		{
+			"type": "premium",
+			"name": "Blessing of the Welkin Moon",
+			"recurrence": -1,
+			"value": 90
+		}
+	],
+	"endgameIncome": [
+		{
+			"name": "Spiral Abyss",
+			"recurrence": 1,
+			"value": 800,
+			"resetsEvery": 16
+		},
+		{
+			"name": "Imaginarium Theater",
+			"recurrence": 1,
+			"value": 800,
+			"resetsEvery": 1
+		}
+	],
+	"otherIncome":
+	[
+		{
+			"name": "April Monthly Shop",
+			"recurrence": 1,
+			"value": 800,
+			"start": "04-01-2025",
+			"end": "04-31-2025"
+		},
+		{
+			"name": "Unlimited Fighting Championship",
+			"recurrence": 1,
+			"value": 400,
+			"start": "04-07-2025",
+			"end": "04-21-2025"
+		}
+	],
+	"pullables":
+	[
+		{
+			"name": "Varesa",
+			"type": "character",
+			"start": "03-26-2025",
+			"end": "04-15-2025"
+		},
+		{
+			"name": "Varesa Signature",
+			"type": "weapon",
+			"start": "03-26-2025",
+			"end": "04-15-2025"
+		},
+		{
+			"name": "Xianyun",
+			"type": "character",
+			"start": "03-26-2025",
+			"end": "04-15-2025"
+		},
+		{
+			"name": "Xianyun Signature",
+			"type": "weapon",
+			"start": "03-26-2025",
+			"end": "04-15-2025"
+		},
+		{
+			"name": "Venti",
+			"type": "character",
+			"start": "04-15-2025",
+			"end": "05-06-2025"
+		},
+		{
+			"name": "Venti Signature",
+			"type": "weapon",
+			"start": "04-15-2025",
+			"end": "05-06-2025"
+		},
+		{
+			"name": "Xilonen",
+			"type": "character",
+			"start": "04-15-2025",
+			"end": "05-06-2025"
+		},
+		{
+			"name": "Xilonen Signature",
+			"type": "weapon",
+			"start": "04-15-2025",
+			"end": "05-06-2025"
+		},
+		{
+			"name": "Escoffier",
+			"type": "character",
+			"start": "05-07-2025",
+			"end": "05-27-2025"
+		},
+		{
+			"name": "Escoffier Signature",
+			"type": "weapon",
+			"start": "05-07-2025",
+			"end": "05-27-2025"
+		},
+		{
+			"name": "Kinich",
+			"type": "character",
+			"start": "05-07-2025",
+			"end": "05-27-2025"
+		},
+		{
+			"name": "Kinich Signature",
+			"type": "weapon",
+			"start": "05-07-2025",
+			"end": "05-27-2025"
+		},
+		{
+			"name": "Navia",
+			"type": "character",
+			"start": "05-27-2025",
+			"end": "06-16-2025"
+		},
+		{
+			"name": "Navia Signature",
+			"type": "weapon",
+			"start": "05-27-2025",
+			"end": "06-16-2025"
+		},
+		{
+			"name": "Raiden Shogun",
+			"type": "character",
+			"start": "05-27-2025",
+			"end": "06-16-2025"
+		},
+		{
+			"name": "Raiden Shogun Signature",
+			"type": "weapon",
+			"start": "05-27-2025",
+			"end": "06-16-2025"
+		}
+	]
+}

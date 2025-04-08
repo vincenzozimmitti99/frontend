@@ -1,4 +1,5 @@
 import type { ExtendedPullable, MonthlyPass, PlannerData } from "~/types/PlannerData";
+import genshinJSON from "../assets/json/genshin.json";
 import hsrJSON from "../assets/json/hsr.json";
 
 import { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import PlannerTable from "./PlannerTable";
 
 type Games = ["3rd", "genshin", "hsr", "zzz", "wuwa"];
 
-const jsons: Record<Games[number], PlannerData> = {"3rd": hsrJSON, "genshin": hsrJSON, "hsr": hsrJSON, "zzz": hsrJSON, "wuwa": hsrJSON}; // Change this later
+const jsons: Record<Games[number], PlannerData> = {"3rd": hsrJSON, "genshin": genshinJSON, "hsr": hsrJSON, "zzz": hsrJSON, "wuwa": hsrJSON}; // Change this later
 
 type PlannerProps = React.HTMLProps<HTMLDivElement> & {
 	game: keyof typeof jsons

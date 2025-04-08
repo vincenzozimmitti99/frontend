@@ -2,6 +2,7 @@
 
 import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass } from "~/types/PlannerData";
 import type { Config } from "./Planner";
+// import genshinLuck from "../assets/json/genshin-luck.json";
 import hsrLuck from "../assets/json/hsr-luck.json";
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -436,6 +437,10 @@ function PlannerTable(props: PlannerTableProps){
 			localStorage.setItem("pullplanner", JSON.stringify(initialPullPlanner));
 		} else {
 			let pullPlanner = JSON.parse(pullPlannerFromStorage);
+			if(!pullPlanner[props.config.game]){
+				localStorage.setItem("pullplanner", JSON.stringify({...pullPlanner, ...initialPullPlanner}));
+				return;
+			}
 
 			if(pullPlanner[props.config.game].savedItems){
 				let savedItemsFromStorageObject = pullPlanner[props.config.game].savedItems;

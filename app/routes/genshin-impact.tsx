@@ -1,3 +1,5 @@
+import Planner from "~/components/Planner";
+
 export function meta({}) {
 	return [
 		{ title: "Pull Planner - Genshin Impact" },
@@ -9,7 +11,7 @@ type Props = {}
 
 function GenshinImpact({}: Props) {
 	return (
-		<div>Genshin Impact</div>
+		<Planner game="genshin" />
 	)
 }
 
