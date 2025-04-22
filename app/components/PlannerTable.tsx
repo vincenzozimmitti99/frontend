@@ -210,6 +210,9 @@ function PlannerTable(props: PlannerTableProps){
 	};
 
 	const endgameIncome: ExtendedIncome[] = useMemo(() => {
+		// let lastEndDate = groupByDatesSelectedPullables[groupByDatesSelectedPullables.length-1].endDate;
+		// console.log(lastEndDate);
+
 		let endgameIncome = [];
 		let today = new Date(); // This should ensure the reset at 4AM.. at least in my PC, with my locale. Should test with different locales.
 
@@ -284,20 +287,22 @@ function PlannerTable(props: PlannerTableProps){
 	const pullables: ExtendedPullable[] = useMemo(() => {
 		return props.json.pullables.map((item) => {
 			if(isExtendedPullable(item)){
-				const type = item.type === "character" ? 0 : 1;
-				let rank = savedItems.find((savedItem) => savedItem.name === item.name)?.rank || 0;
-				if(item.type==="character"){
-					if(rank>7) rank = 7; else if(rank<0) rank = 0;
-				} else if(item.type==="weapon"){
-					rank-=1;
-					if(rank>5) rank = 5; else if(rank<0) rank = 0;
+				if(new Date(item.end)>new Date()){
+					const type = item.type === "character" ? 0 : 1;
+					let rank = savedItems.find((savedItem) => savedItem.name === item.name)?.rank || 0;
+					if(item.type==="character"){
+						if(rank>7) rank = 7; else if(rank<0) rank = 0;
+					} else if(item.type==="weapon"){
+						rank-=1;
+						if(rank>5) rank = 5; else if(rank<0) rank = 0;
+					}
+					
+					const pullsRequired = getIndexFromPercentage(
+						+props.esteemedLuck,
+						hsrLuck[type]["data"][rank]["pulls"] // This needs to adapt to the game!!! Fix it later!
+					);
+					return { ...item, value: -pullsRequired * 160 };
 				}
-				
-				const pullsRequired = getIndexFromPercentage(
-					+props.esteemedLuck,
-					hsrLuck[type]["data"][rank]["pulls"] // This needs to adapt to the game!!! Fix it later!
-				);
-				return { ...item, value: -pullsRequired * 160 };
 			}
 		}).filter(item => !!item);
 	}, [props.json.pullables, props.esteemedLuck, savedItems]);
