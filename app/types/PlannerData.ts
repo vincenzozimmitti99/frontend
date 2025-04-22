@@ -25,7 +25,7 @@ export interface EndgameIncomeVariantHSR extends Income {
 
 export type EndgameIncome = EndgameIncomeVariantGenshin | EndgameIncomeVariantHSR
 
-export interface Pullable {
+export type Pullable = {
 	name: string;
 	type: string;
 	start: string;
@@ -39,10 +39,13 @@ export type ExtendedIncome = Income & {
 
 export type ExtendedRegularIncome = RegularIncome & {
 	start: Date,
-	end: Date
+	end: Date,
+	calculationStart: Date
 }
 
-export type ExtendedPullable = Pullable & {
+export type ExtendedPullable = Omit<Pullable, "start"|"end"> & {
+	start: Date,
+	end: Date,
 	value: number,
 	rank: number
 }

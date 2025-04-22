@@ -22,6 +22,10 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 // 	end: Date
 // }
 
+const isEndgameIncome = (item: any): item is EndgameIncomeVariantGenshin | EndgameIncomeVariantHSR => {
+	return isEndgameIncomeVariantGenshin(item) || isEndgameIncomeVariantHSR(item);
+}
+
 const isEndgameIncomeVariantGenshin = (income: EndgameIncome): income is EndgameIncomeVariantGenshin => {
 	return (income as EndgameIncomeVariantGenshin).resetsEvery !== undefined;
 }
@@ -57,7 +61,7 @@ const expandedIcon = (isExpanded: boolean) => (
 );
 
 const sortByDate = (dates: (ExtendedRegularIncome | ExtendedIncome | OtherIncome | ExtendedPullable)[]) => {
-	return dates.sort((a, b) => new Date(a.end || a.start).getTime() - new Date(b.end || b.start).getTime());
+	return dates.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 }
 
 /**
@@ -128,7 +132,7 @@ const calculateTotalCurrency = (item: ExtendedPullable | ExtendedRegularIncome |
 				// console.log(item.start, item.end);
 				return item.value*countWeeklies(item.start, item.end);
 			} else { // Case dailies + monthly pass
-				return item.value*daysDifference(item.start, item.end); // Not sure if daily count is right, maybe missing one day to the last day
+				return item.value*daysDifference(item.calculationStart, item.end); // Not sure if daily count is right, maybe missing one day to the last day
 			}
 		}
 	}
@@ -140,8 +144,8 @@ const calculateTotalCurrency = (item: ExtendedPullable | ExtendedRegularIncome |
 const groupByEndDate = (pullables: ExtendedPullable[]) => {
 	interface PullableGroup {
 		selectedPullables: ExtendedPullable[];
-		startDate: string;
-		endDate: string;
+		startDate: Date;
+		endDate: Date;
 	}
 
 	const pullableMap: { [key: string]: PullableGroup } = {}; // Hash map to group by 'end' date
@@ -151,8 +155,8 @@ const groupByEndDate = (pullables: ExtendedPullable[]) => {
 		const { start, end } = pullables[i];
 
 		// If the 'end' date is not in the map, initialize it
-		if(!pullableMap[end]){
-			pullableMap[end] = {
+		if(!pullableMap[end.toString()]){
+			pullableMap[end.toString()] = {
 				selectedPullables: [],
 				startDate: start,
 				endDate: end
@@ -160,7 +164,7 @@ const groupByEndDate = (pullables: ExtendedPullable[]) => {
 		}
 
 		// Add the current pullable to the group
-		pullableMap[end].selectedPullables.push(pullables[i]);
+		pullableMap[end.toString()].selectedPullables.push(pullables[i]);
 	}
 
 	// Convert the hash map values into the desired array format
@@ -306,8 +310,9 @@ function PlannerTable(props: PlannerTableProps){
 				for(let i=0;i<pullablesByEndDate.length;i++){
 					if(pullablesByEndDate[i].selectedPullables[0].type==="character"){
 						if(isRegularIncome(item)){
-							let startDate = i>0?new Date(pullablesByEndDate[i-1].endDate):new Date();
+							let startDate = new Date(pullablesByEndDate[i].startDate);
 							let endDate = new Date(pullablesByEndDate[i].endDate);
+							let calculationStart = i>0?new Date(pullablesByEndDate[i-1].endDate):new Date();
 							let recurrence;
 							if(item.type==="premium"){
 								if(props.monthlyPassState[0].enabled){
@@ -332,9 +337,10 @@ function PlannerTable(props: PlannerTableProps){
 								name: `${item.name} until ${pullablesByEndDate[i].selectedPullables[0].name}`,
 								start: startDate,
 								end: endDate,
+								calculationStart,
 								recurrence: recurrence
 							});
-							console.log(dailiesUntil);
+							// console.log(dailiesUntil[0]);
 						}
 					}
 				}
@@ -374,8 +380,11 @@ function PlannerTable(props: PlannerTableProps){
 	}, [pullables, savedItems]);
 
 	// Here make some conditions that check the sorting selected by the user and sorts accordingly. Or maybe not because sorting seems bad?
+	// OK OK here is the best idea: group everything by PATCH VERSION and each group is ordered like this:
+	// 3.2(regularIncome > endgameIncome (if startDate is between group startDate and endDate) > otherIncome > pullables), ...3.3()
 	const combinedData = useMemo(
 		() => sortByDate([...regularIncome, ...endgameIncome, ...otherIncome, ...pullables].filter((item) => !!item)),
+			// sortByVersion(regularIncome, endgameIncome, otherIncome, pullables).filter((item) => !!item),
 		[regularIncome, endgameIncome, otherIncome, pullables]
 	);
 
@@ -519,7 +528,7 @@ function PlannerTable(props: PlannerTableProps){
 					combinedData.map((item, index) => {
 						let currencyCount = calculateTotalCurrency(item);
 						// console.log(item.start, item.end);
-						const dateStart = new Date(item.start);
+						const dateStart = new Date("calculationStart" in item?item.calculationStart:item.start);
 						const dateEnd = item.end ? new Date(item.end) : undefined;
 						
 						const pullCount = Math.floor(currencyCount/160);
