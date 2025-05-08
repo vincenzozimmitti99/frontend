@@ -49,6 +49,34 @@
 			"value": 960,
 			"start": "2025-03-28",
 			"end": "2025-04-14"
+		},
+		{
+			"name": "Whirling Waltz",
+			"recurrence": 1,
+			"value": 990,
+			"start": "2025-05-09",
+			"end": "2025-05-26"
+		},
+		{
+			"name": "Operation Downpour Simulation",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-05-19",
+			"end": "2025-06-03"
+		},
+		{
+			"name": "Chronicle of Shifting Stratagems",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-05-27",
+			"end": "2025-06-09"
+		},
+		{
+			"name": "Legends Ablaze: Cross-Border Brawl",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-06-05",
+			"end": "2025-06-16"
 		}
 	],
 	"pullables": [
