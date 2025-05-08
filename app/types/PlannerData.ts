@@ -72,5 +72,8 @@ export interface PlannerData {
 	pullables: Pullable[];
 }
 
+const games = ["3rd", "genshin", "hsr", "zzz", "wuwa"] as const;
+export type Games = typeof games[number];
+
 const servers = ["Europe", "America", "Asia"] as const;
 export type Server = typeof servers[number];

@@ -5,7 +5,7 @@
 
 "use client";
 
-import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass, Server } from "~/types/PlannerData";
+import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass, Server, Games } from "~/types/PlannerData";
 import type { Config } from "./Planner";
 // import genshinLuck from "../assets/json/genshin-luck.json";
 import hsrLuck from "../assets/json/hsr-luck.json";
@@ -13,6 +13,21 @@ import hsrLuck from "../assets/json/hsr-luck.json";
 import React, { useEffect, useMemo, useState } from "react";
 
 const server = "Europe" as Server;
+
+// Debug function
+function msToTime(duration: number): string {
+    const seconds = Math.floor((duration / 1000) % 60);
+    const minutes = Math.floor((duration / (1000 * 60)) % 60);
+    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(duration / (1000 * 60 * 60 * 24));
+
+    const paddedHours = hours < 10 ? "0" + hours : hours.toString();
+    const paddedMinutes = minutes < 10 ? "0" + minutes : minutes.toString();
+    const paddedSeconds = seconds < 10 ? "0" + seconds : seconds.toString();
+
+    return `${days}d ${paddedHours}h ${paddedMinutes}m ${paddedSeconds}s`;
+}
+
 
 function getServerResetTime(server: Server, now = new Date()) {
 	// Map of server reset offsets in hours relative to UTC
@@ -209,48 +224,6 @@ const calculateTotalCurrency = (item: ExtendedPullable | ExtendedIncome | Extend
 	}
 
 	return recurrence*item.value; // Covers ExtendedPullable, ExtendedIncome and OtherIncome mainly
-
-	// if(recurrence === -1 && item.start && item.end){ // Case regular rewards
-	// 	if(isRegularIncome(item)){
-	// 		if(item.type==="weekly"){ // Case weeklies
-	// 			const countWeeklies = (start: Date, end: Date): number => {
-	// 				const adjustDateForReset = (date: Date): Date => {
-	// 					// Where the magic happens, skip first week count only if it's over 4AM.
-	// 					// Since only the first instance has a start=today, it only happens there.
-	// 					// The successive ones won't have any skip
-	// 					if(date.getHours()>=4){
-	// 						date.setDate(date.getDate()+1);
-	// 					}
-	// 					date.setHours(4, 0, 0, 0);
-	// 					return date;
-	// 				};
-	
-	// 				let newStart = adjustDateForReset(new Date(start));
-	// 				let newEnd = adjustDateForReset(new Date(end));
-	// 				let resetDay = ("resetDay" in item)?item.resetDay:1; // Default as Monday
-	// 				let counter = 0;
-	// 				while(dateDifference(newStart, newEnd)>0){
-	// 					if(newStart.getDay()!==resetDay){
-	// 						newStart.setDate(newStart.getDate()+1);
-	// 						continue;
-	// 					}
-	// 					counter++;
-	// 					newStart.setDate(newStart.getDate()+7);
-	// 				}
-	// 				return counter;
-	// 			};
-	// 			// start = new Date("05-05-2025");
-	// 			// start.setHours(3, 59, 0, 0);
-	// 			// console.log(item.start, item.end);
-	// 			return item.value*countWeeklies(item.start, item.end);
-	// 		} else { // Case dailies + monthly pass
-	// 			return item.value*daysDifference(item.calculationStart, item.end); // Not sure if daily count is right, maybe missing one day to the last day
-	// 		}
-	// 	}
-	// }
-	
-	// // Case any other rewards or pullable, which is most likely recurrence 1
-	// return recurrence*item.value;
 };
 
 /**
@@ -260,11 +233,12 @@ const calculateTotalCurrency = (item: ExtendedPullable | ExtendedIncome | Extend
  * !!! Watch out !!!
  * @param item Pullable to be converted
  * @param server Player's server, dates change based on this parameter
+ * @param game Current game page, times change based on this parameter
  * @param rank Player's desired rank to calculate required pulls
  * @param esteemedLuck Player's esteemed luck to calculate required pulls
  * @returns ExtendedPullable if version is valid (phase is a requirement), undefined if not valid or pullable end date is already over
  */
-const convertToExtendedPullable = (item: Pullable, server: "Europe" | "Asia" | "America", rank: number, esteemedLuck: string): ExtendedPullable | undefined => {
+const convertToExtendedPullable = (item: Pullable, server: Server, game: Games | string, rank: number, esteemedLuck: string): ExtendedPullable | undefined => {
 	let splitVersion = item.version.split(".");
 	let phase = splitVersion.pop();
 	let version = splitVersion.join(".");
@@ -274,18 +248,30 @@ const convertToExtendedPullable = (item: Pullable, server: "Europe" | "Asia" | "
 		utcStartDate.setUTCHours(3);
 		utcEndDate = new Date(item.end);
 
-		switch(server){
-			case "Europe":
-			utcEndDate.setUTCHours(10);
-			break;
-
-			case "Asia":
-			utcEndDate.setUTCHours(3);
-			break;
-
-			case "America":
-			utcEndDate.setUTCHours(16);
-			break;
+		if(game==="genshin"){
+			switch(server){
+				case "Europe":
+					utcEndDate.setUTCHours(16);
+					break;
+				case "Asia":
+					utcEndDate.setUTCHours(9);
+					break;
+				case "America":
+					utcEndDate.setUTCHours(22);
+					break;
+			}
+		} else if(game==="hsr"){
+			switch(server){
+				case "Europe":
+					utcEndDate.setUTCHours(10);
+					break;
+				case "Asia":
+					utcEndDate.setUTCHours(3);
+					break;
+				case "America":
+					utcEndDate.setUTCHours(16);
+					break;
+			}
 		}
 
 		utcEndDate.setUTCMinutes(59);
@@ -296,19 +282,32 @@ const convertToExtendedPullable = (item: Pullable, server: "Europe" | "Asia" | "
 
 		switch(server){
 			case "Europe":
-			utcStartDate.setUTCHours(11);
-			utcEndDate.setUTCHours(13);
-			break;
-
+				if(game==="genshin"){
+					utcStartDate.setUTCHours(17);
+					utcEndDate.setUTCHours(13);
+				} else if(game==="hsr"){
+					utcStartDate.setUTCHours(11);
+					utcEndDate.setUTCHours(13);
+				}
+				break;
 			case "Asia":
-			utcStartDate.setUTCHours(4);
-			utcEndDate.setUTCHours(6);
-			break;
-
+				if(game==="genshin"){
+					utcStartDate.setUTCHours(10);
+					utcEndDate.setUTCHours(6);
+				} else if(game==="hsr"){
+					utcStartDate.setUTCHours(4);
+					utcEndDate.setUTCHours(6);
+				}
+				break;
 			case "America":
-			utcStartDate.setUTCHours(17);
-			utcEndDate.setUTCHours(19);
-			break;
+				if(game==="genshin"){
+					utcStartDate.setUTCHours(23);
+					utcEndDate.setUTCHours(19);
+				} else if(game==="hsr"){
+					utcStartDate.setUTCHours(17);
+					utcEndDate.setUTCHours(19);
+				}
+				break;
 		}
 
 		utcEndDate.setUTCMinutes(59);
@@ -410,8 +409,9 @@ function PlannerTable(props: PlannerTableProps){
 		return props.json.pullables.map((item) => {
 			if(isPullable(item)){
 				let rank = savedItems.find((savedItem) => savedItem.name === item.name)?.rank || 0;
-				// console.log(convertToExtendedPullable(item, server, rank, props.esteemedLuck));
-				return convertToExtendedPullable(item, server, rank, props.esteemedLuck);
+				// let temp = convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
+				// console.log(msToTime(temp?.end.getTime()-temp?.start.getTime()));
+				return convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
 			}
 		}).filter(item => !!item);
 	}, [props.json.pullables, props.esteemedLuck, savedItems]);
@@ -450,21 +450,6 @@ function PlannerTable(props: PlannerTableProps){
 				// console.log(endgameIncome);
 
 				// Debug time remaining
-
-				// console.log(endgameNextReset);
-				// function msToTime(duration: number) {
-				// 	var milliseconds = parseInt((duration%1000)/100)
-				// 		, seconds = parseInt((duration/1000)%60)
-				// 		, minutes = parseInt((duration/(1000*60))%60)
-				// 		, hours = parseInt((duration/(1000*60*60))%24)
-				// 		, days = parseInt(duration/(1000*60*60*24))
-				
-				// 	hours = (hours < 10) ? "0" + hours : hours;
-				// 	minutes = (minutes < 10) ? "0" + minutes : minutes;
-				// 	seconds = (seconds < 10) ? "0" + seconds : seconds;
-				
-				// 	return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-				// }
 				// console.log(msToTime(endgameNextReset.getTime()-new Date().getTime()));
 			}
 		}
@@ -617,13 +602,19 @@ function PlannerTable(props: PlannerTableProps){
 
 	const otherIncome = useMemo(() => {
 		return props.json.otherIncome.map((item) => {
+			let startDate = getServerResetTime(server, new Date(item.start)).nextReset;
+			let endDate;
 			if(item.end){
-				if(dateDifference(new Date(item.end), new Date())<0){
-					return item
-				}
+				endDate = getServerResetTime(server, new Date(item.end)).nextReset;
 			} else {
-				if(dateDifference(new Date(item.start), new Date())<3*(1000*60*60*24)){
-					return item
+				endDate = new Date(startDate.getTime() + 3*(1000*60*60*24)); // 3 days after start date
+			}
+			
+			if(endDate>new Date()){
+				return {
+					...item,
+					start: startDate,
+					end: endDate
 				}
 			}
 		}).filter((item) => !!item);
@@ -800,7 +791,7 @@ function PlannerTable(props: PlannerTableProps){
 
 						const mainRow = (
 							<tr key={`main-${index}`}>
-								<td className="">
+								<td title={`${dateStart.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} - ${dateEnd?.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} ${dateEnd?"(Duration: " + msToTime(+dateEnd-+dateStart) + ")":""}`}>
 									{dateEnd
 									? `${dateFormatter(dateStart)} - ${dateFormatter(dateEnd)}`
 									: dateFormatter(dateStart)}
