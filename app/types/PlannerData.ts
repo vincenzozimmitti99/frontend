@@ -15,7 +15,8 @@ export interface OtherIncome extends Income {
 }
 
 export interface EndgameIncomeVariantGenshin extends Income {
-	resetsEvery: number
+	resetsEvery: number,
+	resetDate?: string
 }
 
 export interface EndgameIncomeVariantHSR extends Income {
@@ -30,6 +31,7 @@ export type Pullable = {
 	type: string;
 	start: string;
 	end: string;
+	version: string;
 }
 
 export type ExtendedIncome = Income & {
@@ -69,3 +71,6 @@ export interface PlannerData {
 	otherIncome: OtherIncome[];
 	pullables: Pullable[];
 }
+
+const servers = ["Europe", "America", "Asia"] as const;
+export type Server = typeof servers[number];

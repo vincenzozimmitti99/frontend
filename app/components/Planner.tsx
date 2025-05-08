@@ -104,6 +104,7 @@ function Planner(props: PlannerProps){
 	const [yourCurrency, setYourCurrency] = useState("0");
 	const [yourPulls, setYourPulls] = useState("0");
 	const [pullsFromTable, setPullsFromTable] = useState(0);
+	const [esteemedLuckDisabled, setEsteemedLuckDisabled] = useState(true);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
 	const [totalPulls, setTotalPulls] = useState(0);
@@ -126,6 +127,16 @@ function Planner(props: PlannerProps){
 		const value = event.target.value;
 		setState(value);
 	};
+
+	const esteemedLuckSelectHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = event.target.value;
+		if(value){
+			setEsteemedLuck(value);
+			setEsteemedLuckDisabled(true);
+		} else {
+			setEsteemedLuckDisabled(false);
+		}
+	}
 
 	const yourCurrencyHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
@@ -162,35 +173,107 @@ function Planner(props: PlannerProps){
 
 	return(
 		<div className="mx-auto">
-			<div className="flex">
-				<span>Your {config.currency}: </span>
-				<input type="text" className="text-right" value={yourCurrency} onChange={yourCurrencyHandle} />
-			</div>
-			<div className="flex">
-				<span>Your {config.pulls}: </span>
-				<input type="text" className="text-right" value={yourPulls} onChange={yourPullsHandle} />
-			</div>
-			<div className="flex">
-				<span>{config.monthlyPass}: </span>
-				<label><input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, enabled: !prev.enabled}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass})}} />Enabled</label>
-				<label><input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />Always</label>
-				<label>End date: <input type="text" className="text-right" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} /></label>
-			</div>
-			<div className="flex">
-				<span>Esteemed luck: </span>
-				<input type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} />%
-			</div>
-			<div className="flex">
-				<span>Total pulls:</span><span className={`${totalPulls > 0 ? "text-green-500" : totalPulls < 0 ? "text-red-500" : ""}`}>{totalPulls>0?`+${Math.floor(totalPulls/160)} (+${totalPulls})`:`${Math.floor(totalPulls/160)} (${totalPulls})`}</span>
-			</div>
-			<div className="flex">
-				<span>Selected pullables:</span>
-				{selectedPullables.map((item) => {return <span>{item.name}</span>})}
-			</div>
-			<div className="flex">
-				{pullsFromSelectedPullables.map((item) => {
-					return <span>{`${item.name}: ${Math.floor((+yourCurrency + item.currencyCount)/160) + +yourPulls} (${+yourCurrency + +yourPulls*160 + item.currencyCount})`}</span>
-				})}
+			<div className="table-customization bg-table-primary max-w-sm mx-auto">
+				<div className="text-center font-bold mb-2">Customization</div>
+				<div className="form-group">
+					<label>
+						{"Your " + config.currency}
+						<input type="text" className="text-right" value={yourCurrency} placeholder="0" onChange={yourCurrencyHandle} />
+					</label>
+				</div>
+				<div className="form-group">
+					<label>
+						{"Your " + config.pulls}
+						<input type="text" className="text-right" value={yourPulls} placeholder="0" onChange={yourPullsHandle} />
+					</label>
+				</div>
+				<div className="form-group">
+					<span className="cursor-default">{config.monthlyPass}</span>
+					<div className="monthly-pass-checkboxes">
+						<label className="form-checkbox">
+							<input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, enabled: !prev.enabled}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass})}} />
+							Enabled
+						</label>
+						<label className="form-checkbox">
+							<input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />
+							Always
+						</label>
+					</div>
+					<label>
+						End date
+						<input type="text" className="text-right" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} placeholder="MM/dd/yyyy" />
+					</label>
+				</div>
+				<div className="form-group">
+					<label htmlFor="esteemed-luck">
+						{"Esteemed luck"}
+					</label>
+					<div className="esteemed-luck">
+						<select defaultValue={50} onChange={(event) => {esteemedLuckSelectHandle(event);}}>
+							<option value={""}>Custom</option>
+							<option value={50}>Average case</option>
+							<option value={99}>Worst case</option>
+						</select>
+						<div className="input-percentage">
+							<input id="esteemed-luck" type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} disabled={esteemedLuckDisabled} />
+						</div>
+					</div>
+				</div>
+				{/* <div class="form-group">
+					<label>
+						Planned characters/weapons<br />
+						<div style="display: flex; align-items: center; margin-top: 4px;">
+							<img src="https://img.game8.co/4105938/a7a620b0c9969474e506afc27d57874b.png/show" style="
+								display: block;
+								min-height: 48px;
+								width: 48px;
+								object-fit: cover;
+							" />
+							<img src="https://img.game8.co/4141885/719b5017394aa3ea256f67825484973f.png/show" style="
+								margin-right: 4px;
+								display: block;
+								min-height: 48px;
+								width: 48px;
+								object-fit: cover;
+							" />
+							<span class="text-green-500">+6349938 (+1015990084)</span>
+						</div>
+					</label>
+				</div> */}
+				<div className="form-group">
+					<label>
+						{"Planned characters/weapons"}
+					</label>
+					{pullsFromSelectedPullables.map((item) => {
+						let pulls = Math.floor((+yourCurrency + item.currencyCount)/160) + +yourPulls;
+						let currency = +yourCurrency + +yourPulls*160 + item.currencyCount
+						return(
+							<div>
+								<span>
+									{`${item.name}: `}
+								</span>
+								<span className={`${pulls > 0 ? "text-green-500" : pulls < 0 ? "text-red-500" : ""}`}>
+									{pulls>0?`+${pulls} (+${currency})`:`${pulls} (${currency})`}
+								</span>
+							</div>
+						);
+					})}
+				</div>
+				<div className="form-group">
+					<label>
+						Total pulls<br/>
+						<span className={`text-[22px] ${totalPulls > 0 ? "text-green-500" : totalPulls < 0 ? "text-red-500" : ""}`}>
+							{totalPulls>0?`+${Math.floor(totalPulls/160)} (+${totalPulls})`:`${Math.floor(totalPulls/160)} (${totalPulls})`}
+						</span>
+					</label>
+					You will be able to pull the selected characters/weapon even in the worst case!
+
+				</div>
+				{/* Debug
+				<div className="flex">
+					<span>Selected pullables:</span>
+					{selectedPullables.map((item) => {return <span>{item.name}</span>})}
+				</div> */}
 			</div>
 			<PlannerTable
 				json={jsons[props.game]}

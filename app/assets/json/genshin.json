@@ -1,7 +1,6 @@
 {
 	"id": "genshin",
-	"regularIncome":
-	[
+	"regularIncome": [
 		{
 			"type": "daily",
 			"name": "Dailies",
@@ -29,127 +28,141 @@
 			"resetsEvery": 1
 		}
 	],
-	"otherIncome":
-	[
+	"otherIncome": [
 		{
 			"name": "April Monthly Shop",
 			"recurrence": 1,
 			"value": 800,
-			"start": "04-01-2025",
-			"end": "04-31-2025"
+			"start": "2025-04-01",
+			"end": "2025-04-30"
 		},
 		{
 			"name": "Unlimited Fighting Championship",
 			"recurrence": 1,
 			"value": 400,
-			"start": "04-07-2025",
-			"end": "04-21-2025"
+			"start": "2025-04-07",
+			"end": "2025-04-21"
 		},
 		{
 			"name": "Tournament of Glory in Bloom",
 			"recurrence": 1,
 			"value": 960,
-			"start": "03-28-2025",
-			"end": "04-14-2025"
+			"start": "2025-03-28",
+			"end": "2025-04-14"
 		}
 	],
-	"pullables":
-	[
+	"pullables": [
 		{
 			"name": "Varesa",
 			"type": "character",
-			"start": "03-26-2025",
-			"end": "04-15-2025"
+			"start": "2025-03-26",
+			"end": "2025-04-15",
+			"version": "5.5.1"
 		},
 		{
 			"name": "Varesa Signature",
 			"type": "weapon",
-			"start": "03-26-2025",
-			"end": "04-15-2025"
+			"start": "2025-03-26",
+			"end": "2025-04-15",
+			"version": "5.5.1"
 		},
 		{
 			"name": "Xianyun",
 			"type": "character",
-			"start": "03-26-2025",
-			"end": "04-15-2025"
+			"start": "2025-03-26",
+			"end": "2025-04-15",
+			"version": "5.5.1"
 		},
 		{
 			"name": "Xianyun Signature",
 			"type": "weapon",
-			"start": "03-26-2025",
-			"end": "04-15-2025"
+			"start": "2025-03-26",
+			"end": "2025-04-15",
+			"version": "5.5.1"
 		},
 		{
 			"name": "Venti",
 			"type": "character",
-			"start": "04-15-2025",
-			"end": "05-05-2025"
+			"start": "2025-04-15",
+			"end": "2025-05-05",
+			"version": "5.5.2"
 		},
 		{
 			"name": "Venti Signature",
 			"type": "weapon",
-			"start": "04-15-2025",
-			"end": "05-05-2025"
+			"start": "2025-04-15",
+			"end": "2025-05-05",
+			"version": "5.5.2"
 		},
 		{
 			"name": "Xilonen",
 			"type": "character",
-			"start": "04-15-2025",
-			"end": "05-05-2025"
+			"start": "2025-04-15",
+			"end": "2025-05-05",
+			"version": "5.5.2"
 		},
 		{
 			"name": "Xilonen Signature",
 			"type": "weapon",
-			"start": "04-15-2025",
-			"end": "05-05-2025"
+			"start": "2025-04-15",
+			"end": "2025-05-05",
+			"version": "5.5.2"
 		},
 		{
 			"name": "Escoffier",
 			"type": "character",
-			"start": "05-05-2025",
-			"end": "05-25-2025"
+			"start": "2025-05-07",
+			"end": "2025-05-27",
+			"version": "5.6.1"
 		},
 		{
 			"name": "Escoffier Signature",
 			"type": "weapon",
-			"start": "05-05-2025",
-			"end": "05-25-2025"
-		},
-		{
-			"name": "Kinich",
-			"type": "character",
-			"start": "05-05-2025",
-			"end": "05-25-2025"
-		},
-		{
-			"name": "Kinich Signature",
-			"type": "weapon",
-			"start": "05-05-2025",
-			"end": "05-25-2025"
+			"start": "2025-05-07",
+			"end": "2025-05-27",
+			"version": "5.6.1"
 		},
 		{
 			"name": "Navia",
 			"type": "character",
-			"start": "05-25-2025",
-			"end": "06-14-2025"
+			"start": "2025-05-07",
+			"end": "2025-05-27",
+			"version": "5.6.1"
 		},
 		{
 			"name": "Navia Signature",
 			"type": "weapon",
-			"start": "05-25-2025",
-			"end": "06-14-2025"
+			"start": "2025-05-07",
+			"end": "2025-05-27",
+			"version": "5.6.1"
+		},
+		{
+			"name": "Kinich",
+			"type": "character",
+			"start": "2025-05-27",
+			"end": "2025-06-17",
+			"version": "5.6.2"
+		},
+		{
+			"name": "Kinich Signature",
+			"type": "weapon",
+			"start": "2025-05-27",
+			"end": "2025-06-17",
+			"version": "5.6.2"
 		},
 		{
 			"name": "Raiden Shogun",
 			"type": "character",
-			"start": "05-25-2025",
-			"end": "06-14-2025"
+			"start": "2025-05-27",
+			"end": "2025-06-17",
+			"version": "5.6.2"
 		},
 		{
 			"name": "Raiden Shogun Signature",
 			"type": "weapon",
-			"start": "05-25-2025",
-			"end": "06-14-2025"
+			"start": "2025-05-27",
+			"end": "2025-06-17",
+			"version": "5.6.2"
 		}
 	]
 }

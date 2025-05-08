@@ -26,21 +26,21 @@
 			"name": "Memory of Chaos",
 			"recurrence": 1,
 			"value": 800,
-			"resetStart": "03-31-2025",
+			"resetStart": "2025-03-31",
 			"resetInterval": 42
 		},
 		{
 			"name": "Pure Fiction",
 			"recurrence": 1,
 			"value": 800,
-			"resetStart": "04-28-2025",
+			"resetStart": "2025-04-28",
 			"resetInterval": 42
 		},
 		{
 			"name": "Apocalyptic Shadow",
 			"recurrence": 1,
 			"value": 800,
-			"resetStart": "04-14-2025",
+			"resetStart": "2025-04-14",
 			"resetInterval": 42
 		}
 	],
@@ -50,47 +50,47 @@
 			"name": "April Monthly Shop",
 			"recurrence": 1,
 			"value": 800,
-			"start": "04-01-2025",
-			"end": "04-31-2025"
+			"start": "2025-04-01",
+			"end": "2025-04-31"
 		},
 		{
 			"name": "3.2 Livestream Code",
 			"recurrence": 1,
 			"value": 300,
-			"start": "03-28-2025"
+			"start": "2025-03-28"
 		},
 		{
 			"name": "3.2 Daily Login Reward",
 			"recurrence": 10,
 			"value": 320,
-			"start": "04-09-2025",
-			"end": "04-16-2025"
+			"start": "2025-04-09",
+			"end": "2025=04-16"
 		},
 		{
 			"name": "3.2 One-time Login Reward",
 			"recurrence": 1,
 			"value": 1600,
-			"start": "04-09-2025"
+			"start": "2025-04-09"
 		},
 		{
 			"name": "3.2 Mail Reward",
 			"recurrence": 1,
 			"value": 600,
-			"start": "04-09-2025"
+			"start": "2025-04-09"
 		},
 		{
 			"name": "The Awooo Firm",
 			"recurrence": 1,
 			"value": 1120,
-			"start": "02-28-2025",
-			"end": "04-07-2025"
+			"start": "2025-02-28",
+			"end": "2025-04-07"
 		},
 		{
 			"name": "Holy City Appraisals",
 			"recurrence": 1,
 			"value": 500,
-			"start": "03-19-2025",
-			"end": "04-07-2025"
+			"start": "2025-03-19",
+			"end": "2025-04-07"
 		}
 	],
 	"pullables":
@@ -98,74 +98,114 @@
 		{
 			"name": "Castorice",
 			"type": "character",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Castorice LC",
 			"type": "weapon",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Fugue",
 			"type": "character",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Fugue LC",
 			"type": "weapon",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Acheron",
 			"type": "character",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Acheron LC",
 			"type": "weapon",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Jiaoqiu",
 			"type": "character",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Jiaoqiu LC",
 			"type": "weapon",
-			"start": "04-09-2025",
-			"end": "04-30-2025"
+			"start": "2025-04-09",
+			"end": "2025-04-30",
+			"version": "3.2.1"
 		},
 		{
 			"name": "Anaxa",
 			"type": "character",
-			"start": "04-30-2025",
-			"end": "05-20-2025"
+			"start": "2025-04-30",
+			"end": "2025-05-20",
+			"version": "3.2.2"
 		},
 		{
-			"name": "Anaxa LC",
+			"name": "Life Should Be Cast to Flames",
 			"type": "weapon",
-			"start": "04-30-2025",
-			"end": "05-20-2025"
+			"start": "2025-04-30",
+			"end": "2025-05-20",
+			"version": "3.2.2"
 		},
 		{
 			"name": "Dr. Ratio",
 			"type": "character",
-			"start": "04-30-2025",
-			"end": "05-20-2025"
+			"start": "2025-04-30",
+			"end": "2025-05-20",
+			"version": "3.2.2"
 		},
 		{
-			"name": "Dr. Ratio LC",
+			"name": "Baptism of Pure Thought",
 			"type": "weapon",
-			"start": "04-30-2025",
-			"end": "05-20-2025"
+			"start": "2025-04-30",
+			"end": "2025-05-20",
+			"version": "3.2.2"
+		},
+		{
+			"name": "Hyacine",
+			"type": "character",
+			"start": "2025-05-21",
+			"end": "2025-06-11",
+			"version": "3.3.1"
+		},
+		{
+			"name": "May Rainbows Remain in the Sky",
+			"type": "weapon",
+			"start": "2025-05-21",
+			"end": "2025-06-11",
+			"version": "3.3.1"
+		},
+		{
+			"name": "Cipher",
+			"type": "character",
+			"start": "2025-06-11",
+			"end": "2025-07-01",
+			"version": "3.3.2"
+		},
+		{
+			"name": "Lies, Aflutter in the Wind",
+			"type": "weapon",
+			"start": "2025-06-11",
+			"end": "2025-07-01",
+			"version": "3.3.2"
 		}
 	]
 }

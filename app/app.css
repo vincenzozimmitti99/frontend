@@ -3,19 +3,46 @@
 @theme {
 	--font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+	--color-primary: #232323;
+	--color-secondary: #0e0e0e;
+	--color-tertiary: #d56a15;
+	--color-tertiary-brighter: #f28f40;
+	--color-table-primary: #3b3b3b;
 }
 
 html,
 body {
 	height: 100%;
 	color: white;
-	background-color: var(--color-gray-700);
+	background-color: var(--color-primary);
+	font-size: 14px;
 
 	/* @apply bg-white dark:bg-gray-950;
 
 	@media (prefers-color-scheme: dark) {
 		color-scheme: dark;
 	} */
+}
+
+.bg-primary{
+	background-color: var(--color-primary);
+}
+
+.bg-secondary{
+	background-color: var(--color-secondary);
+}
+
+.bg-tertiary{
+	background-color: var(--color-tertiary);
+}
+
+.bg-tertiary-brighter{
+	background-color: var(--color-tertiary-brighter);
+}
+
+.bg-table-primary{
+	background-color: var(--color-table-primary);
 }
 
 .shrinked{
@@ -39,6 +66,7 @@ body {
 
 .game-card{
 	flex-shrink: 0;
+	background-color: #101010;
 }
 
 .game-card-img {
@@ -68,7 +96,7 @@ body {
 }
 
 table, .planner-table{
-	background-color: gray;
+	
 }
 
 th, .table-headers{
@@ -80,6 +108,86 @@ th, .table-headers{
 }
 
 th, td{
-	padding: 0 10px;
-	border: 1px solid black;
+	padding: 10px 10px;
+	/* border: 1px solid black; */
+}
+
+tr, .table-customization{
+	border: 1px solid #696969;
+}
+
+.table-customization{
+	margin-top: 32px;
+	margin-bottom: 16px;
+	border-radius: 8px;
+    padding: 16px 24px;
+	background-color: var(--color-table-primary);
+}
+
+.form-group{
+	margin-bottom: 20px;
+}
+
+div.table-customization > div.form-group:last-child{
+	margin-bottom: 0px;
+}
+
+.form-group > label{
+	display: block;
+}
+
+.form-group > label > input[type=text],
+.input-percentage > input[type=text]{
+	display: block;
+	padding: 8px;
+	margin-top: 4px;
+    width: 100%;
+	border: 1px solid #696969;
+	border-radius: 4px;
+}
+
+.input-percentage{
+	display: flex;
+    align-items: center;
+}
+
+.input-percentage::after{
+	content: "%";
+}
+
+.input-percentage > input[type=text]{
+	margin-top: 0px;
+	margin-right: 4px;
+}
+
+.esteemed-luck{
+	display: flex;
+    margin-top: 4px;
+}
+
+.esteemed-luck > select{
+	margin-right: 4px;
+	border: 1px solid #696969;
+	border-radius: 4px;
+}
+
+.esteemed-luck > select > option{
+	background-color: var(--color-table-primary);
+}
+
+.form-checkbox{
+	display: flex;
+	align-items: center;
+}
+
+.form-checkbox > input[type=checkbox]{
+	margin-right: 4px;
+}
+
+.monthly-pass-checkboxes{
+	display: flex;
+}
+
+.monthly-pass-checkboxes > label{
+	flex: 1;
 }

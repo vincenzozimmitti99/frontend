@@ -34,7 +34,7 @@ function GameCard(props: GameCardProps){
 
 	return(
 		<Link to={game.href} className="game-card">
-			<div {...props} className={clsx(props.className, "game-card bg-blue-900 border-b-4 text-center text-lg")}>
+			<div {...props} className={clsx(props.className, "game-card border-b-4 text-center text-lg")}>
 				<img src={game.img} className="game-card-img"></img>
 				<div className="game-card-title">{game.title}</div>
 			</div>
