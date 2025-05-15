@@ -165,13 +165,14 @@ div.table-customization > div.form-group:last-child{
     margin-top: 4px;
 }
 
-.esteemed-luck > select{
+.select, .esteemed-luck > select{
 	margin-right: 4px;
 	border: 1px solid #696969;
 	border-radius: 4px;
+	padding: 8px;
 }
 
-.esteemed-luck > select > option{
+.select > option, .esteemed-luck > select > option{
 	background-color: var(--color-table-primary);
 }
 

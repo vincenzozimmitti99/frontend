@@ -1,8 +1,3 @@
-/**
- * - Castorice banner was already over in the morning of 4/30. Should have expired at 12PM instead, since it's phase 1.
- * - Check for endgame times, but this one might be wrong too.
- */
-
 "use client";
 
 import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass, Server, Games } from "~/types/PlannerData";
@@ -11,6 +6,7 @@ import type { Config } from "./Planner";
 import hsrLuck from "../assets/json/hsr-luck.json";
 
 import React, { useEffect, useMemo, useState } from "react";
+import RankSelector from "./RankSelector";
 
 const server = "Europe" as Server;
 
@@ -88,7 +84,7 @@ const isEndgameIncomeVariantHSR = (income: EndgameIncome): income is EndgameInco
 }
 
 const isRegularIncome = (item: any): item is RegularIncome => {
-	return (item as RegularIncome).type === "daily" || (item as RegularIncome).type === "premium" || (item as RegularIncome).type === "weekly";
+	return (item as RegularIncome).type === "daily" || (item as RegularIncome).type === "premium" || (item as RegularIncome).type === "weekly" || (item as RegularIncome).type === "monthly";
 }
 
 const isPullable = (item: any): item is Pullable => {
@@ -109,9 +105,9 @@ const expandedIcon = (isExpanded: boolean) => (
 		className="size-6"
 	>
 		<path
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		d={isExpanded ? "m4.5 15.75 7.5-7.5 7.5 7.5" : "m19.5 8.25-7.5 7.5-7.5-7.5"}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d={isExpanded ? "m4.5 15.75 7.5-7.5 7.5 7.5" : "m19.5 8.25-7.5 7.5-7.5-7.5"}
 		/>
 	</svg>
 );
@@ -321,7 +317,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 	if(utcEndDate>new Date()){
 		const type = item.type === "character" ? 0 : 1;
 		if(item.type==="character"){
-			if(rank>7) rank = 7; else if(rank<0) rank = 0;
+			if(rank>6) rank = 6; else if(rank<0) rank = 0;
 		} else if(item.type==="weapon"){
 			rank-=1;
 			if(rank>5) rank = 5; else if(rank<0) rank = 0;
@@ -382,11 +378,19 @@ function PlannerTable(props: PlannerTableProps){
 		return false;
 	};
 
-	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, itemName: string) => {
-		const value = event.target.value;
+	const rankChangeHandle = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, itemName: string, type: string) => {
+		let rank = +event.target.value;
+		if(isNaN(rank))
+			rank = 0;
+		if(type==="character"){
+			if(rank>6) rank = 6; else if(rank<0) rank = 0;
+		} else if(type==="weapon"){
+			if(rank>5) rank = 5; else if(rank<1) rank = 1;
+		}
+
 		setSavedItems((prev) => {
 			let newSaved = prev.map((item) =>
-				item.name === itemName ? { ...item, rank: +value } : item
+				item.name === itemName ? { ...item, rank: rank } : item
 			);
 			updateStorage("savedItems", newSaved);
 			return newSaved;
@@ -418,12 +422,31 @@ function PlannerTable(props: PlannerTableProps){
 
 	const endgameIncome: ExtendedIncome[] = useMemo(() => {
 		let endgameIncome = [];
+		let firstStartDate = new Date([...pullables].sort((a, b) => +a.start - +b.start)[0].start); // Finds real first start date in pullables array
 		let lastEndDate = new Date([...pullables].sort((a, b) => +b.end - +a.end)[0].end); // Finds real last end date in pullables array
 
 		// Make endgameIncome items up to date
 		for(let item of props.json.endgameIncome){
 			if(isEndgameIncomeVariantGenshin(item)){
+				let resetDate = getServerResetTime(server, firstStartDate).lastReset;
+				resetDate.setUTCDate(item.resetsEvery);
+				resetDate.setUTCMonth(resetDate.getUTCMonth() - 1);
+				while(resetDate < new Date()){
+					resetDate.setUTCMonth(resetDate.getUTCMonth() + 1);
+				}
 
+				let start = new Date(resetDate);
+				start.setUTCMonth(start.getUTCMonth() - 1);
+				while(start<lastEndDate){ // Make copies until they can be useful to get pull for banners
+					endgameIncome.push({
+						...item,
+						name: `${item.name} (${dateFormatter(start)})`,
+						start: new Date(start),
+						end: new Date(resetDate.getTime() - 1) // End 1ms before next
+					});
+					start.setUTCMonth(start.getUTCMonth() + 1);
+					resetDate.setUTCMonth(resetDate.getUTCMonth() + 1);
+				}
 			} else if(isEndgameIncomeVariantHSR(item)){
 				let resetStart = new Date(item.resetStart);
 				if(server==="Asia"){ // Adjust date only for Asia server
@@ -455,147 +478,77 @@ function PlannerTable(props: PlannerTableProps){
 		}
 
 		return endgameIncome.filter(item => !!item);
-
-		// let firstStartDate = new Date(pullables[0].start);
-		// let lastEndDate = new Date(pullables[pullables.length-1].end); // Maybe search for the last real end date? Or make sure the JSON has always the pullables ordered
-
-		// let endgameIncome = [];
-		// let today = new Date(); // This should ensure the reset at 4AM.. at least in my PC, with my locale. Should test with different locales.
-
-		// for(let item of props.json.endgameIncome){ // Makes the original date up to date
-		// 	if(isEndgameIncomeVariantGenshin(item)){
-		// 		let copy: EndgameIncomeVariantGenshin = {...item};
-		// 		let end = new Date(today.getFullYear(), today.getMonth(), copy.resetsEvery);
-		// 		// end.setMonth(end.getMonth()-1);
-		// 		end.setHours(4);
-		// 		end.setSeconds(-1);
-		// 		let checkEnd = new Date(end);
-		// 		checkEnd.setMonth(checkEnd.getMonth()-1);
-		// 		if(dateDifference(firstStartDate, end)>0){ // Checks if last endgame content is still useful to first banner start date
-		// 			end = checkEnd;
-		// 		}
-		// 		copy.resetDate = end.toDateString();
-		// 		endgameIncome.push(copy);
-		// 	} else if(isEndgameIncomeVariantHSR(item)){
-		// 		let copy: EndgameIncomeVariantHSR = {...item};
-		// 		let end = new Date(copy.resetStart);
-		// 		end.setHours(4);
-		// 		end.setSeconds(-1);
-		// 		while(dateDifference(end, today)>0){
-		// 			end.setDate(end.getDate()+item.resetInterval);
-		// 			copy.resetStart = end.toDateString();
-		// 		}
-		// 		endgameIncome.push(copy);
-		// 	}
-		// }
-
-		// let endgameIncomeCopy = [...endgameIncome];
-		// // console.log(endgameIncomeCopy);
-		// endgameIncome = [];
-		// for(let item of endgameIncomeCopy){ // Make copies of the endgame income until last pullable date
-		// 	if(isEndgameIncomeVariantGenshin(item)){
-		// 		endgameIncome.push(item);
-		// 		let i = 1;
-		// 		let resetDate = new Date(item.resetDate);
-		// 		while(resetDate<lastEndDate){
-		// 			let copy = {...item};
-		// 			resetDate = new Date(copy.resetDate);
-		// 			resetDate.setMonth(resetDate.getMonth() + i);
-		// 			copy.resetDate = resetDate.toDateString();
-		// 			endgameIncome.push(copy);
-		// 			i++;
-		// 		}
-		// 	} else if(isEndgameIncomeVariantHSR(item)){
-		// 		endgameIncome.push(item);
-		// 		let i = 1;
-		// 		let resetStart = new Date(item.resetStart);
-		// 		while(resetStart<lastEndDate){
-		// 			let copy = {...item};
-		// 			resetStart = new Date(copy.resetStart);
-		// 			resetStart.setDate(resetStart.getDate() + copy.resetInterval*i);
-		// 			copy.resetStart = resetStart.toDateString();
-		// 			endgameIncome.push(copy);
-		// 			i++;
-		// 		}
-		// 	}
-		// }
-
-		// return endgameIncome.map((item): ExtendedIncome | undefined => {
-		// 	if(isEndgameIncomeVariantGenshin(item)){ // Maybe doesn't work as intended yet
-		// 		let resetDate = new Date(item.resetDate);
-		// 		let start, end;
-		// 		start = new Date(resetDate);
-		// 		end = new Date(resetDate);
-		// 		end.setMonth(resetDate.getMonth()+1);
-		// 		end.setSeconds(-1);
-		// 		return {
-		// 			...item,
-		// 			start,
-		// 			end
-		// 		};
-		// 	} else if(isEndgameIncomeVariantHSR(item)){ // Works as intended
-		// 		let end = new Date(item.resetStart);
-		// 		end.setHours(4);
-		// 		let start = new Date(end);
-		// 		start.setDate(end.getDate()-item.resetInterval);
-		// 		end.setSeconds(-1);
-		// 		return {
-		// 			...item,
-		// 			name: `${item.name} (${dateFormatter(start)})`,
-		// 			start,
-		// 			end
-		// 		};
-		// 	}
-		// }).filter(item => !!item)
 	}, [props.json.endgameIncome]);
 
 	const regularIncome: ExtendedRegularIncome[] = useMemo(
 		() =>{
-			let dailiesUntil = [];
+			let regularIncome = [];
 			const pullablesByEndDate = groupByEndDate(pullables);
+			let firstStartDate = new Date([...pullables].sort((a, b) => +a.start - +b.start)[0].start); // Finds real first start date in pullables array
+			let lastEndDate = new Date([...pullables].sort((a, b) => +b.end - +a.end)[0].end); // Finds real last end date in pullables array
 			for(let item of props.json.regularIncome){
-				for(let i=0;i<pullablesByEndDate.length;i++){
-					if(pullablesByEndDate[i].selectedPullables[0].type==="character"){
-						if(isRegularIncome(item)){
-							let startDate = new Date(pullablesByEndDate[i].startDate); // Keep original dates for ordering purposes
-							let endDate = new Date(pullablesByEndDate[i].endDate);
-							let calculationStart = i>0?new Date(pullablesByEndDate[i-1].endDate):new Date();
-							let recurrence;
-							if(item.type==="premium"){
-								if(props.monthlyPassState[0].enabled){
-									recurrence = -1;
-									if(!props.monthlyPassState[0].always){
-										if(props.monthlyPassState[0].endDate){
-											let monthlyPassEndDate = getServerResetTime(server, new Date(props.monthlyPassState[0].endDate)).nextReset;
-											if(isNaN(monthlyPassEndDate.getTime())){
-												endDate = calculationStart;
-											} else if(monthlyPassEndDate < endDate){
-												endDate = new Date(Math.max(+monthlyPassEndDate, +calculationStart));
-												// console.log(calculationStart, endDate);
+				if(isRegularIncome(item)){
+					if(item.type==="monthly"){
+						const startDate = getServerResetTime(server, new Date(Date.UTC(firstStartDate.getUTCFullYear(), firstStartDate.getUTCMonth(), 1))).nextReset;
+						const endDate = new Date(startDate);
+						endDate.setUTCMonth(endDate.getUTCMonth() + 1);
+						endDate.setUTCSeconds(endDate.getUTCSeconds() - 1);
+
+						do{
+							regularIncome.push({
+								...item,
+								name: `${item.name} (${startDate.toLocaleDateString(undefined, { timeZone: "UTC", month: "long"})})`,
+								start: new Date(startDate),
+								calculationStart: new Date(startDate),
+								end: new Date(endDate)
+							});
+
+							startDate.setUTCMonth(startDate.getUTCMonth() + 1);
+							endDate.setUTCMonth(endDate.getUTCMonth() + 1);
+						} while(startDate < lastEndDate);
+					} else {
+						for(let i=0;i<pullablesByEndDate.length;i++){
+							if(pullablesByEndDate[i].selectedPullables[0].type==="character"){
+								let startDate = new Date(pullablesByEndDate[i].startDate); // Keep original dates for ordering purposes
+								let endDate = new Date(pullablesByEndDate[i].endDate);
+								let calculationStart = i>0?new Date(pullablesByEndDate[i-1].endDate):new Date();
+								let recurrence;
+								if(item.type==="premium"){
+									if(props.monthlyPassState[0].enabled){
+										recurrence = -1;
+										if(!props.monthlyPassState[0].always){
+											if(props.monthlyPassState[0].endDate){
+												let monthlyPassEndDate = getServerResetTime(server, new Date(props.monthlyPassState[0].endDate)).nextReset;
+												if(isNaN(monthlyPassEndDate.getTime())){
+													endDate = calculationStart;
+												} else if(monthlyPassEndDate < endDate){
+													endDate = new Date(Math.max(+monthlyPassEndDate, +calculationStart));
+													// console.log(calculationStart, endDate);
+												}
 											}
 										}
+									} else {
+										recurrence = 0;
 									}
 								} else {
-									recurrence = 0;
+									recurrence = item.recurrence;
 								}
-							} else {
-								recurrence = item.recurrence;
+								regularIncome.push({
+									...item,
+									name: `${item.name} until ${formatVersion(pullablesByEndDate[i].version)} end`,
+									start: startDate,
+									end: endDate,
+									calculationStart,
+									recurrence: recurrence
+								});
+								// console.log(regularIncome[0]);
 							}
-							dailiesUntil.push({
-								...item,
-								name: `${item.name} until ${formatVersion(pullablesByEndDate[i].version)} end`,
-								start: startDate,
-								end: endDate,
-								calculationStart,
-								recurrence: recurrence
-							});
-							// console.log(dailiesUntil[0]);
 						}
 					}
 				}
 			}
 			
-			return dailiesUntil.filter(item => !!item)
+			return regularIncome.filter(item => !!item)
 		},
 		[props.json.regularIncome, props.monthlyPassState[0]]
 	);
@@ -738,6 +691,12 @@ function PlannerTable(props: PlannerTableProps){
 		setExpandedRow(expandedRow === index ? null : index);
 	};
 
+	/**
+	 * This function generates a custom extended row based on the item.
+	 * To-do: still need to support endgame content and other events customization.
+	 * @param item 
+	 * @returns A disable checkbox and a custom JSX based on the item
+	 */
 	const generateExtendedRow = (item: RegularIncome | ExtendedIncome | ExtendedPullable | OtherIncome) => {
 		const isDisabled = isItemDisabled(item.name);
 		let disableCheckbox = (
@@ -756,9 +715,15 @@ function PlannerTable(props: PlannerTableProps){
 			let savedItem = savedItems.find((savedItem) => {return savedItem.name===item.name});
 			let rankSelector;
 			if(item.type==="character"){
-				rankSelector = <div><span>Desired {props.config.rankCharacter}</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
+				rankSelector = <div>
+					<span className="mr-[4px]">Desired {props.config.rankCharacter}</span>
+					<RankSelector minRank={0} maxRank={6} defaultValue={savedItem?.rank || 0} rankFirstLetter={props.config.rankCharacter[0]} onChange={(event) => {rankChangeHandle(event, item.name, item.type)}} />
+				</div>
 			} else if(item.type==="weapon"){
-				rankSelector = <div><span>Desired {props.config.rankWeapon}</span><input type="text" className="text-right" value={savedItem?.rank} onChange={(event) => {inputChangeHandle(event, item.name)}}/></div>
+				rankSelector = <div>
+					<span className="mr-[4px]">Desired {props.config.rankWeapon}</span>
+					<RankSelector minRank={1} maxRank={5} defaultValue={savedItem?.rank || 1} rankFirstLetter={props.config.rankWeapon[0]} onChange={(event) => {rankChangeHandle(event, item.name, item.type)}} />
+				</div>
 			}
 			return [
 				disableCheckbox,
@@ -802,7 +767,7 @@ function PlannerTable(props: PlannerTableProps){
 								</td>
 								<td className="text-center">
 									{
-										!isRegularIncome(item) &&
+										(!isRegularIncome(item) || item.type==="monthly") &&
 										<button onClick={() => toggleExpand(index)}>
 											{expandedIcon(expandedRow === index)}
 										</button>

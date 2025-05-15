@@ -19,6 +19,12 @@
 			"name": "Weeklies",
 			"recurrence": -1,
 			"value": 225
+		},
+		{
+			"type": "monthly",
+			"name": "Monthly Embers Exchange",
+			"recurrence": 1,
+			"value": 800
 		}
 	],
 	"endgameIncome": [
@@ -46,13 +52,6 @@
 	],
 	"otherIncome":
 	[
-		{
-			"name": "April Monthly Shop",
-			"recurrence": 1,
-			"value": 800,
-			"start": "2025-04-01",
-			"end": "2025-04-31"
-		},
 		{
 			"name": "3.2 Livestream Code",
 			"recurrence": 1,
@@ -91,6 +90,20 @@
 			"value": 500,
 			"start": "2025-03-19",
 			"end": "2025-04-07"
+		},
+		{
+			"name": "Gift of Odyssey (3.3)",
+			"recurrence": 1,
+			"value": 1600,
+			"start": "2025-05-21",
+			"end": "2025-07-01"
+		},
+		{
+			"name": "Gift of Odyssey (3.4)",
+			"recurrence": 1,
+			"value": 1600,
+			"start": "2025-07-02",
+			"end": "2025-08-12"
 		}
 	],
 	"pullables":
@@ -187,7 +200,21 @@
 			"version": "3.3.1"
 		},
 		{
-			"name": "May Rainbows Remain in the Sky",
+			"name": "Long May Rainbows Adorn the Sky",
+			"type": "weapon",
+			"start": "2025-05-21",
+			"end": "2025-06-11",
+			"version": "3.3.1"
+		},
+		{
+			"name": "The Herta",
+			"type": "character",
+			"start": "2025-05-21",
+			"end": "2025-06-11",
+			"version": "3.3.1"
+		},
+		{
+			"name": "Into the Unreachable Veil",
 			"type": "weapon",
 			"start": "2025-05-21",
 			"end": "2025-06-11",
@@ -201,11 +228,53 @@
 			"version": "3.3.2"
 		},
 		{
-			"name": "Lies, Aflutter in the Wind",
+			"name": "Lies Dance on the Breeze",
 			"type": "weapon",
 			"start": "2025-06-11",
 			"end": "2025-07-01",
 			"version": "3.3.2"
+		},
+		{
+			"name": "Aglaea",
+			"type": "character",
+			"start": "2025-06-11",
+			"end": "2025-07-01",
+			"version": "3.3.2"
+		},
+		{
+			"name": "Time Woven Into Gold",
+			"type": "weapon",
+			"start": "2025-06-11",
+			"end": "2025-07-01",
+			"version": "3.3.2"
+		},
+		{
+			"name": "Phainon",
+			"type": "character",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Phainon LC",
+			"type": "weapon",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Saber",
+			"type": "character",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
+		},
+		{
+			"name": "Archer",
+			"type": "character",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
 		}
 	]
 }

@@ -12,6 +12,12 @@
 			"name": "Blessing of the Welkin Moon",
 			"recurrence": -1,
 			"value": 90
+		},
+		{
+			"type": "monthly",
+			"name": "Monthly Stardust Exchange",
+			"recurrence": 1,
+			"value": 800
 		}
 	],
 	"endgameIncome": [
@@ -191,6 +197,20 @@
 			"start": "2025-05-27",
 			"end": "2025-06-17",
 			"version": "5.6.2"
+		},
+		{
+			"name": "Skirk",
+			"type": "character",
+			"start": "2025-06-18",
+			"end": "2025-07-08",
+			"version": "5.7.1"
+		},
+		{
+			"name": "Skirk Signature",
+			"type": "weapon",
+			"start": "2025-06-18",
+			"end": "2025-07-08",
+			"version": "5.7.1"
 		}
 	]
 }

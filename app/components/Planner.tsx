@@ -101,6 +101,8 @@ function Planner(props: PlannerProps){
 
 	const [yourCurrency, setYourCurrency] = useState("0");
 	const [yourPulls, setYourPulls] = useState("0");
+	const [characterPity, setCharacterPity] = useState("0");
+	const [weaponPity, setWeaponPity] = useState("0");
 	const [pullsFromTable, setPullsFromTable] = useState(0);
 	const [esteemedLuckDisabled, setEsteemedLuckDisabled] = useState(true);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
@@ -154,6 +156,24 @@ function Planner(props: PlannerProps){
 		}
 	};
 
+	const characterPityHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value;
+	
+		if(/^\d*$/.test(value) && value.length<6){
+			updateStorage("characterPity", value);
+			setCharacterPity(value);
+		}
+	};
+
+	const weaponPityHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value;
+	
+		if(/^\d*$/.test(value) && value.length<6){
+			updateStorage("weaponPity", value);
+			setWeaponPity(value);
+		}
+	};
+
 	useEffect(() => {
 		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
 		if(pullPlannerFromStorage){
@@ -186,6 +206,18 @@ function Planner(props: PlannerProps){
 					</label>
 				</div>
 				<div className="form-group">
+					<label>
+						{"Character Banner Pity"}
+						<input type="text" className="text-right" value={characterPity} placeholder="0" onChange={characterPityHandle} />
+					</label>
+				</div>
+				<div className="form-group">
+					<label>
+						{"Weapon Banner Pity"}
+						<input type="text" className="text-right" value={weaponPity} placeholder="0" onChange={weaponPityHandle} />
+					</label>
+				</div>
+				<div className="form-group">
 					<span className="cursor-default">{config.monthlyPass}</span>
 					<div className="monthly-pass-checkboxes">
 						<label className="form-checkbox">
@@ -204,7 +236,7 @@ function Planner(props: PlannerProps){
 				</div>
 				<div className="form-group">
 					<label htmlFor="esteemed-luck">
-						{"Esteemed luck"}
+						{"5★ Esteemed Luck"}
 					</label>
 					<div className="esteemed-luck">
 						<select defaultValue={50} onChange={(event) => {esteemedLuckSelectHandle(event);}}>
@@ -215,6 +247,19 @@ function Planner(props: PlannerProps){
 						<div className="input-percentage">
 							<input id="esteemed-luck" type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} disabled={esteemedLuckDisabled} />
 						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<label htmlFor="refund">
+						{"Undying Starlight-- Refund"}
+					</label>
+					<div className="">
+						<select defaultValue={1} className="select" id="refund" onChange={(event) => {}}>
+							<option value={0}>None</option>
+							<option value={1}>Best case</option>
+							<option value={2}>Average case</option>
+							<option value={3}>Worst case</option>
+						</select>
 					</div>
 				</div>
 				{/* <div class="form-group">
