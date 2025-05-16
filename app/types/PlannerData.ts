@@ -52,6 +52,12 @@ export type ExtendedPullable = Omit<Pullable, "start"|"end"> & {
 	rank: number
 }
 
+export type SelectedPullablesGroup = {
+	name: string;
+	pullables: ExtendedPullable[];
+	data: (ExtendedPullable | OtherIncome | ExtendedIncome | ExtendedRegularIncome)[];
+}
+
 export type MonthlyPass = {
 	enabled: boolean,
 	always: boolean,

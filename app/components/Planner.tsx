@@ -1,9 +1,10 @@
-import type { ExtendedPullable, MonthlyPass, PlannerData, Games } from "~/types/PlannerData";
+import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable } from "~/types/PlannerData";
 import genshinJSON from "../assets/json/genshin.json";
 import hsrJSON from "../assets/json/hsr.json";
 
 import { useEffect, useState } from "react";
 import PlannerTable from "./PlannerTable";
+import { calculateTotalCurrency, getStatisticalPullableValue } from "~/utils/common";
 
 const jsons: Record<Games, PlannerData> = {"3rd": hsrJSON, "genshin": genshinJSON, "hsr": hsrJSON, "zzz": hsrJSON, "wuwa": hsrJSON}; // Change this later
 
@@ -15,7 +16,6 @@ export interface Config{
 	game: string;
     currency: string;
     pulls: string;
-    th3: string;
 	rankCharacter: string;
 	rankWeapon: string;
 	monthlyPass: string;
@@ -30,7 +30,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "",
 				pulls: "",
-				th3: "Pulls ()",
 				rankCharacter: "",
 				rankWeapon: "",
 				monthlyPass: ""
@@ -41,7 +40,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Primogems",
 				pulls: "Intertwined Fates",
-				th3: "Pulls (Primogems)",
 				rankCharacter: "Constellation",
 				rankWeapon: "Rank",
 				monthlyPass: "Express Supply Pass"
@@ -52,7 +50,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Stellar Jades",
 				pulls: "Star Rail Special Passes",
-				th3: "Pulls (Jades)",
 				rankCharacter: "Eidolon",
 				rankWeapon: "Superimpose",
 				monthlyPass: "Express Supply Pass"
@@ -63,7 +60,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Polychromes",
 				pulls: "Encrypted Master Tapes",
-				th3: "Pulls (Polychromes)",
 				rankCharacter: "Mindscape Cinema",
 				rankWeapon: "Overclock?", // Fix this later
 				monthlyPass: "Express Supply Pass"
@@ -74,7 +70,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Astrites",
 				pulls: "Radiant Tides",
-				th3: "Pulls (Astrites)",
 				rankCharacter: "",
 				rankWeapon: "",
 				monthlyPass: "Express Supply Pass"
@@ -85,7 +80,6 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "currency",
 				pulls: "pulls",
-				th3: "Pulls (currency)",
 				rankCharacter: "Character Rank",
 				rankWeapon: "Weapon Rank",
 				monthlyPass: "Monthly Pass"
@@ -103,14 +97,13 @@ function Planner(props: PlannerProps){
 	const [yourPulls, setYourPulls] = useState("0");
 	const [characterPity, setCharacterPity] = useState("0");
 	const [weaponPity, setWeaponPity] = useState("0");
-	const [pullsFromTable, setPullsFromTable] = useState(0);
+	// const [pullsFromTable, setPullsFromTable] = useState(0);
 	const [esteemedLuckDisabled, setEsteemedLuckDisabled] = useState(true);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
-	const [totalPulls, setTotalPulls] = useState(0);
 
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
-	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<{ name: string; currencyCount: number; }[]>([]);
+	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<SelectedPullablesGroup[]>([]);
 
 	const updateStorage = (propertyName: string, value: string | object) => {
 		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
@@ -174,20 +167,71 @@ function Planner(props: PlannerProps){
 		}
 	};
 
+	const addPity = (pulls: number, currency: number, currentIndex: number, all: SelectedPullablesGroup[]) => {
+		let hasCharacterPity = false
+		let hasWeaponPity = false;
+
+		for(let i=currentIndex;i>=0;i--){
+			for(let type of all[i].pullables.map((item) => item.type)){
+				if(type==="character"){
+					hasCharacterPity = true;
+				}
+				if(type==="weapon"){
+					hasWeaponPity = true;
+				}
+
+				if(hasCharacterPity && hasWeaponPity) break;
+			}
+		}
+
+		if(hasCharacterPity){
+			pulls += +characterPity
+			currency += +characterPity*160;
+		}
+		if(hasWeaponPity){
+			pulls += +weaponPity
+			currency += +weaponPity*160;
+		}
+		return { pulls, currency };
+	};
+
+	const predictPlayerOutcome = (pullableGroups: SelectedPullablesGroup[]) => {
+		if(!pullableGroups.length) return; // If empty return, nothing to calculate yet.
+		let item = {...pullableGroups[pullableGroups.length-1]};
+		let dataCopy = item.data.map(p => ({ ...p }));
+
+		for(let pullable of dataCopy){
+			if(isExtendedPullable(pullable)){
+				pullable.value = -getStatisticalPullableValue(props.game, "99", pullable.type, pullable.rank)*160;
+			}
+		}
+
+		let tableCurrency = dataCopy.reduce((sum, current) => {
+			return sum + calculateTotalCurrency(current);
+		}, 0)
+		let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
+		let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
+		let { pulls, currency } = addPity(tempPulls, tempCurrency, pullableGroups.length-1, pullableGroups);
+		console.log(pulls, currency);
+		return "You will be able to pull the selected characters/weapons even in the worst case!";
+	};
+
 	useEffect(() => {
 		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
 		if(pullPlannerFromStorage){
 			let pullPlanner = JSON.parse(pullPlannerFromStorage);
 			pullPlanner[props.game].yourCurrency?setYourCurrency(pullPlanner[props.game].yourCurrency):null;
 			pullPlanner[props.game].yourPulls?setYourPulls(pullPlanner[props.game].yourPulls):null;
+			pullPlanner[props.game].characterPity?setCharacterPity(pullPlanner[props.game].characterPity):null;
+			pullPlanner[props.game].weaponPity?setWeaponPity(pullPlanner[props.game].weaponPity):null;
 			pullPlanner[props.game].monthlyPass?setMonthlyPass(pullPlanner[props.game].monthlyPass):null;
 		}
 	}, []);
 
-	useEffect(() => {
-		let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
-		setTotalPulls(result);
-	}, [yourCurrency, yourPulls, pullsFromTable]);
+	// useEffect(() => {
+	// 	let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
+	// 	setTotalPulls(result);
+	// }, [yourCurrency, yourPulls, characterPity, weaponPity, pullsFromTable]);
 
 	return(
 		<div className="mx-auto">
@@ -287,9 +331,13 @@ function Planner(props: PlannerProps){
 					<label>
 						{"Planned characters/weapons"}
 					</label>
-					{pullsFromSelectedPullables.map((item) => {
-						let pulls = Math.floor((+yourCurrency + item.currencyCount)/160) + +yourPulls;
-						let currency = +yourCurrency + +yourPulls*160 + item.currencyCount
+					{pullsFromSelectedPullables.map((item, index) => {
+						let tableCurrency = item.data.reduce((sum, current) => {
+							return sum + calculateTotalCurrency(current);
+						}, 0)
+						let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
+						let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
+						let { pulls, currency } = addPity(tempPulls, tempCurrency, index, pullsFromSelectedPullables);
 						return(
 							<div>
 								<span>
@@ -303,14 +351,7 @@ function Planner(props: PlannerProps){
 					})}
 				</div>
 				<div className="form-group">
-					<label>
-						Total pulls<br/>
-						<span className={`text-[22px] ${totalPulls > 0 ? "text-green-500" : totalPulls < 0 ? "text-red-500" : ""}`}>
-							{totalPulls>0?`+${Math.floor(totalPulls/160)} (+${totalPulls})`:`${Math.floor(totalPulls/160)} (${totalPulls})`}
-						</span>
-					</label>
-					You will be able to pull the selected characters/weapon even in the worst case!
-
+					{predictPlayerOutcome(pullsFromSelectedPullables)}
 				</div>
 				{/* Debug
 				<div className="flex">
@@ -322,7 +363,7 @@ function Planner(props: PlannerProps){
 				json={jsons[props.game]}
 				config={config}
 				monthlyPassState={[monthlyPass, setMonthlyPass]}
-				pullsFromTableState={[pullsFromTable, setPullsFromTable]}
+				// pullsFromTableState={[pullsFromTable, setPullsFromTable]}
 				pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]}
 				selectedPullablesState={[selectedPullables, setSelectedPullables]}
 				esteemedLuck={esteemedLuck}

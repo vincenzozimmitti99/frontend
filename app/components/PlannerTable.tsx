@@ -1,13 +1,30 @@
 "use client";
 
-import { type PlannerData, type Pullable, type OtherIncome, type RegularIncome, type ExtendedPullable, type ExtendedIncome, type ExtendedRegularIncome, type SavedItem, type MonthlyPass, type Server, type Games, isRegularIncome, isPullable, isEndgameIncomeVariantGenshin, isEndgameIncomeVariantHSR, isExtendedPullable } from "~/types/PlannerData";
-import type { Config } from "./Planner";
-// import genshinLuck from "../assets/json/genshin-luck.json";
-import hsrLuck from "../assets/json/hsr-luck.json";
+import {
+	type PlannerData,
+	type Pullable,
+	type OtherIncome,
+	type RegularIncome,
+	type ExtendedPullable,
+	type SelectedPullablesGroup,
+	type ExtendedIncome,
+	type ExtendedRegularIncome,
+	type SavedItem,
+	type MonthlyPass,
+	type Server,
+	type Games,
+	isRegularIncome,
+	isPullable,
+	isEndgameIncomeVariantGenshin,
+	isEndgameIncomeVariantHSR,
+	isExtendedPullable
+} from "~/types/PlannerData";
+import { type Config } from "./Planner";
 
 import React, { useEffect, useMemo, useState } from "react";
 import RankSelector from "./RankSelector";
 import ItemTag from "./ItemTag";
+import { calculateTotalCurrency, getServerResetTime, getStatisticalPullableValue } from "~/utils/common";
 
 const server = "Europe" as Server;
 
@@ -25,43 +42,12 @@ function msToTime(duration: number): string {
     return `${days}d ${paddedHours}h ${paddedMinutes}m ${paddedSeconds}s`;
 }
 
-
-function getServerResetTime(server: Server, now = new Date()) {
-	// Map of server reset offsets in hours relative to UTC
-	const serverOffsets = {
-		Europe: 3,   // 04:00 GMT+1 => 03:00 UTC
-		Asia: 20,    // 04:00 GMT+8 => 20:00 UTC (previous day)
-		America: 9   // 04:00 GMT-5 => 09:00 UTC
-	};
-  
-	let offsetUTC = serverOffsets[server];
-	if(offsetUTC === undefined) {
-		offsetUTC = serverOffsets["America"]; // Default to America, just in case
-	}
-  
-	let utcYear = now.getUTCFullYear();
-	let utcMonth = now.getUTCMonth();
-	let utcDate = now.getUTCDate();
-  
-	let resetUTC = new Date(Date.UTC(utcYear, utcMonth, utcDate, offsetUTC, 0, 0));
-  
-	// If current time is before today's reset, use yesterday's reset
-	if(now < resetUTC){
-		resetUTC.setUTCDate(resetUTC.getUTCDate() - 1);
-	}
-  
-	return{
-		lastReset: resetUTC,
-		nextReset: new Date(resetUTC.getTime() + 24 * 60 * 60 * 1000)
-	};
-}
-
 type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
 	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
-	pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
-	pullsFromSelectedPullablesState: [{ name: string; currencyCount: number; }[], React.Dispatch<React.SetStateAction<{ name: string; currencyCount: number; }[]>>];
+	// pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
+	pullsFromSelectedPullablesState: [SelectedPullablesGroup[], React.Dispatch<React.SetStateAction<SelectedPullablesGroup[]>>];
 	selectedPullablesState: [ExtendedPullable[], React.Dispatch<React.SetStateAction<ExtendedPullable[]>>];
 	esteemedLuck: string;
 };
@@ -133,70 +119,6 @@ const formatVersion = (version: string) => {
 	version = versionSplit.join(".");
 	return version + " Phase " + phase;
 }
-
-const getIndexFromPercentage = (percentage: number, cumulativeArray: number[]) => {
-	percentage = Math.max(0, Math.min(100, percentage)) / 100;
-
-	for(let i = 0; i < cumulativeArray.length; i++){
-		if(cumulativeArray[i] > percentage) return i;
-	}
-
-	return cumulativeArray.length - 1;
-};
-
-/**
- * Date.getUTCDay() doesn't account for timezones (which is right), and Date.getDay() only accounts for client locale.
- * This becomes a problem when counting Mondays because both functions are not suited.
- * @param date Date to apply offset to
- * @param offset The offset in hours
- * @returns Input date with input hours offset
- */
-const getOffsetUTCDay = (date: Date, offset: number) => {
-	return new Date(date.getTime() + offset * 1000*60*60).getUTCDay();
-}
-
-const calculateTotalCurrency = (item: ExtendedPullable | ExtendedIncome | ExtendedRegularIncome | OtherIncome): number => {
-	let recurrence = (("recurrence" in item)?item.recurrence:1);
-
-	if(recurrence===-1){
-		if(isRegularIncome(item)){
-			let startServerResetTime = getServerResetTime(server, item.calculationStart).lastReset;
-			let endServerResetTime = getServerResetTime(server, item.end).lastReset;
-
-			if(item.type==="weekly"){
-				let offset;
-				switch(server){
-					case "Europe":
-						offset = 1;
-						break;
-					case "Asia":
-						offset = 8;
-						break;
-					case "America":
-					default:
-						offset = -5;
-						break;
-				}
-
-				let mondayCounter = 0;
-				let tempDate = new Date(startServerResetTime.getTime() + 1000*60*60*24); // Account for weekly rewards already taken today
-				while(tempDate<=endServerResetTime){ // Account for dailies until the very end of the banner (shouldn't matter, but it's correct now)
-					// console.log(getOffsetUTCDay(tempDate, offset));
-					if(getOffsetUTCDay(tempDate, offset)===1){
-						mondayCounter++;
-					}
-					tempDate.setUTCDate(tempDate.getUTCDate() + 1);
-				}
-
-				return mondayCounter * item.value;
-			} else { // Case f2p + premium
-				return (+endServerResetTime - +startServerResetTime)/1000/60/60/24 * item.value;
-			}
-		}
-	}
-
-	return recurrence*item.value; // Covers ExtendedPullable, ExtendedIncome and OtherIncome mainly
-};
 
 /**
  * Converts a Pullable (character or weapon) to ExtendedPullable
@@ -291,19 +213,8 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 	}
 
 	if(utcEndDate>new Date()){
-		const type = item.type === "character" ? 0 : 1;
-		if(item.type==="character"){
-			if(rank>6) rank = 6; else if(rank<0) rank = 0;
-		} else if(item.type==="weapon"){
-			rank-=1;
-			if(rank>5) rank = 5; else if(rank<0) rank = 0;
-		}
-		
-		const pullsRequired = getIndexFromPercentage(
-			+esteemedLuck,
-			hsrLuck[type]["data"][rank]["pulls"] // This needs to adapt to the game!!! Fix it later!
-		);
-		return { ...item, start: utcStartDate, end: utcEndDate, value: -pullsRequired * 160, rank };
+		const value = getStatisticalPullableValue(game, esteemedLuck, item.type, rank);
+		return { ...item, start: utcStartDate, end: utcEndDate, value: -value*160, rank };
 	}
 }
 
@@ -404,7 +315,7 @@ function PlannerTable(props: PlannerTableProps){
 		// Make endgameIncome items up to date
 		for(let item of props.json.endgameIncome){
 			if(isEndgameIncomeVariantGenshin(item)){
-				let resetDate = getServerResetTime(server, firstStartDate).lastReset;
+				let resetDate = getServerResetTime(firstStartDate, server).lastReset;
 				resetDate.setUTCDate(item.resetsEvery);
 				resetDate.setUTCMonth(resetDate.getUTCMonth() - 1);
 				while(resetDate < new Date()){
@@ -428,7 +339,7 @@ function PlannerTable(props: PlannerTableProps){
 				if(server==="Asia"){ // Adjust date only for Asia server
 					resetStart.setUTCDate(resetStart.getUTCDate() - 1);
 				}
-				let endgameNextReset = getServerResetTime(server, resetStart).nextReset;
+				let endgameNextReset = getServerResetTime(resetStart, server).nextReset;
 				while(endgameNextReset < new Date()){
 					endgameNextReset.setUTCDate(endgameNextReset.getUTCDate() + item.resetInterval);
 				}
@@ -465,7 +376,7 @@ function PlannerTable(props: PlannerTableProps){
 			for(let item of props.json.regularIncome){
 				if(isRegularIncome(item)){
 					if(item.type==="monthly"){
-						const startDate = getServerResetTime(server, new Date(Date.UTC(firstStartDate.getUTCFullYear(), firstStartDate.getUTCMonth(), 1))).nextReset;
+						const startDate = getServerResetTime(new Date(Date.UTC(firstStartDate.getUTCFullYear(), firstStartDate.getUTCMonth(), 1)), server).nextReset;
 						const endDate = new Date(startDate);
 						endDate.setUTCMonth(endDate.getUTCMonth() + 1);
 						endDate.setUTCSeconds(endDate.getUTCSeconds() - 1);
@@ -494,7 +405,7 @@ function PlannerTable(props: PlannerTableProps){
 										recurrence = -1;
 										if(!props.monthlyPassState[0].always){
 											if(props.monthlyPassState[0].endDate){
-												let monthlyPassEndDate = getServerResetTime(server, new Date(props.monthlyPassState[0].endDate)).nextReset;
+												let monthlyPassEndDate = getServerResetTime(new Date(props.monthlyPassState[0].endDate), server).nextReset;
 												if(isNaN(monthlyPassEndDate.getTime())){
 													endDate = calculationStart;
 												} else if(monthlyPassEndDate < endDate){
@@ -531,10 +442,10 @@ function PlannerTable(props: PlannerTableProps){
 
 	const otherIncome = useMemo(() => {
 		return props.json.otherIncome.map((item) => {
-			let startDate = getServerResetTime(server, new Date(item.start)).nextReset;
+			let startDate = getServerResetTime(new Date(item.start), server).nextReset;
 			let endDate;
 			if(item.end){
-				endDate = getServerResetTime(server, new Date(item.end)).nextReset;
+				endDate = getServerResetTime(new Date(item.end), server).nextReset;
 			} else {
 				endDate = new Date(startDate.getTime() + 3*(1000*60*60*24)); // 3 days after start date
 			}
@@ -578,30 +489,32 @@ function PlannerTable(props: PlannerTableProps){
 
 	// Update parent state with total pulls
 	useEffect(() => {
+		// I have to get the last of this at 99% esteemed luck and check if it's < 0
 		const separatedCounts = groupByDatesSelectedPullables.map((pullableGroup) => {
 			return {
-				"name": pullableGroup.selectedPullables.map((item) => item.name).join(" + "),
-				"currencyCount": combinedData
+				"name": pullableGroup.selectedPullables.map(item => item.name).join(" + "),
+				"pullables": pullableGroup.selectedPullables,
+				"data": combinedData
 				.filter((item) => {
 					const savedItem = savedItems.find((saved) => saved.name === item.name);
-					return !savedItem?.disabled && dateDifference(new Date(pullableGroup.endDate), new Date(item.start))<0;
+					return !savedItem?.disabled && +new Date(item.start)<+new Date(pullableGroup.endDate);
 				})
-				.reduce((sum, current) => {
-					return sum + calculateTotalCurrency(current);
-				}, 0)
+				// .reduce((sum, current) => {
+				// 	return sum + calculateTotalCurrency(current);
+				// }, 0)
 			}
 		});
 
-		const totalPulls = combinedData
-			.filter((item) => {
-				const savedItem = savedItems.find((saved) => saved.name === item.name);
-				return !savedItem?.disabled;
-			})
-			.reduce((sum, current) => {
-				return sum + calculateTotalCurrency(current);
-			}, 0);
+		// const excludedPullableCount = combinedData
+		// 	.filter((item) => {
+		// 		const savedItem = savedItems.find((saved) => saved.name === item.name);
+		// 		return !savedItem?.disabled && !isExtendedPullable(item);
+		// 	})
+		// 	.reduce((sum, current) => {
+		// 		return sum + calculateTotalCurrency(current);
+		// 	}, 0);
 		props.pullsFromSelectedPullablesState[1](separatedCounts);
-		props.pullsFromTableState[1](totalPulls);
+		// props.pullsFromTableState[1](excludedPullableCount);
 	}, [combinedData, savedItems, groupByDatesSelectedPullables]);
 
 	useEffect(() => {
@@ -715,7 +628,7 @@ function PlannerTable(props: PlannerTableProps){
 				<tr>
 					<th className="text-left">Date</th>
 					<th className="text-left">Description</th>
-					<th className="text-left">{props.config.th3}</th>
+					<th className="text-left">{`Pulls (${props.config.currency})`}</th>
 					<th className="text-left"></th>
 				</tr>
 			</thead>
