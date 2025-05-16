@@ -1,12 +1,13 @@
 "use client";
 
-import type { PlannerData, EndgameIncome, EndgameIncomeVariantGenshin, EndgameIncomeVariantHSR, Pullable, Income, OtherIncome, RegularIncome, ExtendedPullable, ExtendedIncome, ExtendedRegularIncome, SavedItem, MonthlyPass, Server, Games } from "~/types/PlannerData";
+import { type PlannerData, type Pullable, type OtherIncome, type RegularIncome, type ExtendedPullable, type ExtendedIncome, type ExtendedRegularIncome, type SavedItem, type MonthlyPass, type Server, type Games, isRegularIncome, isPullable, isEndgameIncomeVariantGenshin, isEndgameIncomeVariantHSR, isExtendedPullable } from "~/types/PlannerData";
 import type { Config } from "./Planner";
 // import genshinLuck from "../assets/json/genshin-luck.json";
 import hsrLuck from "../assets/json/hsr-luck.json";
 
 import React, { useEffect, useMemo, useState } from "react";
 import RankSelector from "./RankSelector";
+import ItemTag from "./ItemTag";
 
 const server = "Europe" as Server;
 
@@ -69,31 +70,6 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 // 	start: Date,
 // 	end: Date
 // }
-
-const isEndgameIncome = (item: any): item is EndgameIncomeVariantGenshin | EndgameIncomeVariantHSR => {
-	return isEndgameIncomeVariantGenshin(item) || isEndgameIncomeVariantHSR(item);
-}
-
-const isEndgameIncomeVariantGenshin = (income: EndgameIncome): income is EndgameIncomeVariantGenshin => {
-	return (income as EndgameIncomeVariantGenshin).resetsEvery !== undefined;
-}
-
-const isEndgameIncomeVariantHSR = (income: EndgameIncome): income is EndgameIncomeVariantHSR => {
-	return (income as EndgameIncomeVariantHSR).resetStart !== undefined &&
-		(income as EndgameIncomeVariantHSR).resetInterval !== undefined;
-}
-
-const isRegularIncome = (item: any): item is RegularIncome => {
-	return (item as RegularIncome).type === "daily" || (item as RegularIncome).type === "premium" || (item as RegularIncome).type === "weekly" || (item as RegularIncome).type === "monthly";
-}
-
-const isPullable = (item: any): item is Pullable => {
-	return (item as Pullable).type === "character" || (item as Pullable).type === "weapon";
-}
-
-const isExtendedPullable = (item: any): item is ExtendedPullable => {
-	return (item as ExtendedPullable).value !== undefined && (item as ExtendedPullable).rank !== undefined;
-}
 
 const expandedIcon = (isExpanded: boolean) => (
 	<svg
@@ -179,7 +155,7 @@ const getOffsetUTCDay = (date: Date, offset: number) => {
 	return new Date(date.getTime() + offset * 1000*60*60).getUTCDay();
 }
 
-const calculateTotalCurrency = (item: ExtendedPullable | ExtendedIncome | ExtendedRegularIncome | ExtendedIncome | OtherIncome): number => {
+const calculateTotalCurrency = (item: ExtendedPullable | ExtendedIncome | ExtendedRegularIncome | OtherIncome): number => {
 	let recurrence = (("recurrence" in item)?item.recurrence:1);
 
 	if(recurrence===-1){
@@ -750,29 +726,37 @@ function PlannerTable(props: PlannerTableProps){
 						// console.log(item.start, item.end);
 						const dateStart = new Date("calculationStart" in item?item.calculationStart:item.start);
 						// console.log(item.name, dateStart);
-						const dateEnd = item.end ? new Date(item.end) : undefined;
+						const dateEnd = item.end?new Date(item.end):undefined;
 						
 						const pullCount = Math.floor(currencyCount/160);
 
 						const mainRow = (
 							<tr key={`main-${index}`}>
 								<td title={`${dateStart.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} - ${dateEnd?.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} ${dateEnd?"(Duration: " + msToTime(+dateEnd-+dateStart) + ")":""}`}>
-									{dateEnd
-									? `${dateFormatter(dateStart)} - ${dateFormatter(dateEnd)}`
-									: dateFormatter(dateStart)}
+									<div className="flex justify-around">
+										{dateEnd?
+										<><span>{dateFormatter(dateStart)}</span> - <span>{dateFormatter(dateEnd)}</span></>
+										: dateFormatter(dateStart)}
+									</div>
 								</td>
-								<td className="">{item.name}</td>
+								<td>
+									<div className="description">
+										<span className="mr-[4px]">{item.name}</span>
+										<ItemTag item={item} />
+									</div>
+								</td>
 								<td className={`text-right ${pullCount > 0 ? "text-green-500" : pullCount < 0 ? "text-red-500" : ""} ${isItemDisabled(item.name)?"line-through":""}`}>
 									{pullCount > 0 ? `+${pullCount} (+${currencyCount})` : `${pullCount} (${currencyCount})`}
 								</td>
 								<td className="text-center">
-									{
-										(!isRegularIncome(item) || item.type==="monthly") &&
-										<button onClick={() => toggleExpand(index)}>
-											{expandedIcon(expandedRow === index)}
-										</button>
-									}
-									
+									<div className="flex">
+										{
+											(!isRegularIncome(item) || item.type==="monthly") &&
+											<button onClick={() => toggleExpand(index)}>
+												{expandedIcon(expandedRow === index)}
+											</button>
+										}
+									</div>
 								</td>
 							</tr>
 						);

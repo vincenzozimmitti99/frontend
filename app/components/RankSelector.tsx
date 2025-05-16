@@ -18,7 +18,7 @@ function RankSelector(props: RankSelectorProps){
 		options.push(<option value={i}>{props.rankFirstLetter}{i}</option>);
 	}
 
-	return (
+	return(
 		<select {...props} className="select">
 			{options.map((item) => {
 				return item;
