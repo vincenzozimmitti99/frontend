@@ -263,25 +263,109 @@
 			"version": "3.4.1"
 		},
 		{
-			"name": "Phainon LC",
+			"name": "Thus Burns the Dawn",
 			"type": "weapon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Saber",
+			"name": "Tribbie",
+			"type": "character",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "If Time Were a Flower",
+			"type": "weapon",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Sunday",
+			"type": "character",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "A Grounded Ascent",
+			"type": "weapon",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Sparkle",
+			"type": "character",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Earthly Escapade",
+			"type": "weapon",
+			"start": "2025-07-02",
+			"end": "2025-07-23",
+			"version": "3.4.1"
+		},
+		{
+			"name": "Firefly",
 			"type": "character",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "Archer",
+			"name": "Whereabouts Should Dreams Rest",
+			"type": "weapon",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
+		},
+		{
+			"name": "Jingliu",
 			"type": "character",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
+		},
+		{
+			"name": "I Shall Be My Own Sword",
+			"type": "weapon",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
+		},
+		{
+			"name": "Blade",
+			"type": "character",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
+		},
+		{
+			"name": "The Unreachable Side",
+			"type": "weapon",
+			"start": "2025-07-23",
+			"end": "2025-08-12",
+			"version": "3.4.2"
+		},
+		{
+			"name": "Hysilens",
+			"type": "character",
+			"start": "2025-08-13",
+			"end": "2025-09-03",
+			"version": "3.5.1"
+		},
+		{
+			"name": "Cerydra",
+			"type": "character",
+			"start": "2025-09-03",
+			"end": "2025-09-23",
+			"version": "3.5.2"
 		}
 	]
 }
