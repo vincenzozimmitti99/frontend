@@ -83,6 +83,55 @@
 			"value": 420,
 			"start": "2025-06-05",
 			"end": "2025-06-16"
+		},
+		{
+			"name": "Battle of Imagined Arrays",
+			"recurrence": 1,
+			"value": 970,
+			"start": "2025-06-20",
+			"end": "2025-07-07"
+		},
+		{
+			"name": "Stygian Onslaught",
+			"recurrence": 1,
+			"value": 450,
+			"start": "2025-06-25",
+			"end": "2025-07-29"
+		},
+		{
+			"name": "Travelers' Tales: Gilded Chapter",
+			"recurrence": 1,
+			"value": 120,
+			"start": "2025-06-18",
+			"end": "2025-07-29"
+		},
+		{
+			"name": "Through Yesterdays, to Today",
+			"recurrence": 1,
+			"value": 160,
+			"start": "2025-06-18",
+			"end": "2025-07-02"
+		},
+		{
+			"name": "Swing your Sword 3 Million Times with Skirk!",
+			"recurrence": 1,
+			"value": 40,
+			"start": "2025-06-19",
+			"end": "2025-06-25"
+		},
+		{
+			"name": "Reminiscent Regimen: Frenzy",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-07-14",
+			"end": "2025-07-24"
+		},
+		{
+			"name": "Fearsome Ferocious Firepower",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-07-21",
+			"end": "2025-07-29"
 		}
 	],
 	"pullables": [

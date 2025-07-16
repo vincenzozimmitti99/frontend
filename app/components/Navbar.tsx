@@ -11,15 +11,15 @@ type Props = {
 const BurgerIcon = (props: Props) => {
 	return(
 		<div className={clsx("inline-flex justify-end", props.className)}>
-			<div className="p-2 hover:bg-tertiary-brighter" onClick={props.onClick}>
+			<div className="p-[8px] hover:bg-tertiary-brighter" onClick={props.onClick}>
 				{
 					props.shrinked
 					?
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-[24px] h-[24px]">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
 					</svg>
 					:
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="w-[24px] h-[24px]">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
 					</svg>
 				}

@@ -1,10 +1,10 @@
-import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable } from "~/types/PlannerData";
+import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable, type Server } from "~/types/PlannerData";
 import genshinJSON from "../assets/json/genshin.json";
 import hsrJSON from "../assets/json/hsr.json";
 
 import { useEffect, useState } from "react";
 import PlannerTable from "./PlannerTable";
-import { calculateTotalCurrency, getStatisticalPullableValue } from "~/utils/common";
+import { calculateTotalCurrency, getServerResetTime, getStatisticalPullableValue } from "~/utils/common";
 
 const jsons: Record<Games, PlannerData> = {"3rd": hsrJSON, "genshin": genshinJSON, "hsr": hsrJSON, "zzz": hsrJSON, "wuwa": hsrJSON}; // Change this later
 
@@ -20,6 +20,8 @@ export interface Config{
 	rankWeapon: string;
 	monthlyPass: string;
 }
+
+const server = "Europe" as Server;
 
 const loadConfig = (id: string) => {
 	let config: Config;
@@ -197,23 +199,61 @@ function Planner(props: PlannerProps){
 
 	const predictPlayerOutcome = (pullableGroups: SelectedPullablesGroup[]) => {
 		if(!pullableGroups.length) return; // If empty return, nothing to calculate yet.
-		let item = {...pullableGroups[pullableGroups.length-1]};
-		let dataCopy = item.data.map(p => ({ ...p }));
 
-		for(let pullable of dataCopy){
-			if(isExtendedPullable(pullable)){
-				pullable.value = -getStatisticalPullableValue(props.game, "99", pullable.type, pullable.rank)*160;
+		// let item = {...pullableGroups[pullableGroups.length-1]};
+		let pullableGroupsCopy = pullableGroups.map((item) => {return {
+			...item,
+			data: item.data.map(itemm => ({...itemm}))
+		}});
+		for(let pullableGroup of pullableGroupsCopy){
+			for(let pullable of pullableGroup.data){
+				if(isExtendedPullable(pullable)){
+					pullable.value = -getStatisticalPullableValue(props.game, "99", pullable.type, pullable.rank)*160;
+				}
 			}
 		}
 
-		let tableCurrency = dataCopy.reduce((sum, current) => {
-			return sum + calculateTotalCurrency(current);
-		}, 0)
-		let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
-		let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
-		let { pulls, currency } = addPity(tempPulls, tempCurrency, pullableGroups.length-1, pullableGroups);
-		console.log(pulls, currency);
-		return "You will be able to pull the selected characters/weapons even in the worst case!";
+		let tableCurrencies = pullableGroupsCopy.map(pullableGroup => pullableGroup.data.reduce((sum, current) => {
+			return sum + calculateTotalCurrency(current, "Europe"); // Fix!
+		}, 0));
+		const tablePullsCurrencies = tableCurrencies.map((tableCurrency, index) => {
+			let pullables = pullableGroupsCopy[index].pullables;
+			let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
+			let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
+			let { pulls, currency } = addPity(tempPulls, tempCurrency, index, pullableGroupsCopy);
+			return { pullables, pulls, currency };
+		});
+		let last = tablePullsCurrencies[tablePullsCurrencies.length-1];
+		const positives = tablePullsCurrencies.filter((item) => {return item.currency>=0;});
+		const atLeastAPositive = positives.length?true:false;
+		const allPositives = positives.length===tablePullsCurrencies.length;
+
+		if(allPositives){ // Best case
+			return <span className="text-green-500">You will be able to pull the selected characters/weapons even in the worst case!</span>;
+		} else if(atLeastAPositive){ // Average case
+			let items = positives.map((item) => {return item.pullables.map(item => item.name).join(" + ")});
+			let positivesString = "";
+			if(items.length>1){
+				let lastElement = items.splice(items.length-1, 1);
+				positivesString = items.join(", ") + " and " + lastElement[0];
+			} else {
+				positivesString = items.join(", ");
+			}
+			return <span className="text-orange-500">You are guaranteed to get {positivesString}, but you will need luck to get the others!</span>;
+		} else {
+			return <span className="text-red-500">You might not be able to pull everything you selected, let's hope for the best!</span>;
+		}
+	};
+
+	const monthlyPassResolver = (endDate: string | null, always: boolean) => {
+		if(!endDate || always) return "";
+		
+		let remainingDays = (+getServerResetTime(new Date(endDate), server).nextReset-+getServerResetTime(new Date(), server).lastReset)/1000/60/60/24;
+		if(remainingDays>0){
+			return "(" + remainingDays + " " + (remainingDays===1?"day":"days") + " remaining)";
+		} else {
+			return "(expired)";
+		}
 	};
 
 	useEffect(() => {
@@ -235,75 +275,80 @@ function Planner(props: PlannerProps){
 
 	return(
 		<div className="mx-auto">
-			<div className="table-customization bg-table-primary max-w-sm mx-auto">
-				<div className="text-center font-bold mb-2">Customization</div>
-				<div className="form-group">
-					<label>
-						{"Your " + config.currency}
-						<input type="text" className="text-right" value={yourCurrency} placeholder="0" onChange={yourCurrencyHandle} />
-					</label>
-				</div>
-				<div className="form-group">
-					<label>
-						{"Your " + config.pulls}
-						<input type="text" className="text-right" value={yourPulls} placeholder="0" onChange={yourPullsHandle} />
-					</label>
-				</div>
-				<div className="form-group">
-					<label>
-						{"Character Banner Pity"}
-						<input type="text" className="text-right" value={characterPity} placeholder="0" onChange={characterPityHandle} />
-					</label>
-				</div>
-				<div className="form-group">
-					<label>
-						{"Weapon Banner Pity"}
-						<input type="text" className="text-right" value={weaponPity} placeholder="0" onChange={weaponPityHandle} />
-					</label>
-				</div>
-				<div className="form-group">
-					<span className="cursor-default">{config.monthlyPass}</span>
-					<div className="monthly-pass-checkboxes">
-						<label className="form-checkbox">
-							<input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, enabled: !prev.enabled}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass})}} />
-							Enabled
-						</label>
-						<label className="form-checkbox">
-							<input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />
-							Always
+			<div className="table-customization bg-table-primary max-w-sm md:max-w-[500px] mx-auto mt-[32px]">
+				<div className="text-center font-bold mb-[10px]">Customization</div>
+				<div className="grid gap-4 grid-cols-1 grid-row-1 md:grid-cols-2 customization-desktop-layout">
+					<div className="[grid-area:a]">
+						<label>
+							{config.currency}
+							<input type="text" className="text-right mt-[4px]" value={yourCurrency} placeholder="0" onChange={yourCurrencyHandle} />
 						</label>
 					</div>
-					<label>
-						End date
-						<input type="text" className="text-right" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} placeholder="MM/dd/yyyy" />
-					</label>
-				</div>
-				<div className="form-group">
-					<label htmlFor="esteemed-luck">
-						{"5★ Esteemed Luck"}
-					</label>
-					<div className="esteemed-luck">
-						<select defaultValue={50} onChange={(event) => {esteemedLuckSelectHandle(event);}}>
-							<option value={""}>Custom</option>
-							<option value={50}>Average case</option>
-							<option value={99}>Worst case</option>
-						</select>
-						<div className="input-percentage">
-							<input id="esteemed-luck" type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} disabled={esteemedLuckDisabled} />
+					<div className="[grid-area:b]">
+						<label>
+							{config.pulls}
+							<input type="text" className="text-right mt-[4px]" value={yourPulls} placeholder="0" onChange={yourPullsHandle} />
+						</label>
+					</div>
+					<div className="[grid-area:c]">
+						<label>
+							{"Character Banner Pity"}
+							<input type="text" className="text-right mt-[4px]" value={characterPity} placeholder="0" onChange={characterPityHandle} />
+						</label>
+					</div>
+					<div className="[grid-area:d]">
+						<label>
+							{"Weapon Banner Pity"}
+							<input type="text" className="text-right mt-[4px]" value={weaponPity} placeholder="0" onChange={weaponPityHandle} />
+						</label>
+					</div>
+					<div className="[grid-area:e]">
+						<span className="cursor-default">{config.monthlyPass}</span>
+						<div className="monthly-pass-checkboxes mt-[4px] mb-[4px]">
+							<label className="form-checkbox">
+								<input type="checkbox" checked={monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, enabled: !prev.enabled}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass})}} />
+								Enabled
+							</label>
+							<label className="form-checkbox ml-[16px]">
+								<input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />
+								Always
+							</label>
+						</div>
+						<label>
+							End date
+							<div className="mt-[4px] flex items-center">
+								<input type="text" className="text-right w-full md:!w-auto" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} placeholder="MM/dd/yyyy" />
+								<span className="flex-none ml-[4px]">{monthlyPassResolver(monthlyPass.endDate, monthlyPass.always)}</span>
+							</div>
+						</label>
+					</div>
+					<div className="[grid-area:f]">
+						<label htmlFor="esteemed-luck">
+							{"5★ Esteemed Luck"}
+						</label>
+						<div className="esteemed-luck">
+							<select defaultValue={50} onChange={(event) => {esteemedLuckSelectHandle(event);}}>
+								<option value={""}>Custom</option>
+								<option value={50}>Average case</option>
+								<option value={99}>Worst case</option>
+							</select>
+							<div className="input-percentage">
+								<input id="esteemed-luck" type="text" className="text-right" value={esteemedLuck} placeholder="0-100" onChange={(event) => {inputChangeHandle(event, setEsteemedLuck)}} disabled={esteemedLuckDisabled} />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group">
-					<label htmlFor="refund">
-						{"Undying Starlight-- Refund"}
-					</label>
-					<div className="">
-						<select defaultValue={1} className="select" id="refund" onChange={(event) => {}}>
-							<option value={0}>None</option>
-							<option value={1}>Best case</option>
-							<option value={2}>Average case</option>
-							<option value={3}>Worst case</option>
-						</select>
+					<div className="[grid-area:g]">
+						<label htmlFor="refund">
+							{"Undying Starlight-- Refund"}
+						</label>
+						<div className="mt-[4px]">
+							<select defaultValue={1} className="select" id="refund" onChange={(event) => {}}>
+								<option value={0}>None</option>
+								<option value={1}>Best case</option>
+								<option value={2}>Average case</option>
+								<option value={3}>Worst case</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				{/* <div class="form-group">
@@ -327,13 +372,20 @@ function Planner(props: PlannerProps){
 						</div>
 					</label>
 				</div> */}
-				<div className="form-group">
-					<label>
+				{/* Debug
+				<div className="flex">
+					<span>Selected pullables:</span>
+					{selectedPullables.map((item) => {return <span>{item.name}</span>})}
+				</div> */}
+			</div>
+			<div className="table-customization bg-table-primary max-w-[500px] mx-auto mt-[16px] mb-[16px]">
+				<div>
+					<label className="mb-[4px]">
 						{"Planned characters/weapons"}
 					</label>
 					{pullsFromSelectedPullables.map((item, index) => {
 						let tableCurrency = item.data.reduce((sum, current) => {
-							return sum + calculateTotalCurrency(current);
+							return sum + calculateTotalCurrency(current, "Europe"); // Fix!
 						}, 0)
 						let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
 						let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
@@ -350,14 +402,9 @@ function Planner(props: PlannerProps){
 						);
 					})}
 				</div>
-				<div className="form-group">
+				<div className="mt-[16px]">
 					{predictPlayerOutcome(pullsFromSelectedPullables)}
 				</div>
-				{/* Debug
-				<div className="flex">
-					<span>Selected pullables:</span>
-					{selectedPullables.map((item) => {return <span>{item.name}</span>})}
-				</div> */}
 			</div>
 			<PlannerTable
 				json={jsons[props.game]}

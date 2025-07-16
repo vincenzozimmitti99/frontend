@@ -104,6 +104,13 @@
 			"value": 1600,
 			"start": "2025-07-02",
 			"end": "2025-08-12"
+		},
+		{
+			"name": "Legend of the Galactic Baseballer: Demon King",
+			"recurrence": 1,
+			"value": 1420,
+			"start": "2025-05-21",
+			"end": "2025-06-30"
 		}
 	],
 	"pullables":

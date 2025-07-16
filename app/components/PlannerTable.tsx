@@ -635,7 +635,7 @@ function PlannerTable(props: PlannerTableProps){
 			<tbody>
 				{
 					combinedData.map((item, index) => {
-						let currencyCount = calculateTotalCurrency(item);
+						let currencyCount = calculateTotalCurrency(item, server);
 						// console.log(item.start, item.end);
 						const dateStart = new Date("calculationStart" in item?item.calculationStart:item.start);
 						// console.log(item.name, dateStart);
@@ -646,7 +646,7 @@ function PlannerTable(props: PlannerTableProps){
 						const mainRow = (
 							<tr key={`main-${index}`}>
 								<td title={`${dateStart.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} - ${dateEnd?.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} ${dateEnd?"(Duration: " + msToTime(+dateEnd-+dateStart) + ")":""}`}>
-									<div className="flex justify-around">
+									<div className="date-cell">
 										{dateEnd?
 										<><span>{dateFormatter(dateStart)}</span> - <span>{dateFormatter(dateEnd)}</span></>
 										: dateFormatter(dateStart)}

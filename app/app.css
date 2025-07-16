@@ -117,30 +117,36 @@ tr, .table-customization{
 }
 
 .table-customization{
-	margin-top: 32px;
-	margin-bottom: 16px;
 	border-radius: 8px;
-    padding: 16px 24px;
+    padding: 24px;
 	background-color: var(--color-table-primary);
 }
 
+.date-text{
+	width: 100%;
+}
+
+.date-cell{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .form-group{
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 }
 
 div.table-customization > div.form-group:last-child{
-	margin-bottom: 0px;
+	/* margin-bottom: 0px; */
 }
 
 .form-group > label{
 	display: block;
 }
 
-.form-group > label > input[type=text],
-.input-percentage > input[type=text]{
+input[type=text]{
 	display: block;
 	padding: 8px;
-	margin-top: 4px;
     width: 100%;
 	border: 1px solid #696969;
 	border-radius: 4px;
@@ -149,6 +155,7 @@ div.table-customization > div.form-group:last-child{
 .input-percentage{
 	display: flex;
     align-items: center;
+	flex: 1;
 }
 
 .input-percentage::after{
@@ -165,14 +172,15 @@ div.table-customization > div.form-group:last-child{
     margin-top: 4px;
 }
 
-.select, .esteemed-luck > select{
+select{
 	margin-right: 4px;
 	border: 1px solid #696969;
 	border-radius: 4px;
 	padding: 8px;
+	height: 39px;
 }
 
-.select > option, .esteemed-luck > select > option{
+select > option{
 	background-color: var(--color-table-primary);
 }
 
@@ -189,10 +197,6 @@ div.table-customization > div.form-group:last-child{
 	display: flex;
 }
 
-.monthly-pass-checkboxes > label{
-	flex: 1;
-}
-
 .item-tag{
 	border-radius: 12px;
     padding: 2px 8px;
@@ -206,9 +210,41 @@ div.table-customization > div.form-group:last-child{
 	align-items: flex-start;
 }
 
+.customization-desktop-layout{
+	grid-template-areas:
+		"a"
+		"b"
+		"c"
+		"d"
+		"e"
+		"f"
+		"g";
+}
+
 @media only screen and (min-width: 650px){
 	.description{
 		align-items: center;
 		flex-direction: row;
+	}
+}
+
+@media (min-width: 768px){
+	.customization-desktop-layout{
+		grid-template-areas:
+			"a c"
+			"b d"
+			"f g"
+			"e e";
+	}
+
+	.date-text{
+		width: auto;
+	}
+}
+
+@media (min-width: 390px){
+	.date-cell{
+		flex-direction: row;
+		justify-content: space-around;
 	}
 }
