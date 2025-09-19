@@ -260,6 +260,20 @@
 			"start": "2025-06-18",
 			"end": "2025-07-08",
 			"version": "5.7.1"
+		},
+		{
+			"name": "Raiden",
+			"type": "character",
+			"start": "2025-07-08",
+			"end": "2025-07-29",
+			"version": "5.7.2"
+		},
+		{
+			"name": "Raiden Signature",
+			"type": "weapon",
+			"start": "2025-07-08",
+			"end": "2025-07-29",
+			"version": "5.7.2"
 		}
 	]
 }

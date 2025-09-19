@@ -219,6 +219,8 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 }
 
 const groupByEndDate = (pullables: ExtendedPullable[]) => {
+	if(!pullables || (pullables && !pullables.length)) return [];
+	
 	interface PullableGroup {
 		selectedPullables: ExtendedPullable[];
 		startDate: Date;
@@ -308,6 +310,8 @@ function PlannerTable(props: PlannerTableProps){
 	}, [props.json.pullables, props.esteemedLuck, savedItems]);
 
 	const endgameIncome: ExtendedIncome[] = useMemo(() => {
+		if(!pullables || !pullables.length) return [];
+
 		let endgameIncome = [];
 		let firstStartDate = new Date([...pullables].sort((a, b) => +a.start - +b.start)[0].start); // Finds real first start date in pullables array
 		let lastEndDate = new Date([...pullables].sort((a, b) => +b.end - +a.end)[0].end); // Finds real last end date in pullables array
@@ -369,6 +373,8 @@ function PlannerTable(props: PlannerTableProps){
 
 	const regularIncome: ExtendedRegularIncome[] = useMemo(
 		() =>{
+			if(!pullables || !pullables.length) return [];
+			
 			let regularIncome = [];
 			const pullablesByEndDate = groupByEndDate(pullables);
 			let firstStartDate = new Date([...pullables].sort((a, b) => +a.start - +b.start)[0].start); // Finds real first start date in pullables array

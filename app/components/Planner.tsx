@@ -19,6 +19,7 @@ export interface Config{
 	rankCharacter: string;
 	rankWeapon: string;
 	monthlyPass: string;
+	defaultRefundState: string;
 }
 
 const server = "Europe" as Server;
@@ -34,7 +35,8 @@ const loadConfig = (id: string) => {
 				pulls: "",
 				rankCharacter: "",
 				rankWeapon: "",
-				monthlyPass: ""
+				monthlyPass: "",
+				defaultRefundState: "0"
 			};
 			break;
 		case "genshin":
@@ -44,7 +46,8 @@ const loadConfig = (id: string) => {
 				pulls: "Intertwined Fates",
 				rankCharacter: "Constellation",
 				rankWeapon: "Rank",
-				monthlyPass: "Express Supply Pass"
+				monthlyPass: "Express Supply Pass",
+				defaultRefundState: "3"
 			};
 			break;
 		case "hsr":
@@ -54,7 +57,8 @@ const loadConfig = (id: string) => {
 				pulls: "Star Rail Special Passes",
 				rankCharacter: "Eidolon",
 				rankWeapon: "Superimpose",
-				monthlyPass: "Express Supply Pass"
+				monthlyPass: "Express Supply Pass",
+				defaultRefundState: "1"
 			};
 			break;
 		case "zzz":
@@ -64,7 +68,8 @@ const loadConfig = (id: string) => {
 				pulls: "Encrypted Master Tapes",
 				rankCharacter: "Mindscape Cinema",
 				rankWeapon: "Overclock?", // Fix this later
-				monthlyPass: "Express Supply Pass"
+				monthlyPass: "Express Supply Pass",
+				defaultRefundState: "1"
 			};
 			break;
 		case "wuwa":
@@ -74,7 +79,8 @@ const loadConfig = (id: string) => {
 				pulls: "Radiant Tides",
 				rankCharacter: "",
 				rankWeapon: "",
-				monthlyPass: "Express Supply Pass"
+				monthlyPass: "Express Supply Pass",
+				defaultRefundState: "0"
 			};
 			break;
 		default:
@@ -84,7 +90,8 @@ const loadConfig = (id: string) => {
 				pulls: "pulls",
 				rankCharacter: "Character Rank",
 				rankWeapon: "Weapon Rank",
-				monthlyPass: "Monthly Pass"
+				monthlyPass: "Monthly Pass",
+				defaultRefundState: "0"
 			};
 			break;
 	};
@@ -102,6 +109,7 @@ function Planner(props: PlannerProps){
 	// const [pullsFromTable, setPullsFromTable] = useState(0);
 	const [esteemedLuckDisabled, setEsteemedLuckDisabled] = useState(true);
 	const [esteemedLuck, setEsteemedLuck] = useState("50");
+	const [refund, setRefund] = useState(config.defaultRefundState);
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
 
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
@@ -130,6 +138,13 @@ function Planner(props: PlannerProps){
 			setEsteemedLuckDisabled(true);
 		} else {
 			setEsteemedLuckDisabled(false);
+		}
+	}
+
+	const refundSelectHandle = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = event.target.value;
+		if(value){
+			setRefund(value);
 		}
 	}
 
@@ -214,16 +229,42 @@ function Planner(props: PlannerProps){
 		}
 
 		let tableCurrencies = pullableGroupsCopy.map(pullableGroup => pullableGroup.data.reduce((sum, current) => {
-			return sum + calculateTotalCurrency(current, "Europe"); // Fix!
+			return sum + calculateTotalCurrency(current, server);
 		}, 0));
+		let excludedPullablesCurrency = pullableGroupsCopy.map(pullableGroup => pullableGroup.data.reduce((sum, current) => {
+			if(!isExtendedPullable(current))
+				return sum + calculateTotalCurrency(current, server); // Fix!
+			else
+				return sum;
+		}, 0));
+		// console.log(excludedPullablesCurrency);
 		const tablePullsCurrencies = tableCurrencies.map((tableCurrency, index) => {
 			let pullables = pullableGroupsCopy[index].pullables;
 			let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
 			let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
+			let refunds = pullRefunds(props.game, Math.floor(excludedPullablesCurrency[index]/160)+ + +yourPulls + Math.floor(+yourCurrency/160));
+				switch(refund){
+					case "1":
+						tempPulls += refunds.best;
+						tempCurrency += refunds.best*160;
+						break;
+					case "2":
+						tempPulls += refunds.average;
+						tempCurrency += refunds.average*160;
+						break;
+					case "3":
+						tempPulls += refunds.worst;
+						tempCurrency += refunds.worst*160;
+						break;
+					case "0":
+					default:
+						break;
+				}
+
 			let { pulls, currency } = addPity(tempPulls, tempCurrency, index, pullableGroupsCopy);
 			return { pullables, pulls, currency };
 		});
-		let last = tablePullsCurrencies[tablePullsCurrencies.length-1];
+		// let last = tablePullsCurrencies[tablePullsCurrencies.length-1];
 		const positives = tablePullsCurrencies.filter((item) => {return item.currency>=0;});
 		const atLeastAPositive = positives.length?true:false;
 		const allPositives = positives.length===tablePullsCurrencies.length;
@@ -255,6 +296,19 @@ function Planner(props: PlannerProps){
 			return "(expired)";
 		}
 	};
+
+	const pullRefunds = (game: Games, pulls: number) => {
+		let refunds = {best: 0, average: 0, worst: 0}
+		switch(game){
+			case "hsr":
+			default:
+				refunds.best = Math.floor(0.10377586206896552*pulls);
+				refunds.average = Math.floor(0.07788793103448277*pulls);
+				refunds.worst = Math.floor(0.052*pulls);
+		}
+
+		return refunds;
+	}
 
 	useEffect(() => {
 		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
@@ -339,10 +393,10 @@ function Planner(props: PlannerProps){
 					</div>
 					<div className="[grid-area:g]">
 						<label htmlFor="refund">
-							{"Undying Starlight-- Refund"}
+							{"Undying Starlight Refund"}
 						</label>
 						<div className="mt-[4px]">
-							<select defaultValue={1} className="select" id="refund" onChange={(event) => {}}>
+							<select defaultValue={config.defaultRefundState} className="select" id="refund" onChange={(event) => {refundSelectHandle(event)}}>
 								<option value={0}>None</option>
 								<option value={1}>Best case</option>
 								<option value={2}>Average case</option>
@@ -385,10 +439,37 @@ function Planner(props: PlannerProps){
 					</label>
 					{pullsFromSelectedPullables.map((item, index) => {
 						let tableCurrency = item.data.reduce((sum, current) => {
-							return sum + calculateTotalCurrency(current, "Europe"); // Fix!
-						}, 0)
+							return sum + calculateTotalCurrency(current, server); // Fix!
+						}, 0);
+						let excludedPullablesCurrency = item.data.reduce((sum, current) => {
+							if(!isExtendedPullable(current))
+								return sum + calculateTotalCurrency(current, server); // Fix!
+							else
+								return sum;
+						}, 0);
 						let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
 						let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
+						let refunds = pullRefunds(props.game, Math.floor(excludedPullablesCurrency/160) + +yourPulls + Math.floor(+yourCurrency/160));
+						switch(refund){
+							case "1":
+								tempPulls += refunds.best;
+								tempCurrency += refunds.best*160;
+								break;
+							case "2":
+								tempPulls += refunds.average;
+								tempCurrency += refunds.average*160;
+								break;
+							case "3":
+								tempPulls += refunds.worst;
+								tempCurrency += refunds.worst*160;
+								break;
+							case "0":
+							default:
+								break;
+						}
+						// console.log(tempPulls);
+						// console.log(refunds);
+						
 						let { pulls, currency } = addPity(tempPulls, tempCurrency, index, pullsFromSelectedPullables);
 						return(
 							<div>
