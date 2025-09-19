@@ -111,6 +111,27 @@
 			"value": 1420,
 			"start": "2025-05-21",
 			"end": "2025-06-30"
+		},
+		{
+			"name": "Nice Weather for Dromases",
+			"recurrence": 1,
+			"value": 1150,
+			"start": "2025-09-24",
+			"end": "2025-11-03"
+		},
+		{
+			"name": "The Chrysos Maze Grand Restaurant",
+			"recurrence": 1,
+			"value": 1550,
+			"start": "2025-08-13",
+			"end": "2025-09-22"
+		},
+		{
+			"name": "Colorful Mayhem",
+			"recurrence": 1,
+			"value": 500,
+			"start": "2025-09-30",
+			"end": "2025-11-03"
 		}
 	],
 	"pullables":
@@ -366,6 +387,76 @@
 			"start": "2025-09-03",
 			"end": "2025-09-23",
 			"version": "3.5.2"
+		},
+		{
+			"name": "Evernight",
+			"type": "character",
+			"start": "2025-09-24",
+			"end": "2025-10-15",
+			"version": "3.6.1"
+		},
+		{
+			"name": "To Evernight's Stars",
+			"type": "weapon",
+			"start": "2025-09-24",
+			"end": "2025-10-15",
+			"version": "3.6.1"
+		},
+		{
+			"name": "The Herta",
+			"type": "character",
+			"start": "2025-09-24",
+			"end": "2025-10-15",
+			"version": "3.6.1"
+		},
+		{
+			"name": "Into the Unreachable Veil",
+			"type": "weapon",
+			"start": "2025-09-24",
+			"end": "2025-10-15",
+			"version": "3.6.1"
+		},
+		{
+			"name": "Permansor Terrae",
+			"type": "character",
+			"start": "2025-10-15",
+			"end": "2025-11-04",
+			"version": "3.6.2"
+		},
+		{
+			"name": "Though Worlds Apart",
+			"type": "weapon",
+			"start": "2025-10-15",
+			"end": "2025-11-04",
+			"version": "3.6.2"
+		},
+		{
+			"name": "Anaxa",
+			"type": "character",
+			"start": "2025-10-15",
+			"end": "2025-11-04",
+			"version": "3.6.2"
+		},
+		{
+			"name": "Life Should Be Cast to Flames",
+			"type": "weapon",
+			"start": "2025-10-15",
+			"end": "2025-11-04",
+			"version": "3.6.2"
+		},
+		{
+			"name": "Cyrene",
+			"type": "character",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"name": "Cyrene LC",
+			"type": "weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
 		}
 	]
 }
