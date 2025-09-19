@@ -29,6 +29,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 		<head>
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<title>Pull Planner</title>
+			<meta name="description" content="Site to help plan your next characters to pull!" />
+			<meta property="og:title" content="Pull Planner" />
+			<meta property="og:description" content="Site to help plan your next characters to pull!" />
 			<Meta />
 			<Links />
 		</head>
