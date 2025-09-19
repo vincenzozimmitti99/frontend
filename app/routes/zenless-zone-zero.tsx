@@ -2,6 +2,8 @@ export function meta({}) {
 	return [
 		{ title: "Pull Planner - Zenless Zone Zero" },
 		{ name: "description", content: "Site to help plan your next characters to pull!" },
+		{ property: "og:title", content: `Pull Planner - Zenless Zone Zero` },
+		{ property: "og:description", content: "Site to help plan your next characters to pull!" }
 	];
 }
 
