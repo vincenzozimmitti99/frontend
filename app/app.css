@@ -227,6 +227,12 @@ select > option{
 		"g";
 }
 
+.tooltip-customization{
+	background-color: var(--color-table-primary);
+	border: 1px solid #696969;
+	border-radius: 8px;
+}
+
 @media only screen and (min-width: 650px){
 	.description{
 		align-items: center;

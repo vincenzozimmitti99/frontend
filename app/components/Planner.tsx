@@ -4,6 +4,7 @@ import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, 
 import { useEffect, useRef, useState } from "react";
 import PlannerTable from "./PlannerTable";
 import { calculateTotalCurrency, getServerResetTime, getStatisticalPullableValue } from "~/utils/common";
+import InfoTooltip from "./InfoTooltip";
 
 type PlannerProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData
@@ -403,8 +404,9 @@ function Planner(props: PlannerProps){
 						</label>
 					</div>
 					<div className="[grid-area:f]">
-						<label htmlFor="esteemed-luck">
+						<label htmlFor="esteemed-luck" className="flex items-center">
 							{"5★ Esteemed Luck"}
+							<InfoTooltip text={`5★ Esteemed Luck comes from data of millions of simulated users pulling with the game's declared gacha rates. It defines how many pulls are needed for a character/weapon, also taking into account ${config.rankCharacter}/${config.rankWeapon}.`}></InfoTooltip>
 						</label>
 						<div className="esteemed-luck">
 							<select defaultValue={50} onChange={(event) => {esteemedLuckSelectHandle(event);}}>
@@ -418,8 +420,9 @@ function Planner(props: PlannerProps){
 						</div>
 					</div>
 					<div className="[grid-area:g]">
-						<label htmlFor="refund">
+						<label htmlFor="refund" className="flex items-center">
 							{"Undying Starlight Refund"}
+							<InfoTooltip text="Each game has a refund system, and their currencies can be converted back to pulls. If unsure you should leave it as default or disable it."></InfoTooltip>
 						</label>
 						<div className="mt-[4px]">
 							<select defaultValue={config.defaultRefundState} className="select" id="refund" onChange={(event) => {refundSelectHandle(event)}}>
@@ -471,8 +474,9 @@ function Planner(props: PlannerProps){
 					</div>
 				</div>
 				<div>
-					<label className="mb-[4px] font-bold">
+					<label className="mb-[4px] font-bold flex items-center">
 						{"Planned characters/weapons"}
+						<InfoTooltip text={`The numbers after the characters/weapons are the amount of ${config.pulls} (${config.currency}) you will have after pulling for them, taking into account the whole table. The colored text is a prediction based on the Worst case 5★ Esteemed Luck.`}></InfoTooltip>
 					</label>
 					{pullsFromSelectedPullables.map((item, index) => {
 						let tableCurrency = item.data.reduce((sum, current) => {
