@@ -1,6 +1,20 @@
 // import genshinLuck from "../assets/json/genshin-luck.json";
-import { isRegularIncome, type ExtendedIncome, type ExtendedPullable, type ExtendedRegularIncome, type OtherIncome, type Server } from "~/types/PlannerData";
+import { isRegularIncome, type ExtendedIncome, type ExtendedPullable, type ExtendedRegularIncome, type OtherIncome, type PlannerData, type PullablesJSON, type Server } from "~/types/PlannerData";
 import hsrLuck from "../assets/json/hsr-luck.json";
+
+export const parsePullables = (json: Omit<PlannerData, "pullables"> & { pullables: { id: string, start: string, end: string, version: string }[] }, pullablesJson: PullablesJSON) => {
+	return { ...json, "pullables": json.pullables.map((p1) => {
+		let p2 = pullablesJson.characters.find((c) => c.id === p1.id);
+		if(p2)
+			return { ...p1, "name": p2.name, type: "character" };
+		else
+			p2 = pullablesJson.weapons.find((w) => w.id === p1.id);
+			if(p2)
+				return { ...p1, "name": p2.name, type: "weapon"};
+			else
+				return null
+	}).filter((item) => !!item)}
+}
 
 export const getIndexFromPercentage = (percentage: number, cumulativeArray: number[]) => {
 	percentage = Math.max(0, Math.min(100, percentage)) / 100;

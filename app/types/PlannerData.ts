@@ -1,3 +1,13 @@
+export interface PullablesJSON {
+    characters: BaseJSONPullable[];
+    weapons:    BaseJSONPullable[];
+}
+
+export interface BaseJSONPullable {
+    id:   string;
+    name: string;
+}
+
 export interface Income {
 	name: string;
 	recurrence: number;
@@ -27,6 +37,7 @@ export interface EndgameIncomeVariantHSR extends Income {
 export type EndgameIncome = EndgameIncomeVariantGenshin | EndgameIncomeVariantHSR
 
 export type Pullable = {
+	id: string;
 	name: string;
 	type: string;
 	start: string;

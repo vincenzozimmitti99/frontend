@@ -46,6 +46,7 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
 	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
+	combinedData: [(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[], React.Dispatch<React.SetStateAction<(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[]>>];
 	// pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
 	pullsFromSelectedPullablesState: [SelectedPullablesGroup[], React.Dispatch<React.SetStateAction<SelectedPullablesGroup[]>>];
 	selectedPullablesState: [ExtendedPullable[], React.Dispatch<React.SetStateAction<ExtendedPullable[]>>];
@@ -374,7 +375,7 @@ function PlannerTable(props: PlannerTableProps){
 	const regularIncome: ExtendedRegularIncome[] = useMemo(
 		() =>{
 			if(!pullables || !pullables.length) return [];
-			
+
 			let regularIncome = [];
 			const pullablesByEndDate = groupByEndDate(pullables);
 			let firstStartDate = new Date([...pullables].sort((a, b) => +a.start - +b.start)[0].start); // Finds real first start date in pullables array
@@ -484,9 +485,12 @@ function PlannerTable(props: PlannerTableProps){
 	// OK OK here is the best idea: group everything by PATCH VERSION and each group is ordered like this:
 	// 3.2(regularIncome > endgameIncome (if startDate is between group startDate and endDate) > otherIncome > pullables), ...3.3()
 	const combinedData = useMemo(
-		() => sortByDate([...regularIncome, ...endgameIncome, ...otherIncome, ...pullables].filter((item) => !!item)),
+		() => {
+			const combinedData = sortByDate([...regularIncome, ...endgameIncome, ...otherIncome, ...pullables].filter((item) => !!item));
+			props.combinedData[1](combinedData);
+			return combinedData;
 			// sortByVersion(regularIncome, endgameIncome, otherIncome, pullables).filter((item) => !!item),
-		[regularIncome, endgameIncome, otherIncome, pullables]
+		}, [regularIncome, endgameIncome, otherIncome, pullables]
 	);
 
 	const groupByDatesSelectedPullables = useMemo(() => {

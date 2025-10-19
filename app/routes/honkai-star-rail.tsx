@@ -1,4 +1,9 @@
+import json from "../assets/json/hsr.json";
+import pullablesJson from "../assets/json/hsr-pullables.json";
+
 import Planner from "~/components/Planner";
+import type { Route } from "./+types/honkai-star-rail";
+import { parsePullables } from "~/utils/common";
 
 export function meta({}) {
 	return [
@@ -9,11 +14,15 @@ export function meta({}) {
 	];
 }
 
-type Props = {}
+export async function clientLoader({}: Route.ClientLoaderArgs) {
+	return parsePullables(json, pullablesJson);
+}
 
-function HonkaiStarRail({}: Props) {
+function HonkaiStarRail({ loaderData }: Route.ComponentProps) {
+	const json = loaderData;
+
 	return (
-		<Planner game="hsr" />
+		<Planner json={json} />
 	)
 }
 

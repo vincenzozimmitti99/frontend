@@ -137,323 +137,289 @@
 	"pullables":
 	[
 		{
-			"name": "Castorice",
-			"type": "character",
+			"id": "castorice",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Castorice LC",
-			"type": "weapon",
+			"id": "castorice_weapon",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Fugue",
-			"type": "character",
+			"id": "fugue",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Fugue LC",
-			"type": "weapon",
+			"id": "fugue_weapon",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Acheron",
-			"type": "character",
+			"id": "acheron",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Acheron LC",
-			"type": "weapon",
+			"id": "acheron_weapon",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Jiaoqiu",
-			"type": "character",
+			"id": "jiaoqiu",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Jiaoqiu LC",
-			"type": "weapon",
+			"id": "jiaoqiu_weapon",
 			"start": "2025-04-09",
 			"end": "2025-04-30",
 			"version": "3.2.1"
 		},
 		{
-			"name": "Anaxa",
-			"type": "character",
+			"id": "anaxa",
 			"start": "2025-04-30",
 			"end": "2025-05-20",
 			"version": "3.2.2"
 		},
 		{
-			"name": "Life Should Be Cast to Flames",
-			"type": "weapon",
+			"id": "anaxa_weapon",
 			"start": "2025-04-30",
 			"end": "2025-05-20",
 			"version": "3.2.2"
 		},
 		{
-			"name": "Dr. Ratio",
-			"type": "character",
+			"id": "drratio",
 			"start": "2025-04-30",
 			"end": "2025-05-20",
 			"version": "3.2.2"
 		},
 		{
-			"name": "Baptism of Pure Thought",
-			"type": "weapon",
+			"id": "drratio_weapon",
 			"start": "2025-04-30",
 			"end": "2025-05-20",
 			"version": "3.2.2"
 		},
 		{
-			"name": "Hyacine",
-			"type": "character",
+			"id": "hyacine",
 			"start": "2025-05-21",
 			"end": "2025-06-11",
 			"version": "3.3.1"
 		},
 		{
-			"name": "Long May Rainbows Adorn the Sky",
-			"type": "weapon",
+			"id": "hyacine_weapon",
 			"start": "2025-05-21",
 			"end": "2025-06-11",
 			"version": "3.3.1"
 		},
 		{
-			"name": "The Herta",
-			"type": "character",
+			"id": "theherta",
 			"start": "2025-05-21",
 			"end": "2025-06-11",
 			"version": "3.3.1"
 		},
 		{
-			"name": "Into the Unreachable Veil",
-			"type": "weapon",
+			"id": "theherta_weapon",
 			"start": "2025-05-21",
 			"end": "2025-06-11",
 			"version": "3.3.1"
 		},
 		{
-			"name": "Cipher",
-			"type": "character",
+			"id": "cipher",
 			"start": "2025-06-11",
 			"end": "2025-07-01",
 			"version": "3.3.2"
 		},
 		{
-			"name": "Lies Dance on the Breeze",
-			"type": "weapon",
+			"id": "cipher_weapon",
 			"start": "2025-06-11",
 			"end": "2025-07-01",
 			"version": "3.3.2"
 		},
 		{
-			"name": "Aglaea",
-			"type": "character",
+			"id": "aglaea",
 			"start": "2025-06-11",
 			"end": "2025-07-01",
 			"version": "3.3.2"
 		},
 		{
-			"name": "Time Woven Into Gold",
-			"type": "weapon",
+			"id": "aglaea_weapon",
 			"start": "2025-06-11",
 			"end": "2025-07-01",
 			"version": "3.3.2"
 		},
 		{
-			"name": "Phainon",
-			"type": "character",
+			"id": "phainon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Thus Burns the Dawn",
-			"type": "weapon",
+			"id": "phainon_weapon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Tribbie",
-			"type": "character",
+			"id": "tribbie",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "If Time Were a Flower",
-			"type": "weapon",
+			"id": "tribbie_weapon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Sunday",
-			"type": "character",
+			"id": "sunday",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "A Grounded Ascent",
-			"type": "weapon",
+			"id": "sunday_weapon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Sparkle",
-			"type": "character",
+			"id": "sparkle",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Earthly Escapade",
-			"type": "weapon",
+			"id": "sparkle_weapon",
 			"start": "2025-07-02",
 			"end": "2025-07-23",
 			"version": "3.4.1"
 		},
 		{
-			"name": "Firefly",
-			"type": "character",
+			"id": "firefly",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "Whereabouts Should Dreams Rest",
-			"type": "weapon",
+			"id": "firefly_weapon",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "Jingliu",
-			"type": "character",
+			"id": "jingliu",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "I Shall Be My Own Sword",
-			"type": "weapon",
+			"id": "jingliu_weapon",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "Blade",
-			"type": "character",
+			"id": "blade",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "The Unreachable Side",
-			"type": "weapon",
+			"id": "blade_weapon",
 			"start": "2025-07-23",
 			"end": "2025-08-12",
 			"version": "3.4.2"
 		},
 		{
-			"name": "Hysilens",
-			"type": "character",
+			"id": "hysilens",
 			"start": "2025-08-13",
 			"end": "2025-09-03",
 			"version": "3.5.1"
 		},
 		{
-			"name": "Cerydra",
-			"type": "character",
+			"id": "hysilens_weapon",
+			"start": "2025-08-13",
+			"end": "2025-09-03",
+			"version": "3.5.1"
+		},
+		{
+			"id": "cerydra",
 			"start": "2025-09-03",
 			"end": "2025-09-23",
 			"version": "3.5.2"
 		},
 		{
-			"name": "Evernight",
-			"type": "character",
+			"id": "cerydra_weapon",
+			"start": "2025-09-03",
+			"end": "2025-09-23",
+			"version": "3.5.2"
+		},
+		{
+			"id": "evernight",
 			"start": "2025-09-24",
 			"end": "2025-10-15",
 			"version": "3.6.1"
 		},
 		{
-			"name": "To Evernight's Stars",
-			"type": "weapon",
+			"id": "evernight_weapon",
 			"start": "2025-09-24",
 			"end": "2025-10-15",
 			"version": "3.6.1"
 		},
 		{
-			"name": "The Herta",
-			"type": "character",
+			"id": "theherta",
 			"start": "2025-09-24",
 			"end": "2025-10-15",
 			"version": "3.6.1"
 		},
 		{
-			"name": "Into the Unreachable Veil",
-			"type": "weapon",
+			"id": "theherta_weapon",
 			"start": "2025-09-24",
 			"end": "2025-10-15",
 			"version": "3.6.1"
 		},
 		{
-			"name": "Permansor Terrae",
-			"type": "character",
+			"id": "permansorterrae",
 			"start": "2025-10-15",
 			"end": "2025-11-04",
 			"version": "3.6.2"
 		},
 		{
-			"name": "Though Worlds Apart",
-			"type": "weapon",
+			"id": "permansorterrae_weapon",
 			"start": "2025-10-15",
 			"end": "2025-11-04",
 			"version": "3.6.2"
 		},
 		{
-			"name": "Anaxa",
-			"type": "character",
+			"id": "anaxa",
 			"start": "2025-10-15",
 			"end": "2025-11-04",
 			"version": "3.6.2"
 		},
 		{
-			"name": "Life Should Be Cast to Flames",
-			"type": "weapon",
+			"id": "anaxa_weapon",
 			"start": "2025-10-15",
 			"end": "2025-11-04",
 			"version": "3.6.2"
 		},
 		{
-			"name": "Cyrene",
-			"type": "character",
+			"id": "cyrene",
 			"start": "2025-11-05",
 			"end": "2025-11-26",
 			"version": "3.7.1"
 		},
 		{
-			"name": "Cyrene LC",
-			"type": "weapon",
+			"id": "cyrene_weapon",
 			"start": "2025-11-05",
 			"end": "2025-11-26",
 			"version": "3.7.1"

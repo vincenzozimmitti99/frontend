@@ -1,0 +1,190 @@
+{
+	"characters": [
+		{
+			"id": "theherta",
+			"name": "The Herta"
+		},
+		{
+			"id": "castorice",
+			"name": "Castorice"
+		},
+		{
+			"id": "fugue",
+			"name": "Fugue"
+		},
+		{
+			"id": "acheron",
+			"name": "Acheron"
+		},
+		{
+			"id": "jiaoqiu",
+			"name": "Jiaoqiu"
+		},
+		{
+			"id": "anaxa",
+			"name": "Anaxa"
+		},
+		{
+			"id": "drratio",
+			"name": "Dr. Ratio"
+		},
+		{
+			"id": "hyacine",
+			"name": "Hyacine"
+		},
+		{
+			"id": "cipher",
+			"name": "Cipher"
+		},
+		{
+			"id": "aglaea",
+			"name": "Aglaea"
+		},
+		{
+			"id": "phainon",
+			"name": "Phainon"
+		},
+		{
+			"id": "tribbie",
+			"name": "Tribbie"
+		},
+		{
+			"id": "sunday",
+			"name": "Sunday"
+		},
+		{
+			"id": "sparkle",
+			"name": "Sparkle"
+		},
+		{
+			"id": "firefly",
+			"name": "Firefly"
+		},
+		{
+			"id": "jingliu",
+			"name": "Jingliu"
+		},
+		{
+			"id": "blade",
+			"name": "Blade"
+		},
+		{
+			"id": "hysilens",
+			"name": "Hysilens"
+		},
+		{
+			"id": "cerydra",
+			"name": "Cerydra"
+		},
+		{
+			"id": "evernight",
+			"name": "Evernight"
+		},
+		{
+			"id": "permansorterrae",
+			"name": "Permansor Terrae"
+		},
+		{
+			"id": "cyrene",
+			"name": "Cyrene"
+		},
+		{
+			"id": "constance",
+			"name": "Constance"
+		}
+	],
+	"weapons": [
+		{
+			"id": "theherta_weapon",
+			"name": "Into the Unreachable Veil"
+		},
+		{
+			"id": "castorice_weapon",
+			"name": "Make Farewells More Beautiful"
+		},
+		{
+			"id": "fugue_weapon",
+			"name": "Long Road Leads Home"
+		},
+		{
+			"id": "acheron_weapon",
+			"name": "Along the Passing Shore"
+		},
+		{
+			"id": "jiaoqiu_weapon",
+			"name": "Those Many Springs"
+		},
+		{
+			"id": "anaxa_weapon",
+			"name": "Life Should Be Cast to Flames"
+		},
+		{
+			"id": "drratio_weapon",
+			"name": "Baptism of Pure Thought"
+		},
+		{
+			"id": "hyacine_weapon",
+			"name": "Long May Rainbows Adorn the Sky"
+		},
+		{
+			"id": "cipher_weapon",
+			"name": "Lies Dance on the Breeze"
+		},
+		{
+			"id": "aglaea_weapon",
+			"name": "Time Woven into Gold"
+		},
+		{
+			"id": "phainon_weapon",
+			"name": "Thus Burns the Dawn"
+		},
+		{
+			"id": "tribbie_weapon",
+			"name": "If Time Were a Flower"
+		},
+		{
+			"id": "sunday_weapon",
+			"name": "A Grounded Ascent"
+		},
+		{
+			"id": "sparkle_weapon",
+			"name": "Earthly Escapade"
+		},
+		{
+			"id": "firefly_weapon",
+			"name": "Whereabouts Should Dreams Rest"
+		},
+		{
+			"id": "jingliu_weapon",
+			"name": "Flame of Blood, Blaze My Path"
+		},
+		{
+			"id": "blade_weapon",
+			"name": "The Unreachable Side"
+		},
+		{
+			"id": "hysilens_weapon",
+			"name": "Why Does the Ocean Sing"
+		},
+		{
+			"id": "cerydra_weapon",
+			"name": "Epoch Etched in Golden Blood"
+		},
+		{
+			"id": "evernight_weapon",
+			"name": "To Evernight's Stars"
+		},
+		{
+			"id": "permansorterrae_weapon",
+			"name": "Though Worlds Apart"
+		},
+		{
+			"id": "cyrene_weapon",
+			"name": "Cyrene LC"
+		},
+		{
+			"id": "constance_weapon",
+			"name": "Constance LC"
+		}
+	]
+}

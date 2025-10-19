@@ -150,6 +150,11 @@ input[type=text]{
     width: 100%;
 	border: 1px solid #696969;
 	border-radius: 4px;
+	background-color: var(--color-primary);
+}
+
+input[type=text]:disabled{
+	background-color: unset;
 }
 
 .input-percentage{
@@ -173,6 +178,7 @@ input[type=text]{
 }
 
 select{
+	background-color: var(--color-primary);
 	margin-right: 4px;
 	border: 1px solid #696969;
 	border-radius: 4px;
@@ -181,7 +187,7 @@ select{
 }
 
 select > option{
-	background-color: var(--color-table-primary);
+	background-color: var(--color-primary);
 }
 
 .form-checkbox{

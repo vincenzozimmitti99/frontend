@@ -1,4 +1,9 @@
+import json from "../assets/json/genshin.json";
+import pullablesJson from "../assets/json/genshin-pullables.json";
+
 import Planner from "~/components/Planner";
+import type { Route } from "./+types/genshin-impact";
+import { parsePullables } from "~/utils/common";
 
 export function meta({}) {
 	return [
@@ -9,11 +14,15 @@ export function meta({}) {
 	];
 }
 
-type Props = {}
+export async function clientLoader({}: Route.ClientLoaderArgs) {
+	return parsePullables(json, pullablesJson);
+}
 
-function GenshinImpact({}: Props) {
+function GenshinImpact({ loaderData }: Route.ComponentProps) {
+	const json = loaderData;
+
 	return (
-		<Planner game="genshin" />
+		<Planner json={json} />
 	)
 }
 

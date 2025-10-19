@@ -1,15 +1,12 @@
-import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable, type Server } from "~/types/PlannerData";
-import genshinJSON from "../assets/json/genshin.json";
-import hsrJSON from "../assets/json/hsr.json";
+// import html2canvas from "html2canvas";
+import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable, type Server, type ExtendedRegularIncome, type ExtendedIncome, type OtherIncome } from "~/types/PlannerData";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PlannerTable from "./PlannerTable";
 import { calculateTotalCurrency, getServerResetTime, getStatisticalPullableValue } from "~/utils/common";
 
-const jsons: Record<Games, PlannerData> = {"3rd": hsrJSON, "genshin": genshinJSON, "hsr": hsrJSON, "zzz": hsrJSON, "wuwa": hsrJSON}; // Change this later
-
 type PlannerProps = React.HTMLProps<HTMLDivElement> & {
-	game: keyof typeof jsons
+	json: PlannerData
 }
 
 export interface Config{
@@ -100,7 +97,7 @@ const loadConfig = (id: string) => {
 };
 
 function Planner(props: PlannerProps){
-	let config = loadConfig(props.game);
+	let config = loadConfig(props.json.id);
 
 	const [yourCurrency, setYourCurrency] = useState("0");
 	const [yourPulls, setYourPulls] = useState("0");
@@ -112,14 +109,16 @@ function Planner(props: PlannerProps){
 	const [refund, setRefund] = useState(config.defaultRefundState);
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
 
+	const [combinedData, setCombinedData] = useState<(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[]>([]);
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
 	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<SelectedPullablesGroup[]>([]);
+	const tableRef = useRef(null);
 
 	const updateStorage = (propertyName: string, value: string | object) => {
 		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
 		if(pullPlannerFromStorage){
 			let pullPlanner = JSON.parse(pullPlannerFromStorage);
-			pullPlanner[props.game][propertyName] = value;
+			pullPlanner[props.json.id][propertyName] = value;
 			localStorage.setItem("pullplanner", JSON.stringify(pullPlanner));
 			return true;
 		}
@@ -223,7 +222,7 @@ function Planner(props: PlannerProps){
 		for(let pullableGroup of pullableGroupsCopy){
 			for(let pullable of pullableGroup.data){
 				if(isExtendedPullable(pullable)){
-					pullable.value = -getStatisticalPullableValue(props.game, "99", pullable.type, pullable.rank)*160;
+					pullable.value = -getStatisticalPullableValue(props.json.id, "99", pullable.type, pullable.rank)*160;
 				}
 			}
 		}
@@ -242,7 +241,7 @@ function Planner(props: PlannerProps){
 			let pullables = pullableGroupsCopy[index].pullables;
 			let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
 			let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
-			let refunds = pullRefunds(props.game, Math.floor(excludedPullablesCurrency[index]/160)+ + +yourPulls + Math.floor(+yourCurrency/160));
+			let refunds = pullRefunds(props.json.id as ("3rd" | "genshin" | "hsr" | "zzz" | "wuwa"), Math.floor(excludedPullablesCurrency[index]/160)+ + +yourPulls + Math.floor(+yourCurrency/160));
 				switch(refund){
 					case "1":
 						tempPulls += refunds.best;
@@ -314,21 +313,41 @@ function Planner(props: PlannerProps){
 		const pullPlannerFromStorage = localStorage.getItem("pullplanner");
 		if(pullPlannerFromStorage){
 			let pullPlanner = JSON.parse(pullPlannerFromStorage);
-			pullPlanner[props.game].yourCurrency?setYourCurrency(pullPlanner[props.game].yourCurrency):null;
-			pullPlanner[props.game].yourPulls?setYourPulls(pullPlanner[props.game].yourPulls):null;
-			pullPlanner[props.game].characterPity?setCharacterPity(pullPlanner[props.game].characterPity):null;
-			pullPlanner[props.game].weaponPity?setWeaponPity(pullPlanner[props.game].weaponPity):null;
-			pullPlanner[props.game].monthlyPass?setMonthlyPass(pullPlanner[props.game].monthlyPass):null;
+			pullPlanner[props.json.id].yourCurrency?setYourCurrency(pullPlanner[props.json.id].yourCurrency):null;
+			pullPlanner[props.json.id].yourPulls?setYourPulls(pullPlanner[props.json.id].yourPulls):null;
+			pullPlanner[props.json.id].characterPity?setCharacterPity(pullPlanner[props.json.id].characterPity):null;
+			pullPlanner[props.json.id].weaponPity?setWeaponPity(pullPlanner[props.json.id].weaponPity):null;
+			pullPlanner[props.json.id].monthlyPass?setMonthlyPass(pullPlanner[props.json.id].monthlyPass):null;
 		}
 	}, []);
+
+	useEffect(() => {
+		console.log(pullsFromSelectedPullables);
+	}, [pullsFromSelectedPullables]);
 
 	// useEffect(() => {
 	// 	let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
 	// 	setTotalPulls(result);
 	// }, [yourCurrency, yourPulls, characterPity, weaponPity, pullsFromTable]);
 
+	// async function exportAsImage(el: HTMLElement, name: string) {
+	// 	// Clean oklch across all styles
+
+	// 	const canvas = await html2canvas(el, {
+	// 		useCORS: true,
+	// 		backgroundColor: null,
+	// 	});
+
+	// 	const data = canvas.toDataURL("image/png");
+	// 	const link = document.createElement("a");
+	// 	link.href = data;
+	// 	link.download = `${name}.png`;
+	// 	link.click();
+	// }
+
 	return(
 		<div className="mx-auto">
+			{/* <button onClick={() => {exportAsImage(tableRef.current, "test")}}>Download Table</button> */}
 			<div className="table-customization bg-table-primary max-w-sm md:max-w-[500px] mx-auto mt-[32px]">
 				<div className="text-center font-bold mb-[10px]">Customization</div>
 				<div className="grid gap-4 grid-cols-1 grid-row-1 md:grid-cols-2 customization-desktop-layout">
@@ -433,8 +452,19 @@ function Planner(props: PlannerProps){
 				</div> */}
 			</div>
 			<div className="table-customization bg-table-primary max-w-[500px] mx-auto mt-[16px] mb-[16px]">
+				<div className="flex flex-col mb-[8px]">
+					<label className="mb-[4px] font-bold">
+						{"Quick selection"}
+					</label>
+					<div>
+					{combinedData.map((pullable, index) => {
+						if(isExtendedPullable(pullable))
+							return <label key={`quick-select-${index}`} className="inline-flex align-center select-none mr-[4px]"><input className="mr-[2px]" type="checkbox" checked={pullsFromSelectedPullables.some((item) => item.pullables.some((item) => item.name===pullable.name))} />{pullable.name}</label>;
+					})}
+					</div>
+				</div>
 				<div>
-					<label className="mb-[4px]">
+					<label className="mb-[4px] font-bold">
 						{"Planned characters/weapons"}
 					</label>
 					{pullsFromSelectedPullables.map((item, index) => {
@@ -449,7 +479,7 @@ function Planner(props: PlannerProps){
 						}, 0);
 						let tempPulls = Math.floor((+yourCurrency + tableCurrency)/160) + +yourPulls;
 						let tempCurrency = +yourCurrency + +yourPulls*160 + tableCurrency;
-						let refunds = pullRefunds(props.game, Math.floor(excludedPullablesCurrency/160) + +yourPulls + Math.floor(+yourCurrency/160));
+						let refunds = pullRefunds(props.json.id as ("3rd" | "genshin" | "hsr" | "zzz" | "wuwa"), Math.floor(excludedPullablesCurrency/160) + +yourPulls + Math.floor(+yourCurrency/160));
 						switch(refund){
 							case "1":
 								tempPulls += refunds.best;
@@ -472,7 +502,7 @@ function Planner(props: PlannerProps){
 						
 						let { pulls, currency } = addPity(tempPulls, tempCurrency, index, pullsFromSelectedPullables);
 						return(
-							<div>
+							<div key={`planned-${index}`}>
 								<span>
 									{`${item.name}: `}
 								</span>
@@ -483,15 +513,16 @@ function Planner(props: PlannerProps){
 						);
 					})}
 				</div>
-				<div className="mt-[16px]">
+				<div className="mt-[16px]" ref={tableRef}>
 					{predictPlayerOutcome(pullsFromSelectedPullables)}
 				</div>
 			</div>
 			<PlannerTable
-				json={jsons[props.game]}
+				json={props.json}
 				config={config}
 				monthlyPassState={[monthlyPass, setMonthlyPass]}
 				// pullsFromTableState={[pullsFromTable, setPullsFromTable]}
+				combinedData={[combinedData, setCombinedData]}
 				pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]}
 				selectedPullablesState={[selectedPullables, setSelectedPullables]}
 				esteemedLuck={esteemedLuck}

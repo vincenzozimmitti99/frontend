@@ -136,144 +136,244 @@
 	],
 	"pullables": [
 		{
-			"name": "Varesa",
-			"type": "character",
+			"id": "varesa",
 			"start": "2025-03-26",
 			"end": "2025-04-15",
 			"version": "5.5.1"
 		},
 		{
-			"name": "Varesa Signature",
-			"type": "weapon",
+			"id": "varesa_weapon",
 			"start": "2025-03-26",
 			"end": "2025-04-15",
 			"version": "5.5.1"
 		},
 		{
-			"name": "Xianyun",
-			"type": "character",
+			"id": "xianyun",
 			"start": "2025-03-26",
 			"end": "2025-04-15",
 			"version": "5.5.1"
 		},
 		{
-			"name": "Xianyun Signature",
-			"type": "weapon",
+			"id": "xianyun_weapon",
 			"start": "2025-03-26",
 			"end": "2025-04-15",
 			"version": "5.5.1"
 		},
 		{
-			"name": "Venti",
-			"type": "character",
+			"id": "venti",
 			"start": "2025-04-15",
 			"end": "2025-05-05",
 			"version": "5.5.2"
 		},
 		{
-			"name": "Venti Signature",
-			"type": "weapon",
+			"id": "venti_weapon",
 			"start": "2025-04-15",
 			"end": "2025-05-05",
 			"version": "5.5.2"
 		},
 		{
-			"name": "Xilonen",
-			"type": "character",
+			"id": "xilonen",
 			"start": "2025-04-15",
 			"end": "2025-05-05",
 			"version": "5.5.2"
 		},
 		{
-			"name": "Xilonen Signature",
-			"type": "weapon",
+			"id": "xilonen_weapon",
 			"start": "2025-04-15",
 			"end": "2025-05-05",
 			"version": "5.5.2"
 		},
 		{
-			"name": "Escoffier",
-			"type": "character",
+			"id": "escoffier",
 			"start": "2025-05-07",
 			"end": "2025-05-27",
 			"version": "5.6.1"
 		},
 		{
-			"name": "Escoffier Signature",
-			"type": "weapon",
+			"id": "escoffier_weapon",
 			"start": "2025-05-07",
 			"end": "2025-05-27",
 			"version": "5.6.1"
 		},
 		{
-			"name": "Navia",
-			"type": "character",
+			"id": "navia",
 			"start": "2025-05-07",
 			"end": "2025-05-27",
 			"version": "5.6.1"
 		},
 		{
-			"name": "Navia Signature",
-			"type": "weapon",
+			"id": "navia_weapon",
 			"start": "2025-05-07",
 			"end": "2025-05-27",
 			"version": "5.6.1"
 		},
 		{
-			"name": "Kinich",
-			"type": "character",
+			"id": "kinich",
 			"start": "2025-05-27",
 			"end": "2025-06-17",
 			"version": "5.6.2"
 		},
 		{
-			"name": "Kinich Signature",
-			"type": "weapon",
+			"id": "kinich_weapon",
 			"start": "2025-05-27",
 			"end": "2025-06-17",
 			"version": "5.6.2"
 		},
 		{
-			"name": "Raiden Shogun",
-			"type": "character",
+			"id": "raidenshogun",
 			"start": "2025-05-27",
 			"end": "2025-06-17",
 			"version": "5.6.2"
 		},
 		{
-			"name": "Raiden Shogun Signature",
-			"type": "weapon",
+			"id": "raidenshogun_weapon",
 			"start": "2025-05-27",
 			"end": "2025-06-17",
 			"version": "5.6.2"
 		},
 		{
-			"name": "Skirk",
-			"type": "character",
+			"id": "skirk",
 			"start": "2025-06-18",
 			"end": "2025-07-08",
 			"version": "5.7.1"
 		},
 		{
-			"name": "Skirk Signature",
-			"type": "weapon",
+			"id": "skirk_weapon",
 			"start": "2025-06-18",
 			"end": "2025-07-08",
 			"version": "5.7.1"
 		},
 		{
-			"name": "Raiden",
-			"type": "character",
+			"id": "shenhe",
+			"start": "2025-06-18",
+			"end": "2025-07-08",
+			"version": "5.7.1"
+		},
+		{
+			"id": "shenhe_weapon",
+			"start": "2025-06-18",
+			"end": "2025-07-08",
+			"version": "5.7.1"
+		},
+		{
+			"id": "mavuika",
 			"start": "2025-07-08",
 			"end": "2025-07-29",
 			"version": "5.7.2"
 		},
 		{
-			"name": "Raiden Signature",
-			"type": "weapon",
+			"id": "mavuika_weapon",
 			"start": "2025-07-08",
 			"end": "2025-07-29",
 			"version": "5.7.2"
+		},
+		{
+			"id": "emilie",
+			"start": "2025-07-08",
+			"end": "2025-07-29",
+			"version": "5.7.2"
+		},
+		{
+			"id": "emilie_weapon",
+			"start": "2025-07-08",
+			"end": "2025-07-29",
+			"version": "5.7.2"
+		},
+		{
+			"id": "ineffa",
+			"start": "2025-07-30",
+			"end": "2025-08-19",
+			"version": "5.8.1"
+		},
+		{
+			"id": "ineffa_weapon",
+			"start": "2025-07-30",
+			"end": "2025-08-19",
+			"version": "5.8.1"
+		},
+		{
+			"id": "citlali",
+			"start": "2025-07-30",
+			"end": "2025-08-19",
+			"version": "5.8.1"
+		},
+		{
+			"id": "citlali_weapon",
+			"start": "2025-07-30",
+			"end": "2025-08-19",
+			"version": "5.8.1"
+		},
+		{
+			"id": "mualani",
+			"start": "2025-08-19",
+			"end": "2025-09-09",
+			"version": "5.8.2"
+		},
+		{
+			"id": "mualani_weapon",
+			"start": "2025-08-19",
+			"end": "2025-09-09",
+			"version": "5.8.2"
+		},
+		{
+			"id": "chasca",
+			"start": "2025-08-19",
+			"end": "2025-09-09",
+			"version": "5.8.2"
+		},
+		{
+			"id": "chasca_weapon",
+			"start": "2025-08-19",
+			"end": "2025-09-09",
+			"version": "5.8.2"
+		},
+		{
+			"id": "lauma",
+			"start": "2025-09-10",
+			"end": "2025-09-30",
+			"version": "6.0.1"
+		},
+		{
+			"id": "lauma_weapon",
+			"start": "2025-09-10",
+			"end": "2025-09-30",
+			"version": "6.0.1"
+		},
+		{
+			"id": "nahida",
+			"start": "2025-09-10",
+			"end": "2025-09-30",
+			"version": "6.0.1"
+		},
+		{
+			"id": "nahida_weapon",
+			"start": "2025-09-10",
+			"end": "2025-09-30",
+			"version": "6.0.1"
+		},
+		{
+			"id": "flins",
+			"start": "2025-09-30",
+			"end": "2025-10-21",
+			"version": "6.0.2"
+		},
+		{
+			"id": "flins_weapon",
+			"start": "2025-09-30",
+			"end": "2025-10-21",
+			"version": "6.0.2"
+		},
+		{
+			"id": "yelan",
+			"start": "2025-09-30",
+			"end": "2025-10-21",
+			"version": "6.0.2"
+		},
+		{
+			"id": "yelan_weapon",
+			"start": "2025-09-30",
+			"end": "2025-10-21",
+			"version": "6.0.2"
 		}
 	]
 }
