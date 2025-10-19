@@ -14,7 +14,7 @@ function InfoTooltip({ text }: { text: string }) {
 			</svg>
 		</span>
 		{visible && (
-			<div className="absolute z-10 tooltip-customization p-2 text-white text-sm rounded shadow-md mt-1 w-40">
+			<div className="absolute z-10 tooltip-customization p-2 text-white text-sm rounded shadow-md mt-1 w-40 font-normal">
 				{text}
 			</div>
 		)}
