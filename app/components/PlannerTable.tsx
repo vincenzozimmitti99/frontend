@@ -46,6 +46,7 @@ type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
 	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
+	savedItems: [SavedItem[], React.Dispatch<React.SetStateAction<SavedItem[]>>];
 	combinedData: [(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[], React.Dispatch<React.SetStateAction<(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[]>>];
 	// pullsFromTableState: [number, React.Dispatch<React.SetStateAction<number>>];
 	pullsFromSelectedPullablesState: [SelectedPullablesGroup[], React.Dispatch<React.SetStateAction<SelectedPullablesGroup[]>>];
@@ -255,7 +256,6 @@ const groupByEndDate = (pullables: ExtendedPullable[]) => {
 
 function PlannerTable(props: PlannerTableProps){
 	const [expandedRow, setExpandedRow] = useState<number | null>(null);
-	const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
 
 	const updateStorage = (propertyName: string, value: string | object) => {
 		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
@@ -278,7 +278,7 @@ function PlannerTable(props: PlannerTableProps){
 			if(rank>5) rank = 5; else if(rank<1) rank = 1;
 		}
 
-		setSavedItems((prev) => {
+		props.savedItems[1]((prev) => {
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, rank: rank } : item
 			);
@@ -287,10 +287,10 @@ function PlannerTable(props: PlannerTableProps){
 		});
 	};
 
-	const isItemDisabled = (itemName: string) => savedItems.some((savedItem) => savedItem.name === itemName && savedItem.disabled);
+	const isItemDisabled = (itemName: string) => props.savedItems[0].some((savedItem) => savedItem.name === itemName && savedItem.disabled);
 
 	const toggleDisabled = (itemName: string) => {
-		setSavedItems((prev) => {
+		props.savedItems[1]((prev) => {
 			let newSaved = prev.map((item) =>
 				item.name === itemName ? { ...item, disabled: !item.disabled } : item
 			);
@@ -302,13 +302,13 @@ function PlannerTable(props: PlannerTableProps){
 	const pullables: ExtendedPullable[] = useMemo(() => {
 		return props.json.pullables.map((item) => {
 			if(isPullable(item)){
-				let rank = savedItems.find((savedItem) => savedItem.name === item.name)?.rank || 0;
+				let rank = props.savedItems[0].find((savedItem) => savedItem.name === item.name)?.rank || 0;
 				// let temp = convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
 				// console.log(msToTime(temp?.end.getTime()-temp?.start.getTime()));
 				return convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
 			}
 		}).filter(item => !!item);
-	}, [props.json.pullables, props.esteemedLuck, savedItems]);
+	}, [props.json.pullables, props.esteemedLuck, props.savedItems[0]]);
 
 	const endgameIncome: ExtendedIncome[] = useMemo(() => {
 		if(!pullables || !pullables.length) return [];
@@ -469,7 +469,7 @@ function PlannerTable(props: PlannerTableProps){
 
 	const selectedPullables = useMemo(() => {
 		let selectedPullables = [];
-		for(let savedItem of savedItems){
+		for(let savedItem of props.savedItems[0]){
 			for(let item of pullables){
 				if(item?.name===savedItem.name){
 					if(!savedItem.disabled){
@@ -479,7 +479,7 @@ function PlannerTable(props: PlannerTableProps){
 			}
 		}
 		return selectedPullables;
-	}, [pullables, savedItems]);
+	}, [pullables, props.savedItems[0]]);
 
 	// Here make some conditions that check the sorting selected by the user and sorts accordingly. Or maybe not because sorting seems bad?
 	// OK OK here is the best idea: group everything by PATCH VERSION and each group is ordered like this:
@@ -487,11 +487,14 @@ function PlannerTable(props: PlannerTableProps){
 	const combinedData = useMemo(
 		() => {
 			const combinedData = sortByDate([...regularIncome, ...endgameIncome, ...otherIncome, ...pullables].filter((item) => !!item));
-			props.combinedData[1](combinedData);
 			return combinedData;
 			// sortByVersion(regularIncome, endgameIncome, otherIncome, pullables).filter((item) => !!item),
 		}, [regularIncome, endgameIncome, otherIncome, pullables]
 	);
+
+	useEffect(() => {
+		props.combinedData[1](combinedData);
+	}, [combinedData])
 
 	const groupByDatesSelectedPullables = useMemo(() => {
 		return groupByEndDate(selectedPullables);
@@ -506,7 +509,7 @@ function PlannerTable(props: PlannerTableProps){
 				"pullables": pullableGroup.selectedPullables,
 				"data": combinedData
 				.filter((item) => {
-					const savedItem = savedItems.find((saved) => saved.name === item.name);
+					const savedItem = props.savedItems[0].find((saved) => saved.name === item.name);
 					return !savedItem?.disabled && +new Date(item.start)<+new Date(pullableGroup.endDate);
 				})
 				// .reduce((sum, current) => {
@@ -525,7 +528,7 @@ function PlannerTable(props: PlannerTableProps){
 		// 	}, 0);
 		props.pullsFromSelectedPullablesState[1](separatedCounts);
 		// props.pullsFromTableState[1](excludedPullableCount);
-	}, [combinedData, savedItems, groupByDatesSelectedPullables]);
+	}, [combinedData, props.savedItems[0], groupByDatesSelectedPullables]);
 
 	useEffect(() => {
 		const initialSavedItems = combinedData.map((item) => {
@@ -573,7 +576,7 @@ function PlannerTable(props: PlannerTableProps){
 				}
 			}
 		}
-		setSavedItems(initialSavedItems);
+		props.savedItems[1](initialSavedItems);
 	}, []);
 
 	// Save to localStorage whenever savedItems changes
@@ -611,7 +614,7 @@ function PlannerTable(props: PlannerTableProps){
 			</div>
 		);
 		if(isExtendedPullable(item)){
-			let savedItem = savedItems.find((savedItem) => {return savedItem.name===item.name});
+			let savedItem = props.savedItems[0].find((savedItem) => {return savedItem.name===item.name});
 			let rankSelector;
 			if(item.type==="character"){
 				rankSelector = <div>

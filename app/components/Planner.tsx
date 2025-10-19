@@ -1,5 +1,5 @@
 // import html2canvas from "html2canvas";
-import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, isExtendedPullable, type Server, type ExtendedRegularIncome, type ExtendedIncome, type OtherIncome } from "~/types/PlannerData";
+import { type ExtendedPullable, type MonthlyPass, type PlannerData, type Games, type SelectedPullablesGroup, type SavedItem, isExtendedPullable, type Server, type ExtendedRegularIncome, type ExtendedIncome, type OtherIncome } from "~/types/PlannerData";
 
 import { useEffect, useRef, useState } from "react";
 import PlannerTable from "./PlannerTable";
@@ -109,6 +109,7 @@ function Planner(props: PlannerProps){
 	const [refund, setRefund] = useState(config.defaultRefundState);
 	const [monthlyPass, setMonthlyPass] = useState<MonthlyPass>({enabled: false, always: false, endDate: null});
 
+	const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
 	const [combinedData, setCombinedData] = useState<(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[]>([]);
 	const [selectedPullables, setSelectedPullables] = useState<ExtendedPullable[]>([]);
 	const [pullsFromSelectedPullables, setPullsFromSelectedPullables] = useState<SelectedPullablesGroup[]>([]);
@@ -123,6 +124,16 @@ function Planner(props: PlannerProps){
 			return true;
 		}
 		return false;
+	};
+
+	const toggleDisabled = (itemName: string) => {
+		setSavedItems((prev) => {
+			let newSaved = prev.map((item) =>
+				item.name === itemName ? { ...item, disabled: !item.disabled } : item
+			);
+			updateStorage("savedItems", newSaved);
+			return newSaved;
+		});
 	};
 
 	const inputChangeHandle = (event: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
@@ -321,10 +332,6 @@ function Planner(props: PlannerProps){
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log(pullsFromSelectedPullables);
-	}, [pullsFromSelectedPullables]);
-
 	// useEffect(() => {
 	// 	let result = Math.floor(+yourCurrency + +yourPulls*160 + pullsFromTable);
 	// 	setTotalPulls(result);
@@ -459,7 +466,7 @@ function Planner(props: PlannerProps){
 					<div>
 					{combinedData.map((pullable, index) => {
 						if(isExtendedPullable(pullable))
-							return <label key={`quick-select-${index}`} className="inline-flex align-center select-none mr-[4px]"><input className="mr-[2px]" type="checkbox" checked={pullsFromSelectedPullables.some((item) => item.pullables.some((item) => item.name===pullable.name))} />{pullable.name}</label>;
+							return <label key={`quick-select-${index}`} className="inline-flex align-center select-none mr-[4px]"><input className="mr-[2px]" type="checkbox" checked={pullsFromSelectedPullables.some((item) => item.pullables.some((item) => item.name===pullable.name))} onChange={() => toggleDisabled(pullable.name)} />{pullable.name}</label>;
 					})}
 					</div>
 				</div>
@@ -522,6 +529,7 @@ function Planner(props: PlannerProps){
 				config={config}
 				monthlyPassState={[monthlyPass, setMonthlyPass]}
 				// pullsFromTableState={[pullsFromTable, setPullsFromTable]}
+				savedItems={[savedItems, setSavedItems]}
 				combinedData={[combinedData, setCombinedData]}
 				pullsFromSelectedPullablesState={[pullsFromSelectedPullables, setPullsFromSelectedPullables]}
 				selectedPullablesState={[selectedPullables, setSelectedPullables]}
