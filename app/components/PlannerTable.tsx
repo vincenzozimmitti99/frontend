@@ -628,8 +628,8 @@ function PlannerTable(props: PlannerTableProps){
 				</div>
 			}
 			return [
-				disableCheckbox,
-				rankSelector
+				<div key={"disable"}>{disableCheckbox}</div>,
+				<div key={"rank"}>{rankSelector}</div>
 			];
 		}
 		return disableCheckbox;
@@ -700,7 +700,10 @@ function PlannerTable(props: PlannerTableProps){
 								</tr>
 							);
 
-						return [mainRow, extendedRow];
+						return (<React.Fragment key={index}>
+							{mainRow}
+							{extendedRow}
+						</React.Fragment>)
 					})
 				}
 			</tbody>
