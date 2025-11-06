@@ -1,0 +1,18 @@
+{
+	"characters": [
+		{ "id": "lucia", "name": "Lucia" },
+		{ "id": "vivian", "name": "Vivian" },
+		{ "id": "yidhari", "name": "Yidhari" },
+		{ "id": "jufufu", "name": "Ju Fufu" },
+		{ "id": "dialyn", "name": "Dialyn" },
+		{ "id": "banyue", "name": "Banyue" }
+	],
+	"weapons": [
+		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
+		{ "id": "vivian_weapon", "name": "Flight of Fancy" },
+		{ "id": "yidhari_weapon", "name": "Kraken's Cradle" },
+		{ "id": "jufufu_weapon", "name": "Roaring Fur-nace" },
+		{ "id": "dialyn_weapon", "name": "Dialyn W-Engine" },
+		{ "id": "banyue_weapon", "name": "Banyue W-Engine" }
+	]
+}

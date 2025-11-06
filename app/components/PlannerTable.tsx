@@ -26,8 +26,6 @@ import RankSelector from "./RankSelector";
 import ItemTag from "./ItemTag";
 import { calculateTotalCurrency, getServerResetTime, getStatisticalPullableValue } from "~/utils/common";
 
-const server = "Europe" as Server;
-
 // Debug function
 function msToTime(duration: number): string {
     const seconds = Math.floor((duration / 1000) % 60);
@@ -45,6 +43,7 @@ function msToTime(duration: number): string {
 type PlannerTableProps = React.HTMLProps<HTMLDivElement> & {
 	json: PlannerData;
 	config: Config;
+	server: Server;
 	monthlyPassState: [MonthlyPass, React.Dispatch<React.SetStateAction<MonthlyPass>>];
 	savedItems: [SavedItem[], React.Dispatch<React.SetStateAction<SavedItem[]>>];
 	combinedData: [(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[], React.Dispatch<React.SetStateAction<(ExtendedPullable | ExtendedRegularIncome | ExtendedIncome | OtherIncome)[]>>];
@@ -98,7 +97,7 @@ const dateDifference = (startDate: Date, endDate: Date) =>
 const daysDifference = (startDate: Date, endDate: Date) =>
 	Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
-const dateFormatter = (date: Date) => {
+const dateFormatter = (date: Date, server: Server) => {
 	let timeZone;
 	switch(server){
 		case "Europe":
@@ -156,7 +155,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 					utcEndDate.setUTCHours(22);
 					break;
 			}
-		} else if(game==="hsr"){
+		} else if(game==="hsr" || game==="zzz"){
 			switch(server){
 				case "Europe":
 					utcEndDate.setUTCHours(10);
@@ -181,7 +180,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 				if(game==="genshin"){
 					utcStartDate.setUTCHours(17);
 					utcEndDate.setUTCHours(13);
-				} else if(game==="hsr"){
+				} else if(game==="hsr" || game==="zzz"){
 					utcStartDate.setUTCHours(11);
 					utcEndDate.setUTCHours(13);
 				}
@@ -190,7 +189,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 				if(game==="genshin"){
 					utcStartDate.setUTCHours(10);
 					utcEndDate.setUTCHours(6);
-				} else if(game==="hsr"){
+				} else if(game==="hsr" || game==="zzz"){
 					utcStartDate.setUTCHours(4);
 					utcEndDate.setUTCHours(6);
 				}
@@ -199,7 +198,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 				if(game==="genshin"){
 					utcStartDate.setUTCHours(23);
 					utcEndDate.setUTCHours(19);
-				} else if(game==="hsr"){
+				} else if(game==="hsr" || game==="zzz"){
 					utcStartDate.setUTCHours(17);
 					utcEndDate.setUTCHours(19);
 				}
@@ -305,10 +304,10 @@ function PlannerTable(props: PlannerTableProps){
 				let rank = props.savedItems[0].find((savedItem) => savedItem.name === item.name)?.rank || 0;
 				// let temp = convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
 				// console.log(msToTime(temp?.end.getTime()-temp?.start.getTime()));
-				return convertToExtendedPullable(item, server, props.config.game, rank, props.esteemedLuck);
+				return convertToExtendedPullable(item, props.server, props.config.game, rank, props.esteemedLuck);
 			}
 		}).filter(item => !!item);
-	}, [props.json.pullables, props.esteemedLuck, props.savedItems[0]]);
+	}, [props.json.pullables, props.esteemedLuck, props.savedItems[0], props.server]);
 
 	const endgameIncome: ExtendedIncome[] = useMemo(() => {
 		if(!pullables || !pullables.length) return [];
@@ -320,7 +319,7 @@ function PlannerTable(props: PlannerTableProps){
 		// Make endgameIncome items up to date
 		for(let item of props.json.endgameIncome){
 			if(isEndgameIncomeVariantGenshin(item)){
-				let resetDate = getServerResetTime(firstStartDate, server).lastReset;
+				let resetDate = getServerResetTime(firstStartDate, props.server).lastReset;
 				resetDate.setUTCDate(item.resetsEvery);
 				resetDate.setUTCMonth(resetDate.getUTCMonth() - 1);
 				while(resetDate < new Date()){
@@ -332,7 +331,7 @@ function PlannerTable(props: PlannerTableProps){
 				while(start<lastEndDate){ // Make copies until they can be useful to get pull for banners
 					endgameIncome.push({
 						...item,
-						name: `${item.name} (${dateFormatter(start)})`,
+						name: `${item.name} (${dateFormatter(start, props.server)})`,
 						start: new Date(start),
 						end: new Date(resetDate.getTime() - 1) // End 1ms before next
 					});
@@ -341,10 +340,10 @@ function PlannerTable(props: PlannerTableProps){
 				}
 			} else if(isEndgameIncomeVariantHSR(item)){
 				let resetStart = new Date(item.resetStart);
-				if(server==="Asia"){ // Adjust date only for Asia server
+				if(props.server==="Asia"){ // Adjust date only for Asia server
 					resetStart.setUTCDate(resetStart.getUTCDate() - 1);
 				}
-				let endgameNextReset = getServerResetTime(resetStart, server).nextReset;
+				let endgameNextReset = getServerResetTime(resetStart, props.server).nextReset;
 				while(endgameNextReset < new Date()){
 					endgameNextReset.setUTCDate(endgameNextReset.getUTCDate() + item.resetInterval);
 				}
@@ -354,7 +353,7 @@ function PlannerTable(props: PlannerTableProps){
 				while(start<lastEndDate){ // Make copies until they can be useful to get pull for banners
 					endgameIncome.push({
 						...item,
-						name: `${item.name} (${dateFormatter(start)})`,
+						name: `${item.name} (${dateFormatter(start, props.server)})`,
 						start: new Date(start),
 						end: new Date(endgameNextReset.getTime() - 1) // End 1ms before next
 					});
@@ -370,7 +369,7 @@ function PlannerTable(props: PlannerTableProps){
 		}
 
 		return endgameIncome.filter(item => !!item);
-	}, [props.json.endgameIncome]);
+	}, [props.json.endgameIncome,  props.server]);
 
 	const regularIncome: ExtendedRegularIncome[] = useMemo(
 		() =>{
@@ -383,7 +382,7 @@ function PlannerTable(props: PlannerTableProps){
 			for(let item of props.json.regularIncome){
 				if(isRegularIncome(item)){
 					if(item.type==="monthly"){
-						const startDate = getServerResetTime(new Date(Date.UTC(firstStartDate.getUTCFullYear(), firstStartDate.getUTCMonth(), 1)), server).nextReset;
+						const startDate = getServerResetTime(new Date(Date.UTC(firstStartDate.getUTCFullYear(), firstStartDate.getUTCMonth(), 1)), props.server).nextReset;
 						const endDate = new Date(startDate);
 						endDate.setUTCMonth(endDate.getUTCMonth() + 1);
 						endDate.setUTCSeconds(endDate.getUTCSeconds() - 1);
@@ -412,7 +411,7 @@ function PlannerTable(props: PlannerTableProps){
 										recurrence = -1;
 										if(!props.monthlyPassState[0].always){
 											if(props.monthlyPassState[0].endDate){
-												let monthlyPassEndDate = getServerResetTime(new Date(props.monthlyPassState[0].endDate), server).nextReset;
+												let monthlyPassEndDate = getServerResetTime(new Date(props.monthlyPassState[0].endDate), props.server).nextReset;
 												if(isNaN(monthlyPassEndDate.getTime())){
 													endDate = calculationStart;
 												} else if(monthlyPassEndDate < endDate){
@@ -449,10 +448,10 @@ function PlannerTable(props: PlannerTableProps){
 
 	const otherIncome = useMemo(() => {
 		return props.json.otherIncome.map((item) => {
-			let startDate = getServerResetTime(new Date(item.start), server).nextReset;
+			let startDate = getServerResetTime(new Date(item.start), props.server).nextReset;
 			let endDate;
 			if(item.end){
-				endDate = getServerResetTime(new Date(item.end), server).nextReset;
+				endDate = getServerResetTime(new Date(item.end), props.server).nextReset;
 			} else {
 				endDate = new Date(startDate.getTime() + 3*(1000*60*60*24)); // 3 days after start date
 			}
@@ -648,7 +647,7 @@ function PlannerTable(props: PlannerTableProps){
 			<tbody>
 				{
 					combinedData.map((item, index) => {
-						let currencyCount = calculateTotalCurrency(item, server);
+						let currencyCount = calculateTotalCurrency(item, props.server);
 						// console.log(item.start, item.end);
 						const dateStart = new Date("calculationStart" in item?item.calculationStart:item.start);
 						// console.log(item.name, dateStart);
@@ -661,8 +660,8 @@ function PlannerTable(props: PlannerTableProps){
 								<td title={`${dateStart.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} - ${dateEnd?.toLocaleString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"})} ${dateEnd?"(Duration: " + msToTime(+dateEnd-+dateStart) + ")":""}`}>
 									<div className="date-cell">
 										{dateEnd?
-										<><span>{dateFormatter(dateStart)}</span> - <span>{dateFormatter(dateEnd)}</span></>
-										: dateFormatter(dateStart)}
+										<><span>{dateFormatter(dateStart, props.server)}</span> - <span>{dateFormatter(dateEnd, props.server)}</span></>
+										: dateFormatter(dateStart, props.server)}
 									</div>
 								</td>
 								<td>

@@ -21,6 +21,12 @@
 			"value": 225
 		},
 		{
+			"type": "weekly",
+			"name": "Currency Wars",
+			"recurrence": -1,
+			"value": 225
+		},
+		{
 			"type": "monthly",
 			"name": "Monthly Embers Exchange",
 			"recurrence": 1,
@@ -132,6 +138,13 @@
 			"value": 500,
 			"start": "2025-09-30",
 			"end": "2025-11-03"
+		},
+		{
+			"name": "Snack Dash",
+			"recurrence": 1,
+			"value": 1180,
+			"start": "2025-11-05",
+			"end": "2025-12-15"
 		}
 	],
 	"pullables":
@@ -423,6 +436,90 @@
 			"start": "2025-11-05",
 			"end": "2025-11-26",
 			"version": "3.7.1"
+		},
+		{
+			"id": "hyacine",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "hyacine_weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "castorice",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "castorice_weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "tribbie",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "tribbie_weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-26",
+			"version": "3.7.1"
+		},
+		{
+			"id": "phainon",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "phainon_weapon",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "cipher",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "cipher_weapon",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "mydei",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "mydei_weapon",
+			"start": "2025-11-26",
+			"end": "2025-12-16",
+			"version": "3.7.2"
+		},
+		{
+			"id": "thedahlia",
+			"start": "2025-12-17",
+			"end": "2026-01-07",
+			"version": "3.8.1"
+		},
+		{
+			"id": "thedahlia_weapon",
+			"start": "2025-12-17",
+			"end": "2026-01-07",
+			"version": "3.8.1"
 		}
 	]
 }

@@ -1,0 +1,128 @@
+{
+	"id": "zzz",
+	"regularIncome": [
+		{
+			"type": "daily",
+			"name": "Dailies",
+			"recurrence": -1,
+			"value": 60
+		},
+		{
+			"type": "premium",
+			"name": "Inter-Knot Membership",
+			"recurrence": -1,
+			"value": 90
+		},
+		{
+			"type": "weekly",
+			"name": "Ridu Weekly",
+			"recurrence": -1,
+			"value": 60
+		},
+		{
+			"type": "monthly",
+			"name": "Monthly Fading Signal Exchange",
+			"recurrence": 1,
+			"value": 800
+		}
+	],
+	"endgameIncome": [
+		{
+			"name": "Shiyu Defense",
+			"recurrence": 1,
+			"value": 720,
+			"resetStart": "2025-10-24",
+			"resetInterval": 14
+		},
+		{
+			"name": "Deadly Assault",
+			"recurrence": 1,
+			"value": 300,
+			"resetStart": "2025-10-31",
+			"resetInterval": 14
+		}
+	],
+	"otherIncome": [
+		{
+			"name": "Dance Dance Dynamic Disco",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-11-17",
+			"end": "2025-11-26"
+		}
+	],
+	"pullables": [
+		{
+			"id": "lucia",
+			"start": "2025-10-15",
+			"end": "2025-11-05",
+			"version": "2.3.1"
+		},
+		{
+			"id": "lucia_weapon",
+			"start": "2025-10-15",
+			"end": "2025-11-05",
+			"version": "2.3.1"
+		},
+		{
+			"id": "vivian",
+			"start": "2025-10-15",
+			"end": "2025-11-05",
+			"version": "2.3.1"
+		},
+		{
+			"id": "vivian_weapon",
+			"start": "2025-10-15",
+			"end": "2025-11-05",
+			"version": "2.3.1"
+		},
+		{
+			"id": "yidhari",
+			"start": "2025-11-05",
+			"end": "2025-11-25",
+			"version": "2.3.2"
+		},
+		{
+			"id": "yidhari_weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-25",
+			"version": "2.3.2"
+		},
+		{
+			"id": "jufufu",
+			"start": "2025-11-05",
+			"end": "2025-11-25",
+			"version": "2.3.2"
+		},
+		{
+			"id": "jufufu_weapon",
+			"start": "2025-11-05",
+			"end": "2025-11-25",
+			"version": "2.3.2"
+		},
+		{
+			"id": "dialyn",
+			"start": "2025-11-26",
+			"end": "2025-12-17",
+			"version": "2.4.1"
+		},
+		{
+			"id": "dialyn_weapon",
+			"start": "2025-11-26",
+			"end": "2025-12-17",
+			"version": "2.4.1"
+		},
+		{
+			"id": "banyue",
+			"start": "2025-12-17",
+			"end": "2026-01-06",
+			"version": "2.4.2"
+		},
+		{
+			"id": "banyue_weapon",
+			"start": "2025-12-17",
+			"end": "2026-01-06",
+			"version": "2.4.2"
+		}
+	]
+}

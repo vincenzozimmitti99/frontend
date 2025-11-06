@@ -89,8 +89,12 @@
 			"name": "Cyrene"
 		},
 		{
-			"id": "constance",
-			"name": "Constance"
+			"id": "thedahlia",
+			"name": "The Dahlia"
+		},
+		{
+			"id": "mydei",
+			"name": "Mydei"
 		}
 	],
 	"weapons": [
@@ -180,11 +184,15 @@
 		},
 		{
 			"id": "cyrene_weapon",
-			"name": "Cyrene LC"
+			"name": "This Love, Forever"
 		},
 		{
-			"id": "constance_weapon",
-			"name": "Constance LC"
+			"id": "thedahlia_weapon",
+			"name": "The Dahlia LC"
+		},
+		{
+			"id": "mydei_weapon",
+			"name": "Flame of Blood, Blaze My Path"
 		}
 	]
 }

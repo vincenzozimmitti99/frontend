@@ -132,6 +132,20 @@
 			"value": 420,
 			"start": "2025-07-21",
 			"end": "2025-07-29"
+		},
+		{
+			"name": "Ruins Exploration: Fieldwise Center",
+			"recurrence": 1,
+			"value": 960,
+			"start": "2025-11-07",
+			"end": "2025-11-24"
+		},
+		{
+			"name": "Dance Dance Dynamic Disco",
+			"recurrence": 1,
+			"value": 420,
+			"start": "2025-11-17",
+			"end": "2025-11-26"
 		}
 	],
 	"pullables": [
@@ -374,6 +388,102 @@
 			"start": "2025-09-30",
 			"end": "2025-10-21",
 			"version": "6.0.2"
+		},
+		{
+			"id": "nefer",
+			"start": "2025-10-22",
+			"end": "2025-11-11",
+			"version": "6.1.1"
+		},
+		{
+			"id": "nefer_weapon",
+			"start": "2025-10-22",
+			"end": "2025-11-11",
+			"version": "6.1.1"
+		},
+		{
+			"id": "furina",
+			"start": "2025-10-22",
+			"end": "2025-11-11",
+			"version": "6.1.1"
+		},
+		{
+			"id": "furina_weapon",
+			"start": "2025-10-22",
+			"end": "2025-11-11",
+			"version": "6.1.1"
+		},
+		{
+			"id": "arlecchino",
+			"start": "2025-11-11",
+			"end": "2025-12-02",
+			"version": "6.1.2"
+		},
+		{
+			"id": "arlecchino_weapon",
+			"start": "2025-11-11",
+			"end": "2025-12-02",
+			"version": "6.1.2"
+		},
+		{
+			"id": "zhongli",
+			"start": "2025-11-11",
+			"end": "2025-12-02",
+			"version": "6.1.2"
+		},
+		{
+			"id": "zhongli_weapon",
+			"start": "2025-11-11",
+			"end": "2025-12-02",
+			"version": "6.1.2"
+		},
+		{
+			"id": "durin",
+			"start": "2025-12-03",
+			"end": "2025-12-23",
+			"version": "6.2.1"
+		},
+		{
+			"id": "durin_weapon",
+			"start": "2025-12-03",
+			"end": "2025-12-23",
+			"version": "6.2.1"
+		},
+		{
+			"id": "varesa",
+			"start": "2025-12-03",
+			"end": "2025-12-23",
+			"version": "6.2.1"
+		},
+		{
+			"id": "varesa_weapon",
+			"start": "2025-12-03",
+			"end": "2025-12-23",
+			"version": "6.2.1"
+		},
+		{
+			"id": "xilonen",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
+		},
+		{
+			"id": "xilonen_weapon",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
+		},
+		{
+			"id": "venti",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
+		},
+		{
+			"id": "elegyfortheend_weapon",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
 		}
 	]
 }

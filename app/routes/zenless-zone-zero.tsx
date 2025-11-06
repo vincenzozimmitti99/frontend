@@ -1,3 +1,10 @@
+import json from "../assets/json/zzz.json";
+import pullablesJson from "../assets/json/zzz-pullables.json";
+
+import Planner from "~/components/Planner";
+import type { Route } from "./+types/zenless-zone-zero";
+import { parsePullables } from "~/utils/common";
+
 export function meta({}) {
 	return [
 		{ title: "Pull Planner - Zenless Zone Zero" },
@@ -7,11 +14,15 @@ export function meta({}) {
 	];
 }
 
-type Props = {}
+export async function clientLoader({}: Route.ClientLoaderArgs) {
+	return parsePullables(json, pullablesJson);
+}
 
-function ZenlessZoneZero({}: Props) {
+function ZenlessZoneZero({ loaderData }: Route.ComponentProps) {
+	const json = loaderData;
+
 	return (
-		<div>Zenless Zone Zero</div>
+		<Planner json={json} />
 	)
 }
 

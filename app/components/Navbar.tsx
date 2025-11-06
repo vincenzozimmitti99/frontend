@@ -38,10 +38,13 @@ const Navbar = () => {
 			<BurgerIcon onClick={() => {setShrinked(!shrinked)}} shrinked={shrinked} className="m-0 mb-10" />
 			<ul>
 				<NavLink to="/" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, "border-b-1", isActive?activeStyle:"")}>Pull Planner</li>}}</NavLink>
-				<NavLink to="/honkai-impact-3rd" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Honkai Impact 3rd</li>}}</NavLink>
+				{/* <NavLink to="/honkai-impact-3rd" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Honkai Impact 3rd</li>}}</NavLink> */}
 				<NavLink to="/genshin-impact" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Genshin Impact</li>}}</NavLink>
 				<NavLink to="/honkai-star-rail" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Honkai: Star Rail</li>}}</NavLink>
-				<NavLink to="/zenless-zone-zero" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Zenless Zone Zero</li>}}</NavLink>
+				<NavLink to="/zenless-zone-zero" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, "border-b-1", isActive?activeStyle:"")}>Zenless Zone Zero</li>}}</NavLink>
+				<NavLink to="/settings" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Settings</li>}}</NavLink>
+				<NavLink to="/terms-of-use" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Terms of Use</li>}}</NavLink>
+				<NavLink to="/privacy-policy" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Privacy Policy</li>}}</NavLink>
 			</ul>
 		</nav>
 	);

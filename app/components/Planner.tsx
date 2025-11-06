@@ -14,13 +14,12 @@ export interface Config{
 	game: string;
     currency: string;
     pulls: string;
+	refundCurrency: string;
 	rankCharacter: string;
 	rankWeapon: string;
 	monthlyPass: string;
 	defaultRefundState: string;
 }
-
-const server = "Europe" as Server;
 
 const loadConfig = (id: string) => {
 	let config: Config;
@@ -31,6 +30,7 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "",
 				pulls: "",
+				refundCurrency: "",
 				rankCharacter: "",
 				rankWeapon: "",
 				monthlyPass: "",
@@ -42,6 +42,7 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Primogems",
 				pulls: "Intertwined Fates",
+				refundCurrency: "Masterless Starglitter",
 				rankCharacter: "Constellation",
 				rankWeapon: "Rank",
 				monthlyPass: "Express Supply Pass",
@@ -53,6 +54,7 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Stellar Jades",
 				pulls: "Star Rail Special Passes",
+				refundCurrency: "Undying Starlight",
 				rankCharacter: "Eidolon",
 				rankWeapon: "Superimpose",
 				monthlyPass: "Express Supply Pass",
@@ -64,9 +66,10 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Polychromes",
 				pulls: "Encrypted Master Tapes",
+				refundCurrency: "Residual Signal",
 				rankCharacter: "Mindscape Cinema",
-				rankWeapon: "Overclock?", // Fix this later
-				monthlyPass: "Express Supply Pass",
+				rankWeapon: "Overclocking",
+				monthlyPass: "Inter-Knot Membership",
 				defaultRefundState: "1"
 			};
 			break;
@@ -75,6 +78,7 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "Astrites",
 				pulls: "Radiant Tides",
+				refundCurrency: "",
 				rankCharacter: "",
 				rankWeapon: "",
 				monthlyPass: "Express Supply Pass",
@@ -86,6 +90,7 @@ const loadConfig = (id: string) => {
 				game: id,
 				currency: "currency",
 				pulls: "pulls",
+				refundCurrency: "refund currency",
 				rankCharacter: "Character Rank",
 				rankWeapon: "Weapon Rank",
 				monthlyPass: "Monthly Pass",
@@ -100,6 +105,7 @@ const loadConfig = (id: string) => {
 function Planner(props: PlannerProps){
 	let config = loadConfig(props.json.id);
 
+	const [server, setServer] = useState("America");
 	const [yourCurrency, setYourCurrency] = useState("0");
 	const [yourPulls, setYourPulls] = useState("0");
 	const [characterPity, setCharacterPity] = useState("0");
@@ -223,7 +229,7 @@ function Planner(props: PlannerProps){
 		return { pulls, currency };
 	};
 
-	const predictPlayerOutcome = (pullableGroups: SelectedPullablesGroup[]) => {
+	const predictPlayerOutcome = (pullableGroups: SelectedPullablesGroup[], server: Server) => {
 		if(!pullableGroups.length) return; // If empty return, nothing to calculate yet.
 
 		// let item = {...pullableGroups[pullableGroups.length-1]};
@@ -244,7 +250,7 @@ function Planner(props: PlannerProps){
 		}, 0));
 		let excludedPullablesCurrency = pullableGroupsCopy.map(pullableGroup => pullableGroup.data.reduce((sum, current) => {
 			if(!isExtendedPullable(current))
-				return sum + calculateTotalCurrency(current, server); // Fix!
+				return sum + calculateTotalCurrency(current, server);
 			else
 				return sum;
 		}, 0));
@@ -297,7 +303,7 @@ function Planner(props: PlannerProps){
 		}
 	};
 
-	const monthlyPassResolver = (endDate: string | null, always: boolean) => {
+	const monthlyPassResolver = (endDate: string | null, always: boolean, server: Server) => {
 		if(!endDate || always) return "";
 		
 		let remainingDays = (+getServerResetTime(new Date(endDate), server).nextReset-+getServerResetTime(new Date(), server).lastReset)/1000/60/60/24;
@@ -330,6 +336,7 @@ function Planner(props: PlannerProps){
 			pullPlanner[props.json.id].characterPity?setCharacterPity(pullPlanner[props.json.id].characterPity):null;
 			pullPlanner[props.json.id].weaponPity?setWeaponPity(pullPlanner[props.json.id].weaponPity):null;
 			pullPlanner[props.json.id].monthlyPass?setMonthlyPass(pullPlanner[props.json.id].monthlyPass):null;
+			pullPlanner.settings?.server?setServer(["America", "Europe", "Asia"].includes(pullPlanner.settings.server)?pullPlanner.settings.server:"America"):null;
 		}
 	}, []);
 
@@ -391,15 +398,15 @@ function Planner(props: PlannerProps){
 								Enabled
 							</label>
 							<label className="form-checkbox ml-[16px]">
-								<input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {return {...prev, always: !prev.always}})}} />
+								<input type="checkbox" checked={monthlyPass.always} disabled={!monthlyPass.enabled} onChange={() => {setMonthlyPass((prev) => {let newMonthlyPass = {...prev, always: !prev.always}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass;})}} />
 								Always
 							</label>
 						</div>
 						<label>
 							End date
 							<div className="mt-[4px] flex items-center">
-								<input type="text" className="text-right w-full md:!w-auto" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {return {...prev, endDate: event.target.value}})}} placeholder="MM/dd/yyyy" />
-								<span className="flex-none ml-[4px]">{monthlyPassResolver(monthlyPass.endDate, monthlyPass.always)}</span>
+								<input type="text" className="text-right w-full md:!w-auto" value={monthlyPass.endDate || ""} disabled={monthlyPass.always || !monthlyPass.enabled} onChange={(event) => {setMonthlyPass((prev) => {let newMonthlyPass =  {...prev, endDate: event.target.value}; updateStorage("monthlyPass", newMonthlyPass); return newMonthlyPass;})}} placeholder="MM/dd/yyyy" />
+								<span className="flex-none ml-[4px]">{monthlyPassResolver(monthlyPass.endDate, monthlyPass.always, server as Server)}</span>
 							</div>
 						</label>
 					</div>
@@ -421,7 +428,7 @@ function Planner(props: PlannerProps){
 					</div>
 					<div className="[grid-area:g]">
 						<label htmlFor="refund" className="flex items-center">
-							{"Undying Starlight Refund"}
+							{config.refundCurrency}
 							<InfoTooltip text="Each game has a refund system, and their currencies can be converted back to pulls. If unsure you should leave it as default or disable it."></InfoTooltip>
 						</label>
 						<div className="mt-[4px]">
@@ -480,11 +487,11 @@ function Planner(props: PlannerProps){
 					</label>
 					{pullsFromSelectedPullables.map((item, index) => {
 						let tableCurrency = item.data.reduce((sum, current) => {
-							return sum + calculateTotalCurrency(current, server); // Fix!
+							return sum + calculateTotalCurrency(current, server as Server);
 						}, 0);
 						let excludedPullablesCurrency = item.data.reduce((sum, current) => {
 							if(!isExtendedPullable(current))
-								return sum + calculateTotalCurrency(current, server); // Fix!
+								return sum + calculateTotalCurrency(current, server as Server);
 							else
 								return sum;
 						}, 0);
@@ -525,12 +532,13 @@ function Planner(props: PlannerProps){
 					})}
 				</div>
 				<div className="mt-[16px]" ref={tableRef}>
-					{predictPlayerOutcome(pullsFromSelectedPullables)}
+					{predictPlayerOutcome(pullsFromSelectedPullables, server as Server)}
 				</div>
 			</div>
 			<PlannerTable
 				json={props.json}
 				config={config}
+				server={server as Server}
 				monthlyPassState={[monthlyPass, setMonthlyPass]}
 				// pullsFromTableState={[pullsFromTable, setPullsFromTable]}
 				savedItems={[savedItems, setSavedItems]}

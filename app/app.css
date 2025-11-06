@@ -144,7 +144,7 @@ div.table-customization > div.form-group:last-child{
 	display: block;
 }
 
-input[type=text]{
+input[type=text], button{
 	display: block;
 	padding: 8px;
     width: 100%;
@@ -153,7 +153,7 @@ input[type=text]{
 	background-color: var(--color-primary);
 }
 
-input[type=text]:disabled{
+input[type=text]:disabled, button:disabled{
 	background-color: unset;
 }
 
