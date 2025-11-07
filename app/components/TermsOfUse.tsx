@@ -1,7 +1,7 @@
 function TermsOfUse() {
 	return (
 		<div className="mx-auto w-full">
-			<header className="shadow">
+			<header className="border-b-1" style={{borderColor: "#696969"}}>
 				<div className="max-w-4xl mx-auto px-4 py-6">
 					<h1 className="text-2xl font-bold">Terms of Use</h1>
 				</div>

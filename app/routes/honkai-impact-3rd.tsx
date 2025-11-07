@@ -1,9 +1,9 @@
 export function meta({}) {
 	return [
 		{ title: "Pull Planner - Honkai Impact 3rd" },
-		{ name: "description", content: "Site to help plan your next characters to pull!" },
+		{ name: "description", content: "Plan your gacha pulls across upcoming banners. Very f2p friendly!" },
 		{ property: "og:title", content: `Pull Planner - Honkai Impact 3rd` },
-		{ property: "og:description", content: "Site to help plan your next characters to pull!" }
+		{ property: "og:description", content: "Plan your gacha pulls across upcoming banners. Very f2p friendly!" }
 	];
 }
 

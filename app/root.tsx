@@ -34,13 +34,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<title>Pull Planner</title>
-			<meta name="description" content="Site to help plan your next characters to pull!" />
+			<meta name="description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
 			<meta property="og:title" content="Pull Planner" />
-			<meta property="og:description" content="Site to help plan your next characters to pull!" />
+			<meta property="og:description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
 			<Meta />
 			<Links />
 		</head>
 		<body>
+			<noscript>
+				<div style={{textAlign: "center", padding: "1rem"}}>
+					<strong>Pull Planner</strong> is a site that helps you plan the next character you want to pull in Hoyoverse's popular gacha games.<br/>
+					This site requires JavaScript to work properly. Please enable it to continue.
+				</div>
+			</noscript>
 			{children}
 			<ScrollRestoration />
 			<Scripts />

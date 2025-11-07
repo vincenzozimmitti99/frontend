@@ -8,9 +8,9 @@ import { parsePullables } from "~/utils/common";
 export function meta({}) {
 	return [
 		{ title: "Pull Planner - Genshin Impact" },
-		{ name: "description", content: "Site to help plan your next characters to pull!" },
+		{ name: "description", content: "Plan your gacha pulls across upcoming banners. Very f2p friendly!" },
 		{ property: "og:title", content: `Pull Planner - Genshin Impact` },
-		{ property: "og:description", content: "Site to help plan your next characters to pull!" }
+		{ property: "og:description", content: "Plan your gacha pulls across upcoming banners. Very f2p friendly!" }
 	];
 }
 

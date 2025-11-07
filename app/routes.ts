@@ -8,6 +8,7 @@ export default [
 		route("/honkai-star-rail", "routes/honkai-star-rail.tsx"),
 		route("/zenless-zone-zero", "routes/zenless-zone-zero.tsx"),
 		route("/settings", "routes/settings.tsx"),
+		route("/about", "routes/about.tsx"),
 		route("/privacy-policy", "routes/privacy-policy.tsx"),
 		route("/terms-of-use", "routes/terms-of-use.tsx")
 	])

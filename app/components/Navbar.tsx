@@ -42,7 +42,8 @@ const Navbar = () => {
 				<NavLink to="/genshin-impact" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Genshin Impact</li>}}</NavLink>
 				<NavLink to="/honkai-star-rail" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Honkai: Star Rail</li>}}</NavLink>
 				<NavLink to="/zenless-zone-zero" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, "border-b-1", isActive?activeStyle:"")}>Zenless Zone Zero</li>}}</NavLink>
-				<NavLink to="/settings" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, "border-b-1", isActive?activeStyle:"")}>Settings</li>}}</NavLink>
+				<NavLink to="/settings" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Settings</li>}}</NavLink>
+				<NavLink to="/about" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>About</li>}}</NavLink>
 				<NavLink to="/terms-of-use" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Terms of Use</li>}}</NavLink>
 				<NavLink to="/privacy-policy" onClick={() => {setShrinked(!shrinked)}}>{({ isActive }) => {return <li className={clsx(defaultLiStyle, isActive?activeStyle:"")}>Privacy Policy</li>}}</NavLink>
 			</ul>
