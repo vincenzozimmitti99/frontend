@@ -37,7 +37,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
 				<meta property="og:title" content="Pull Planner" />
 				<meta property="og:description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
-				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2168034696721280" crossOrigin="anonymous"></script>
 				<Meta />
 				<Links />
 			</head>
