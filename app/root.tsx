@@ -30,27 +30,28 @@ export function HydrateFallback() {
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-		<head>
-			<meta charSet="utf-8" />
-			<meta name="viewport" content="width=device-width, initial-scale=1" />
-			<title>Pull Planner</title>
-			<meta name="description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
-			<meta property="og:title" content="Pull Planner" />
-			<meta property="og:description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
-			<Meta />
-			<Links />
-		</head>
-		<body>
-			<noscript>
-				<div style={{textAlign: "center", padding: "1rem"}}>
-					<strong>Pull Planner</strong> is a site that helps you plan the next character you want to pull in Hoyoverse's popular gacha games.<br/>
-					This site requires JavaScript to work properly. Please enable it to continue.
-				</div>
-			</noscript>
-			{children}
-			<ScrollRestoration />
-			<Scripts />
-		</body>
+			<head>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<title>Pull Planner</title>
+				<meta name="description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
+				<meta property="og:title" content="Pull Planner" />
+				<meta property="og:description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2168034696721280" crossOrigin="anonymous"></script>
+				<Meta />
+				<Links />
+			</head>
+			<body>
+				<noscript>
+					<div style={{textAlign: "center", padding: "1rem"}}>
+						<strong>Pull Planner</strong> is a site that helps you plan the next character you want to pull in Hoyoverse's popular gacha games.<br/>
+						This site requires JavaScript to work properly. Please enable it to continue.
+					</div>
+				</noscript>
+				{children}
+				<ScrollRestoration />
+				<Scripts />
+			</body>
 		</html>
 	);
 }

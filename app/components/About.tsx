@@ -21,7 +21,7 @@ function About() {
 				</section>
 
 				<section>
-					<p>For questions, feedback, or bug reports, contact us at <a className="underline" href="mailto:temp@mail.com">temp@mail.com</a></p>
+					<p>For questions, feedback, or bug reports, contact us at <a className="underline" href="mailto:pullplanner@gmail.com">pullplanner@gmail.com</a></p>
 				</section>
 			</main>
 		</div>

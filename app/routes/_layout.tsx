@@ -17,7 +17,7 @@ function _layout() {
 			<Navbar />
 			<div className="content-container">
 				<Outlet />
-				{(cookieConsent!==null && cookieConsent===false) && <CookieBanner setCookieConsent={setCookieConsent} />}
+				{/* {(cookieConsent!==null && cookieConsent===false) && <CookieBanner setCookieConsent={setCookieConsent} />} */}
 			</div>
 		</div>
 	)

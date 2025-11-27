@@ -5,14 +5,22 @@
 		{ "id": "yidhari", "name": "Yidhari" },
 		{ "id": "jufufu", "name": "Ju Fufu" },
 		{ "id": "dialyn", "name": "Dialyn" },
-		{ "id": "banyue", "name": "Banyue" }
+		{ "id": "banyue", "name": "Banyue" },
+		{ "id": "yeshunguang", "name": "Ye Shunguang" },
+		{ "id": "zhao", "name": "Zhao" },
+		{ "id": "hugo", "name": "Hugo" },
+		{ "id": "ellen", "name": "Ellen" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
 		{ "id": "vivian_weapon", "name": "Flight of Fancy" },
 		{ "id": "yidhari_weapon", "name": "Kraken's Cradle" },
 		{ "id": "jufufu_weapon", "name": "Roaring Fur-nace" },
-		{ "id": "dialyn_weapon", "name": "Dialyn W-Engine" },
-		{ "id": "banyue_weapon", "name": "Banyue W-Engine" }
+		{ "id": "dialyn_weapon", "name": "Yesterday Calls" },
+		{ "id": "banyue_weapon", "name": "Wrathful Vajra" },
+		{ "id": "yeshunguang_weapon", "name": "Ye Shunguang Signature" },
+		{ "id": "zhao_weapon", "name": "Zhao Signature" },
+		{ "id": "hugo_weapon", "name": "Myriad Eclipse" },
+		{ "id": "ellen_weapon", "name": "Deep Sea Visitor" }
 	]
 }

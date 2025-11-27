@@ -16,13 +16,7 @@
 		},
 		{
 			"type": "weekly",
-			"name": "Weeklies",
-			"recurrence": -1,
-			"value": 225
-		},
-		{
-			"type": "weekly",
-			"name": "Currency Wars",
+			"name": "Weeklies (SU/DU or CW)",
 			"recurrence": -1,
 			"value": 225
 		},

@@ -450,16 +450,28 @@
 			"version": "6.2.1"
 		},
 		{
-			"id": "varesa",
+			"id": "venti",
 			"start": "2025-12-03",
 			"end": "2025-12-23",
 			"version": "6.2.1"
 		},
 		{
-			"id": "varesa_weapon",
+			"id": "venti_weapon",
 			"start": "2025-12-03",
 			"end": "2025-12-23",
 			"version": "6.2.1"
+		},
+		{
+			"id": "varesa",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
+		},
+		{
+			"id": "varesa_weapon",
+			"start": "2025-12-23",
+			"end": "2026-01-13",
+			"version": "6.2.2"
 		},
 		{
 			"id": "xilonen",
@@ -474,16 +486,16 @@
 			"version": "6.2.2"
 		},
 		{
-			"id": "venti",
-			"start": "2025-12-23",
-			"end": "2026-01-13",
-			"version": "6.2.2"
+			"id": "columbina",
+			"start": "2026-01-14",
+			"end": "2026-02-03",
+			"version": "6.3.1"
 		},
 		{
-			"id": "elegyfortheend_weapon",
-			"start": "2025-12-23",
-			"end": "2026-01-13",
-			"version": "6.2.2"
+			"id": "whitehorseadeptus",
+			"start": "2026-02-03",
+			"end": "2026-02-24",
+			"version": "6.3.2"
 		}
 	]
 }
