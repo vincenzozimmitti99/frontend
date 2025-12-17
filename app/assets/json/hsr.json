@@ -139,6 +139,13 @@
 			"value": 1180,
 			"start": "2025-11-05",
 			"end": "2025-12-15"
+		},
+		{
+			"name": "Chrysos Awoo Championship",
+			"recurrence": 1,
+			"value": 1170,
+			"start": "2025-12-17",
+			"end": "2026-02-09"
 		}
 	],
 	"pullables":
@@ -514,6 +521,90 @@
 			"start": "2025-12-17",
 			"end": "2026-01-07",
 			"version": "3.8.1"
+		},
+		{
+			"id": "firefly",
+			"start": "2025-12-17",
+			"end": "2026-01-07",
+			"version": "3.8.1"
+		},
+		{
+			"id": "firefly_weapon",
+			"start": "2025-12-17",
+			"end": "2026-01-07",
+			"version": "3.8.1"
+		},
+		{
+			"id": "fugue",
+			"start": "2026-01-07",
+			"end": "2026-01-28",
+			"version": "3.8.2"
+		},
+		{
+			"id": "fugue_weapon",
+			"start": "2026-01-07",
+			"end": "2026-01-28",
+			"version": "3.8.2"
+		},
+		{
+			"id": "lingsha",
+			"start": "2026-01-07",
+			"end": "2026-01-28",
+			"version": "3.8.2"
+		},
+		{
+			"id": "lingsha_weapon",
+			"start": "2026-01-07",
+			"end": "2026-01-28",
+			"version": "3.8.2"
+		},
+		{
+			"id": "aglaea",
+			"start": "2026-01-28",
+			"end": "2026-02-12",
+			"version": "3.8.3"
+		},
+		{
+			"id": "aglaea_weapon",
+			"start": "2026-01-28",
+			"end": "2026-02-12",
+			"version": "3.8.3"
+		},
+		{
+			"id": "sunday",
+			"start": "2026-01-28",
+			"end": "2026-02-12",
+			"version": "3.8.3"
+		},
+		{
+			"id": "sunday_weapon",
+			"start": "2026-01-28",
+			"end": "2026-02-12",
+			"version": "3.8.3"
+		},
+		{
+			"id": "yaoguang",
+			"start": "2026-02-13",
+			"end": "2026-03-05",
+			"version": "4.0.1"
+		},
+		{
+			"id": "yaoguang_weapon",
+			"start": "2026-02-13",
+			"end": "2026-03-05",
+			"version": "4.0.1"
+		},
+		{
+			"id": "sparklesp",
+			"start": "2026-03-05",
+			"end": "2026-03-26",
+			"version": "4.0.2"
+		},
+		{
+			"id": "sparklesp_weapon",
+			"start": "2026-03-05",
+			"end": "2026-03-26",
+			"version": "4.0.2"
 		}
 	]
 }

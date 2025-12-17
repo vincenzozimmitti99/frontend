@@ -88,8 +88,8 @@ function TermsOfUse() {
 					<h2 className="text-xl font-semibold mt-4">6. Contact</h2>
 					<p>
 						If you have any questions about these Terms, please contact us at{" "}
-						<a href="mailto:youremail@example.com" className="underline">
-							youremail@example.com
+						<a href="mailto:pullplanner@gmail.com" className="underline">
+							pullplanner@gmail.com
 						</a>
 						.
 					</p>

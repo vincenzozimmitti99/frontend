@@ -95,6 +95,18 @@
 		{
 			"id": "mydei",
 			"name": "Mydei"
+		},
+		{
+			"id": "lingsha",
+			"name": "Lingsha"
+		},
+		{
+			"id": "yaoguang",
+			"name": "Yao Guang"
+		},
+		{
+			"id": "sparklesp",
+			"name": "Sparkle SP"
 		}
 	],
 	"weapons": [
@@ -188,11 +200,23 @@
 		},
 		{
 			"id": "thedahlia_weapon",
-			"name": "The Dahlia LC"
+			"name": "Never Forget Her Flame"
 		},
 		{
 			"id": "mydei_weapon",
 			"name": "Flame of Blood, Blaze My Path"
+		},
+		{
+			"id": "lingsha_weapon",
+			"name": "Scent Alone Stays True"
+		},
+		{
+			"id": "yaoguang_weapon",
+			"name": "Yao Guang LC"
+		},
+		{
+			"id": "sparklesp_weapon",
+			"name": "Sparkle SP LC"
 		}
 	]
 }

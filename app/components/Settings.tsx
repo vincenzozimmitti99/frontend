@@ -3,7 +3,7 @@ import InfoTooltip from "./InfoTooltip";
 import CookieBanner from "./CookieBanner";
 
 function Settings() {
-	const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
+	// const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
 
 	useEffect(() => {
 		let pullPlannerFromStorage = localStorage.getItem("pullplanner");
@@ -43,17 +43,17 @@ function Settings() {
 							<option value={"Asia"}>Asia</option>
 						</select>
 					</div>
-					<div className="mt-4">
+					{/* <div className="mt-4">
 						<div className="flex items-center mb-[4px] flex-col">
 							<label htmlFor="consent">
 								Ads cookie consent
 							</label>
 						</div>
 						<button id="consent" onClick={() => {setCookieConsent(false)}}>Change</button>
-					</div>
+					</div> */}
 				</div>
 			</div>
-			{(cookieConsent!==null && cookieConsent===false) && <CookieBanner setCookieConsent={setCookieConsent} />}
+			{/* {(cookieConsent!==null && cookieConsent===false) && <CookieBanner setCookieConsent={setCookieConsent} />} */}
 		</div>
 	)
 }

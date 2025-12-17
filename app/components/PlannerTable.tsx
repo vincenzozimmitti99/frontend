@@ -171,7 +171,7 @@ const convertToExtendedPullable = (item: Pullable, server: Server, game: Games |
 
 		utcEndDate.setUTCMinutes(59);
 		utcEndDate.setUTCSeconds(59);
-	} else if(phase==="2"){
+	} else if(phase==="2" || phase==="3"){
 		utcStartDate = new Date(item.start);
 		utcEndDate = new Date(item.end); 
 
