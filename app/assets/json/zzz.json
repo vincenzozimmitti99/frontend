@@ -53,8 +53,29 @@
 		{
 			"name": "Neo Golden Mecha",
 			"recurrence": 1,
-			"value": 0,
+			"value": 360,
 			"start": "2025-11-28",
+			"end": "2025-12-29"
+		},
+		{
+			"name": "100% Miss Bunny",
+			"recurrence": 1,
+			"value": 300,
+			"start": "2025-12-17",
+			"end": "2025-12-29"
+		},
+		{
+			"name": "Simulated Sequence Showdown",
+			"recurrence": 1,
+			"value": 350,
+			"start": "2025-12-08",
+			"end": "2025-12-29"
+		},
+		{
+			"name": "Lightstream Notes",
+			"recurrence": 1,
+			"value": 300,
+			"start": "2025-12-03",
 			"end": "2025-12-29"
 		}
 	],
@@ -176,6 +197,42 @@
 		{
 			"id": "zhao_weapon",
 			"start": "2026-01-27",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "alice",
+			"start": "2026-01-07",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "alice_weapon",
+			"start": "2026-01-07",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "soldier0anby",
+			"start": "2026-01-07",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "soldier0anby_weapon",
+			"start": "2026-01-07",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "astra",
+			"start": "2026-01-07",
+			"end": "2026-02-17",
+			"version": "2.5.2"
+		},
+		{
+			"id": "astra_weapon",
+			"start": "2026-01-07",
 			"end": "2026-02-17",
 			"version": "2.5.2"
 		}

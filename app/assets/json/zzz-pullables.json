@@ -9,7 +9,10 @@
 		{ "id": "yeshunguang", "name": "Ye Shunguang" },
 		{ "id": "zhao", "name": "Zhao" },
 		{ "id": "hugo", "name": "Hugo" },
-		{ "id": "ellen", "name": "Ellen" }
+		{ "id": "ellen", "name": "Ellen" },
+		{ "id": "alice", "name": "Alice" },
+		{ "id": "soldier0anby", "name": "Soldier 0 Anby" },
+		{ "id": "astra", "name": "Astra" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
@@ -21,6 +24,9 @@
 		{ "id": "yeshunguang_weapon", "name": "Ye Shunguang Signature" },
 		{ "id": "zhao_weapon", "name": "Zhao Signature" },
 		{ "id": "hugo_weapon", "name": "Myriad Eclipse" },
-		{ "id": "ellen_weapon", "name": "Deep Sea Visitor" }
+		{ "id": "ellen_weapon", "name": "Deep Sea Visitor" },
+		{ "id": "alice_weapon", "name": "Practiced Perfection" },
+		{ "id": "soldier0anby_weapon", "name": "Severed Innocence" },
+		{ "id": "astra_weapon", "name": "Elegant Vanity" }
 	]
 }
