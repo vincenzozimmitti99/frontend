@@ -27,7 +27,9 @@
 		{ "id": "zhongli", "name": "Zhongli"},
 		{ "id": "durin", "name": "Durin"},
 		{ "id": "columbina", "name": "Columbina"},
-		{ "id": "whitehorseadeptus", "name": "White Horse Adeptus"}
+		{ "id": "zibai", "name": "Zibai"},
+		{ "id": "neuvillette", "name": "Neuvillette"},
+		{ "id": "varka", "name": "Varka" }
 	],
 	"weapons": [
 		{ "id": "hutao_weapon", "name": "Staff of Homa"},
@@ -57,7 +59,9 @@
 		{ "id": "zhongli_weapon", "name": "Vortex Vanquisher"},
 		{ "id": "durin_weapon", "name": "Durin Signature"},
 		{ "id": "venti_weapon", "name":"The Daybreak Chronicles"},
-		{ "id": "columbina_weapon", "name": "Columbina Signature"},
-		{ "id": "whitehorseadeptus_weapon", "name": "White Horse Adeptus Signature"}
+		{ "id": "columbina_weapon", "name": "Nocturne's Curtain Call"},
+		{ "id": "zibai_weapon", "name": "Zibai Signature"},
+		{ "id": "neuvillette_weapon", "name": "Tome of the Eternal Flow"},
+		{ "id": "varka_weapon", "name": "Varka Signature" }
 	]
 }

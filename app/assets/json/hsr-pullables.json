@@ -105,8 +105,8 @@
 			"name": "Yao Guang"
 		},
 		{
-			"id": "sparklesp",
-			"name": "Sparkle SP"
+			"id": "sparxie",
+			"name": "Sparxie"
 		}
 	],
 	"weapons": [
@@ -215,8 +215,8 @@
 			"name": "Yao Guang LC"
 		},
 		{
-			"id": "sparklesp_weapon",
-			"name": "Sparkle SP LC"
+			"id": "sparxie_weapon",
+			"name": "Sparxie LC"
 		}
 	]
 }

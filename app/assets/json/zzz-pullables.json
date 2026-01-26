@@ -12,7 +12,9 @@
 		{ "id": "ellen", "name": "Ellen" },
 		{ "id": "alice", "name": "Alice" },
 		{ "id": "soldier0anby", "name": "Soldier 0 Anby" },
-		{ "id": "astra", "name": "Astra" }
+		{ "id": "astra", "name": "Astra" },
+		{ "id": "sunna", "name": "Sunna" },
+		{ "id": "aria", "name": "Aria" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
@@ -21,12 +23,14 @@
 		{ "id": "jufufu_weapon", "name": "Roaring Fur-nace" },
 		{ "id": "dialyn_weapon", "name": "Yesterday Calls" },
 		{ "id": "banyue_weapon", "name": "Wrathful Vajra" },
-		{ "id": "yeshunguang_weapon", "name": "Ye Shunguang Signature" },
-		{ "id": "zhao_weapon", "name": "Zhao Signature" },
+		{ "id": "yeshunguang_weapon", "name": "Cloudcleave Radiance" },
+		{ "id": "zhao_weapon", "name": "Half-Sugar Bunny" },
 		{ "id": "hugo_weapon", "name": "Myriad Eclipse" },
 		{ "id": "ellen_weapon", "name": "Deep Sea Visitor" },
 		{ "id": "alice_weapon", "name": "Practiced Perfection" },
 		{ "id": "soldier0anby_weapon", "name": "Severed Innocence" },
-		{ "id": "astra_weapon", "name": "Elegant Vanity" }
+		{ "id": "astra_weapon", "name": "Elegant Vanity" },
+		{ "id": "sunna_weapon", "name": "Sunna Signature" },
+		{ "id": "aria_weapon", "name": "Aria Signature" }
 	]
 }

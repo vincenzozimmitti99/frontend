@@ -492,10 +492,94 @@
 			"version": "6.3.1"
 		},
 		{
-			"id": "whitehorseadeptus",
+			"id": "columbina_weapon",
+			"start": "2026-01-14",
+			"end": "2026-02-03",
+			"version": "6.3.1"
+		},
+		{
+			"id": "ineffa",
+			"start": "2026-01-14",
+			"end": "2026-02-03",
+			"version": "6.3.1"
+		},
+		{
+			"id": "ineffa_weapon",
+			"start": "2026-01-14",
+			"end": "2026-02-03",
+			"version": "6.3.1"
+		},
+		{
+			"id": "zibai",
 			"start": "2026-02-03",
 			"end": "2026-02-24",
 			"version": "6.3.2"
+		},
+		{
+			"id": "zibai_weapon",
+			"start": "2026-02-03",
+			"end": "2026-02-24",
+			"version": "6.3.2"
+		},
+		{
+			"id": "neuvillette",
+			"start": "2026-02-03",
+			"end": "2026-02-24",
+			"version": "6.3.2"
+		},
+		{
+			"id": "neuvillette_weapon",
+			"start": "2026-02-03",
+			"end": "2026-02-24",
+			"version": "6.3.2"
+		},
+		{
+			"id": "varka",
+			"start": "2026-02-25",
+			"end": "2026-03-17",
+			"version": "6.4.1"
+		},
+		{
+			"id": "varka_weapon",
+			"start": "2026-02-25",
+			"end": "2026-03-17",
+			"version": "6.4.1"
+		},
+		{
+			"id": "flins",
+			"start": "2026-02-25",
+			"end": "2026-03-17",
+			"version": "6.4.1"
+		},
+		{
+			"id": "flins_weapon",
+			"start": "2026-02-25",
+			"end": "2026-03-17",
+			"version": "6.4.1"
+		},
+		{
+			"id": "skirk",
+			"start": "2026-03-17",
+			"end": "2026-04-07",
+			"version": "6.4.2"
+		},
+		{
+			"id": "skirk_weapon",
+			"start": "2026-03-17",
+			"end": "2026-04-07",
+			"version": "6.4.2"
+		},
+		{
+			"id": "escoffier",
+			"start": "2026-03-17",
+			"end": "2026-04-07",
+			"version": "6.4.2"
+		},
+		{
+			"id": "escoffier_weapon",
+			"start": "2026-03-17",
+			"end": "2026-04-07",
+			"version": "6.4.2"
 		}
 	]
 }
