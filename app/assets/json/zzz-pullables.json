@@ -14,7 +14,9 @@
 		{ "id": "soldier0anby", "name": "Soldier 0 Anby" },
 		{ "id": "astra", "name": "Astra" },
 		{ "id": "sunna", "name": "Sunna" },
-		{ "id": "aria", "name": "Aria" }
+		{ "id": "aria", "name": "Aria" },
+		{ "id": "yixuan", "name": "Yixuan" },
+		{ "id": "yuzuha", "name": "Yuzuha" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
@@ -30,7 +32,9 @@
 		{ "id": "alice_weapon", "name": "Practiced Perfection" },
 		{ "id": "soldier0anby_weapon", "name": "Severed Innocence" },
 		{ "id": "astra_weapon", "name": "Elegant Vanity" },
-		{ "id": "sunna_weapon", "name": "Sunna Signature" },
-		{ "id": "aria_weapon", "name": "Aria Signature" }
+		{ "id": "sunna_weapon", "name": "Thoughtbop" },
+		{ "id": "aria_weapon", "name": "Angel in the Shell" },
+		{ "id": "yixuan_weapon", "name": "Qingming Birdcage" },
+		{ "id": "yuzuha_weapon", "name": "Metanukimorphosis" }
 	]
 }
