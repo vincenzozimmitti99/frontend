@@ -16,7 +16,9 @@
 		{ "id": "sunna", "name": "Sunna" },
 		{ "id": "aria", "name": "Aria" },
 		{ "id": "yixuan", "name": "Yixuan" },
-		{ "id": "yuzuha", "name": "Yuzuha" }
+		{ "id": "yuzuha", "name": "Yuzuha" },
+		{ "id": "nangongyu", "name": "Nangong Yu" },
+		{ "id": "cissia", "name": "Cissia" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
@@ -35,6 +37,8 @@
 		{ "id": "sunna_weapon", "name": "Thoughtbop" },
 		{ "id": "aria_weapon", "name": "Angel in the Shell" },
 		{ "id": "yixuan_weapon", "name": "Qingming Birdcage" },
-		{ "id": "yuzuha_weapon", "name": "Metanukimorphosis" }
+		{ "id": "yuzuha_weapon", "name": "Metanukimorphosis" },
+		{ "id": "nangongyu_weapon", "name": "Neon Fantasies" },
+		{ "id": "cissia_weapon", "name": "Serpentine Seeker" }
 	]
 }

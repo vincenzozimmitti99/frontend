@@ -585,26 +585,86 @@
 		{
 			"id": "yaoguang",
 			"start": "2026-02-13",
-			"end": "2026-03-05",
+			"end": "2026-03-23",
 			"version": "4.0.1"
 		},
 		{
 			"id": "yaoguang_weapon",
 			"start": "2026-02-13",
-			"end": "2026-03-05",
+			"end": "2026-03-23",
 			"version": "4.0.1"
 		},
 		{
 			"id": "sparxie",
 			"start": "2026-03-05",
-			"end": "2026-03-26",
+			"end": "2026-03-23",
 			"version": "4.0.2"
 		},
 		{
 			"id": "sparxie_weapon",
 			"start": "2026-03-05",
-			"end": "2026-03-26",
+			"end": "2026-03-23",
 			"version": "4.0.2"
+		},
+		{
+			"id": "ashveil",
+			"start": "2026-03-24",
+			"end": "2026-04-21",
+			"version": "4.1.1"
+		},
+		{
+			"id": "ashveil_weapon",
+			"start": "2026-03-24",
+			"end": "2026-04-21",
+			"version": "4.1.1"
+		},
+		{
+			"id": "hyacine",
+			"start": "2026-03-24",
+			"end": "2026-04-08",
+			"version": "4.1.1"
+		},
+		{
+			"id": "hyacine_weapon",
+			"start": "2026-03-24",
+			"end": "2026-04-08",
+			"version": "4.1.1"
+		},
+		{
+			"id": "boothill",
+			"start": "2026-04-08",
+			"end": "2026-04-21",
+			"version": "4.1.2"
+		},
+		{
+			"id": "boothill_weapon",
+			"start": "2026-04-08",
+			"end": "2026-04-21",
+			"version": "4.1.2"
+		},
+		{
+			"id": "silverwolflv999",
+			"start": "2026-04-22",
+			"end": "2026-05-12",
+			"version": "4.2.1"
+		},
+		{
+			"id": "silverwolflv999_weapon",
+			"start": "2026-04-22",
+			"end": "2026-05-12",
+			"version": "4.2.1"
+		},
+		{
+			"id": "evanescia",
+			"start": "2026-05-12",
+			"end": "2026-06-02",
+			"version": "4.2.2"
+		},
+		{
+			"id": "evanescia_weapon",
+			"start": "2026-05-12",
+			"end": "2026-06-02",
+			"version": "4.2.2"
 		}
 	]
 }

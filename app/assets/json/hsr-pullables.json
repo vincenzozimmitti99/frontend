@@ -107,6 +107,22 @@
 		{
 			"id": "sparxie",
 			"name": "Sparxie"
+		},
+		{
+			"id": "ashveil",
+			"name": "Ashveil"
+		},
+		{
+			"id": "boothill",
+			"name": "Boothill"
+		},
+		{
+			"id": "silverwolflv999",
+			"name": "Silver Wolf Lv.999"
+		},
+		{
+			"id": "evanescia",
+			"name": "Evanescia"
 		}
 	],
 	"weapons": [
@@ -212,11 +228,27 @@
 		},
 		{
 			"id": "yaoguang_weapon",
-			"name": "Yao Guang LC"
+			"name": "Diviner of Distant Reach"
 		},
 		{
 			"id": "sparxie_weapon",
-			"name": "Sparxie LC"
+			"name": "Ever-Glorious Magical Girl"
+		},
+		{
+			"id": "ashveil_weapon",
+			"name": "The Finale of a Lie"
+		},
+		{
+			"id": "boothill_weapon",
+			"name": "Sailing Towards A Second Life"
+		},
+		{
+			"id": "silverwolflv999_weapon",
+			"name": "Silver Wolf Lv.999 LC"
+		},
+		{
+			"id": "evanescia_weapon",
+			"name": "Evanescia LC"
 		}
 	]
 }
