@@ -37,6 +37,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
 				<meta property="og:title" content="Pull Planner" />
 				<meta property="og:description" content="Plan your gacha pulls across upcoming banners. Very f2p friendly!" />
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2168034696721280" crossOrigin="anonymous"></script>
+				<script async src="https://www.googletagmanager.com/gtag/js?id=G-XQL83P28NP"></script>
+				<script  dangerouslySetInnerHTML={{
+					__html: `
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-XQL83P28NP');
+					`,
+				}}></script>
 				<Meta />
 				<Links />
 			</head>
