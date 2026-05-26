@@ -606,6 +606,18 @@
 			"version": "6.5.1"
 		},
 		{
+			"id": "lauma",
+			"start": "2026-04-28",
+			"end": "2026-05-19",
+			"version": "6.5.2"
+		},
+		{
+			"id": "lauma_weapon",
+			"start": "2026-04-28",
+			"end": "2026-05-19",
+			"version": "6.5.2"
+		},
+		{
 			"id": "nefer",
 			"start": "2026-04-28",
 			"end": "2026-05-19",
@@ -618,16 +630,64 @@
 			"version": "6.5.2"
 		},
 		{
-			"id": "lauma",
-			"start": "2026-04-28",
-			"end": "2026-05-19",
-			"version": "6.5.2"
+			"id": "nicole",
+			"start": "2026-05-20",
+			"end": "2026-06-09",
+			"version": "6.6.1"
 		},
 		{
-			"id": "lauma_weapon",
-			"start": "2026-04-28",
-			"end": "2026-05-19",
-			"version": "6.5.2"
+			"id": "nicole_weapon",
+			"start": "2026-05-20",
+			"end": "2026-06-09",
+			"version": "6.6.1"
+		},
+		{
+			"id": "durin",
+			"start": "2026-05-20",
+			"end": "2026-06-09",
+			"version": "6.6.1"
+		},
+		{
+			"id": "durin_weapon",
+			"start": "2026-05-20",
+			"end": "2026-06-09",
+			"version": "6.6.1"
+		},
+		{
+			"id": "lohen",
+			"start": "2026-06-09",
+			"end": "2026-06-30",
+			"version": "6.6.2"
+		},
+		{
+			"id": "lohen_weapon",
+			"start": "2026-06-09",
+			"end": "2026-06-30",
+			"version": "6.6.2"
+		},
+		{
+			"id": "mavuika",
+			"start": "2026-06-09",
+			"end": "2026-06-30",
+			"version": "6.6.2"
+		},
+		{
+			"id": "mavuika_weapon",
+			"start": "2026-06-09",
+			"end": "2026-06-30",
+			"version": "6.6.2"
+		},
+		{
+			"id": "sandrone",
+			"start": "2026-07-01",
+			"end": "2026-07-21",
+			"version": "6.7.1"
+		},
+		{
+			"id": "sandrone_weapon",
+			"start": "2026-07-01",
+			"end": "2026-07-21",
+			"version": "6.7.1"
 		}
 	]
 }

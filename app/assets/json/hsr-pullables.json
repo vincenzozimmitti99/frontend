@@ -123,6 +123,18 @@
 		{
 			"id": "evanescia",
 			"name": "Evanescia"
+		},
+		{
+			"id": "feixiao",
+			"name": "Feixiao"
+		},
+		{
+			"id": "mortenaxblade",
+			"name": "Mortenax Blade"
+		},
+		{
+			"id": "nova",
+			"name": "Nova"
 		}
 	],
 	"weapons": [
@@ -244,11 +256,23 @@
 		},
 		{
 			"id": "silverwolflv999_weapon",
-			"name": "Silver Wolf Lv.999 LC"
+			"name": "Welcome to the Cosmic City"
 		},
 		{
 			"id": "evanescia_weapon",
-			"name": "Evanescia LC"
+			"name": "Until the Flowers Bloom Again"
+		},
+		{
+			"id": "feixiao_weapon",
+			"name": "I Venture Forth to Hunt"
+		},
+		{
+			"id": "mortenaxblade_weapon",
+			"name": "Reforged in Hellfire"
+		},
+		{
+			"id": "nova_weapon",
+			"name": "Reforged in Hellfire"
 		}
 	]
 }

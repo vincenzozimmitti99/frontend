@@ -656,15 +656,105 @@
 		},
 		{
 			"id": "evanescia",
-			"start": "2026-05-12",
-			"end": "2026-06-02",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
 			"version": "4.2.2"
 		},
 		{
 			"id": "evanescia_weapon",
-			"start": "2026-05-12",
-			"end": "2026-06-02",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
 			"version": "4.2.2"
+		},
+		{
+			"id": "tribbie",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "tribbie_weapon",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "sunday",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "sunday_weapon",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "feixiao",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "feixiao_weapon",
+			"start": "2026-05-13",
+			"end": "2026-05-31",
+			"version": "4.2.2"
+		},
+		{
+			"id": "mortenaxblade",
+			"start": "2026-05-31",
+			"end": "2026-06-24",
+			"version": "4.3.1"
+		},
+		{
+			"id": "mortenaxblade_weapon",
+			"start": "2026-05-31",
+			"end": "2026-06-24",
+			"version": "4.3.1"
+		},
+		{
+			"id": "yaoguang",
+			"start": "2026-05-31",
+			"end": "2026-06-24",
+			"version": "4.3.1"
+		},
+		{
+			"id": "yaoguang_weapon",
+			"start": "2026-05-31",
+			"end": "2026-06-24",
+			"version": "4.3.1"
+		},
+		{
+			"id": "cyrene",
+			"start": "2026-06-24",
+			"end": "2026-07-14",
+			"version": "4.3.2"
+		},
+		{
+			"id": "cyrene_weapon",
+			"start": "2026-06-24",
+			"end": "2026-07-14",
+			"version": "4.3.2"
+		},
+		{
+			"id": "phainon",
+			"start": "2026-06-24",
+			"end": "2026-07-14",
+			"version": "4.3.2"
+		},
+		{
+			"id": "phainon_weapon",
+			"start": "2026-06-24",
+			"end": "2026-07-14",
+			"version": "4.3.2"
+		},
+		{
+			"id": "nova",
+			"start": "2026-07-15",
+			"end": "2026-08-04",
+			"version": "4.4.1"
 		}
 	]
 }

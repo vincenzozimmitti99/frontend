@@ -331,6 +331,54 @@
 			"start": "2026-04-15",
 			"end": "2026-05-05",
 			"version": "2.7.2"
+		},
+		{
+			"id": "promeia",
+			"start": "2026-05-06",
+			"end": "2026-05-26",
+			"version": "2.8.1"
+		},
+		{
+			"id": "promeia_weapon",
+			"start": "2026-05-06",
+			"end": "2026-05-26",
+			"version": "2.8.1"
+		},
+		{
+			"id": "lucia",
+			"start": "2026-05-06",
+			"end": "2026-05-26",
+			"version": "2.8.1"
+		},
+		{
+			"id": "lucia_weapon",
+			"start": "2026-05-06",
+			"end": "2026-05-26",
+			"version": "2.8.1"
+		},
+		{
+			"id": "starlightbilly",
+			"start": "2026-05-26",
+			"end": "2026-06-16",
+			"version": "2.8.2"
+		},
+		{
+			"id": "starlightbilly_weapon",
+			"start": "2026-05-26",
+			"end": "2026-06-16",
+			"version": "2.8.2"
+		},
+		{
+			"id": "orphieandmagus",
+			"start": "2026-05-26",
+			"end": "2026-06-16",
+			"version": "2.8.2"
+		},
+		{
+			"id": "orphieandmagus_weapon",
+			"start": "2026-05-26",
+			"end": "2026-06-16",
+			"version": "2.8.2"
 		}
 	]
 }

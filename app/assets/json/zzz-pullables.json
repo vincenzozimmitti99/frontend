@@ -18,7 +18,10 @@
 		{ "id": "yixuan", "name": "Yixuan" },
 		{ "id": "yuzuha", "name": "Yuzuha" },
 		{ "id": "nangongyu", "name": "Nangong Yu" },
-		{ "id": "cissia", "name": "Cissia" }
+		{ "id": "cissia", "name": "Cissia" },
+		{ "id": "promeia", "name": "Promeia" },
+		{ "id": "starlightbilly", "name": "Starlight Billy" },
+		{ "id": "orphieandmagus", "name": "Orphie and Magus" }
 	],
 	"weapons": [
 		{ "id": "lucia_weapon", "name": "Dreamlit Hearth" },
@@ -39,6 +42,9 @@
 		{ "id": "yixuan_weapon", "name": "Qingming Birdcage" },
 		{ "id": "yuzuha_weapon", "name": "Metanukimorphosis" },
 		{ "id": "nangongyu_weapon", "name": "Neon Fantasies" },
-		{ "id": "cissia_weapon", "name": "Serpentine Seeker" }
+		{ "id": "cissia_weapon", "name": "Serpentine Seeker" },
+		{ "id": "promeia_weapon", "name": "Frostfall Sickle" },
+		{ "id": "starlightbilly_weapon", "name": "Starlight Rider Faceplate" },
+		{ "id": "orphieandmagus_weapon", "name": "Bellicose Blaze" }
 	]
 }

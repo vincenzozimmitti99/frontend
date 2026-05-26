@@ -30,7 +30,10 @@
 		{ "id": "zibai", "name": "Zibai" },
 		{ "id": "neuvillette", "name": "Neuvillette" },
 		{ "id": "varka", "name": "Varka" },
-		{ "id": "linnea", "name": "Linnea" }
+		{ "id": "linnea", "name": "Linnea" },
+		{ "id": "nicole", "name": "Nicole" },
+		{ "id": "lohen", "name": "Lohen" },
+		{ "id": "sandrone", "name": "Sandrone" }
 	],
 	"weapons": [
 		{ "id": "hutao_weapon", "name": "Staff of Homa" },
@@ -64,6 +67,9 @@
 		{ "id": "zibai_weapon", "name": "Lightbearing Moonshard" },
 		{ "id": "neuvillette_weapon", "name": "Tome of the Eternal Flow" },
 		{ "id": "varka_weapon", "name": "Gest of the Mighty Wolf" },
-		{ "id": "linnea_weapon", "name": "Linnea Signature" }
+		{ "id": "linnea_weapon", "name": "Golden Frostbound Oath" },
+		{ "id": "nicole_weapon", "name": "Angelos' Heptades" },
+		{ "id": "lohen_weapon", "name": "Athame Artis" },
+		{ "id": "sandrone_weapon", "name": "Sandrone Signature" }
 	]
 }
